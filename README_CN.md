@@ -1,42 +1,37 @@
-# @bg-effects/fireworks
+# @bg-effects/math-beauty
 
 [English](./README.md) | [简体中文](./README_CN.md)
 
-基于 OGL 和 Vue 构建的高性能烟花背景特效。
+基于 Vue 和 Canvas 构建的数学背景效果包，可在大坐标轴上展示公式与图形之美。
 
-[在线演示](https://huangzida.github.io/fireworks/)
+[在线演示](https://huangzida.github.io/math/)
 
 ---
 
 ### 特性
 
-- 🚀 **高性能**: 基于 OGL (轻量级 WebGL 库) 构建，运行流畅。
-- 🎨 **高度可定制**: 提供多种形状（心形、星形、蝴蝶等）、发射模式和颜色选项。
-- 🛠️ **调试模式**: 内置可视化调试面板，方便实时调整效果。
-- 📦 **开箱即用**: 作为 Vue 组件，简单配置即可使用。
+- 📐 **大坐标系舞台**: 内置深色坐标轴、网格线和刻度。
+- 🧮 **公式联动展示**: 顶部显示公式，画布中动态描边对应数学图形。
+- 🖱️ **快捷切换与直选**: 保留“切换效果”按钮，并支持从效果列表直接选择。
+- 🎨 **多种优美曲线**: 内置玫瑰线、内旋轮线、蝴蝶曲线、李萨如图形等。
+- 🛠️ **实时调试能力**: 可调动画速度、线宽线色、坐标范围、残影等参数。
 
 ### 安装
 
 ```bash
-pnpm add @bg-effects/fireworks ogl
+pnpm add @bg-effects/math-beauty
 ```
-
-> **注意**: `ogl` 是 peer dependency，需要手动安装。
 
 ### 使用
 
 ```vue
 <script setup>
-import { Fireworks } from '@bg-effects/fireworks'
+import { MathBeauty } from '@bg-effects/math-beauty'
 </script>
 
 <template>
   <div style="width: 100vw; height: 100vh; background: #000;">
-    <Fireworks 
-      :firework-count="50"
-      shape="heart"
-      color-mode="multi"
-    />
+    <MathBeauty debug />
   </div>
 </template>
 ```
@@ -45,21 +40,53 @@ import { Fireworks } from '@bg-effects/fireworks'
 
 | 属性名 | 类型 | 默认值 | 说明 |
 | :--- | :--- | :--- | :--- |
-| `firework-count` | `number` | `30` | 烟花数量 |
-| `speed` | `number` | `1.0` | 动画速度 |
-| `size` | `number` | `2.0` | 烟花粒子大小 |
-| `shape` | `string` | `'normal'` | 烟花形状（见下文） |
-| `launch-mode` | `string` | `'random'` | 发射模式（见下文） |
-| `color-mode` | `string` | `'multi'` | 颜色模式 (`'single'` 或 `'multi'`) |
-| `color` | `string` | `'#ff0000'` | 当颜色模式为 `'single'` 时的颜色 |
+| `effect-index` | `number` | `0` | 当前公式效果索引 |
+| `animation-speed` | `number` | `0.2` | 动态描边速度 |
+| `line-width` | `number` | `2.8` | 曲线线宽 |
+| `line-color` | `string` | `'#f9fafb'` | 曲线颜色 |
+| `axis-range` | `number` | `18` | 世界坐标显示范围 |
+| `grid-density` | `number` | `18` | 网格细分密度 |
+| `show-grid` | `boolean` | `true` | 是否显示网格 |
+| `show-axis` | `boolean` | `true` | 是否显示坐标轴 |
+| `show-trail` | `boolean` | `false` | 是否开启轨迹残影 |
+| `trail-alpha` | `number` | `0.12` | 残影衰减强度 |
 | `debug` | `boolean` | `false` | 是否开启调试面板 |
 | `lang` | `'zh-CN' \| 'en'` | `'zh-CN'` | 界面语言 |
 
-#### 支持的形状 (`shape`)
-`normal`, `circular`, `heart`, `star`, `butterfly`, `spiral`, `ring`, `doubleRing`, `atom`, `trefoil`, `clover`, `cross`, `saturn`, `hexagram`, `astroid`, `gear`, `fermat`, `folium`, `random`
+### 内置公式效果
+- 心形线
+- 帕斯卡蜗线
+- 模乘圆连线
+- 双频花盘
+- 超椭圆
+- 星芒玫瑰
+- 螺旋旋轮
+- 蝶形变奏
+- gcd 等值层
+- 二次剩余格
+- 互质晶格
+- 丝带环
+- 花心网
+- 花瓣链
+- 五角星波
+- 花瓣轨道
+- 玫瑰线
+- 内旋轮线
+- 外摆线
+- 双纽线
+- 蝴蝶曲线
+- 正切余切爆裂线
+- 肾形线
+- 阿基米德螺线
+- 星芒内摆线
+- 李萨如图形
 
-#### 发射模式 (`launchMode`)
-`random`, `burst`, `wave`, `tide`, `simultaneous`, `pendulum`
+### 调试交互
+- 开启 `debug` 模式
+- 在面板点击“切换效果”按钮
+- 在“效果列表”下拉框中可直接选中任意公式
+- 顶部公式文本与当前曲线同步切换
+- 坐标轴与网格铺满整屏动态绘制
 
 ### 本地开发
 

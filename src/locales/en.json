@@ -1,0 +1,36 @@
+{
+  "title": "Debug Panel",
+  "tabs": {
+    "basic": "Basic",
+    "display": "Display"
+  },
+  "labels": {
+    "effectName": "Current Effect",
+    "effectSelect": "Effect List",
+    "effectCategory": "Effect Category",
+    "categoryAll": "All Categories",
+    "animationSpeed": "Animation Speed",
+    "lineWidth": "Line Width",
+    "lineColor": "Line Color",
+    "axisRange": "Axis Range",
+    "gridDensity": "Grid Density",
+    "showGrid": "Show Grid",
+    "showAxis": "Show Axis",
+    "showTrail": "Trail Fade",
+    "trailAlpha": "Trail Strength",
+    "modularPointCount": "Modular Count N",
+    "modularMultiplier": "Modular Multiplier k",
+    "modularRadius": "Modular Radius r"
+  },
+  "actions": {
+    "prevEffect": "Previous",
+    "nextEffect": "Next"
+  },
+  "categories": {
+    "polar": "Polar",
+    "parametric": "Parametric",
+    "trochoid": "Trochoid",
+    "numberTheory": "Number Theory",
+    "hybrid": "Hybrid"
+  }
+}

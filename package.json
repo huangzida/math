@@ -1,26 +1,26 @@
 {
-  "name": "@bg-effects/fireworks",
+  "name": "@bg-effects/math-beauty",
   "version": "1.0.0",
   "type": "module",
   "packageManager": "pnpm@10.25.0",
-  "description": "Star Trails GL Effect - A high-performance star trails background effect built with OGL and Vue.",
+  "description": "Math Beauty Effect - A mathematical formula and coordinate drawing background effect built with Canvas and Vue.",
   "author": "huangzida",
   "license": "MIT",
   "keywords": [
-    "star-trails",
-    "webgl",
-    "ogl",
+    "math",
+    "formula",
+    "canvas",
     "vue",
     "background-effect",
     "animation"
   ],
-  "homepage": "https://github.com/huangzida/fireworks#readme",
+  "homepage": "https://github.com/huangzida/math#readme",
   "bugs": {
-    "url": "https://github.com/huangzida/fireworks/issues"
+    "url": "https://github.com/huangzida/math/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/huangzida/fireworks.git"
+    "url": "git+https://github.com/huangzida/math.git"
   },
   "sideEffects": [
     "**/*.css"
@@ -84,7 +84,6 @@
     "vue-tsc": "^2.2.12"
   },
   "peerDependencies": {
-    "ogl": "^1.0.0",
     "vue": "^3.3.0"
   }
 }

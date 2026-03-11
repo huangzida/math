@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
   const isPlayground = mode === 'playground'
 
   return {
-    base: isPlayground ? '/fireworks/' : './',
+    base: isPlayground ? '/math/' : './',
     root: isPlayground ? 'playground' : '.',
     plugins: [
       vue(),
@@ -22,7 +22,6 @@ export default defineConfig(({ mode }) => {
         rollupTypes: true,
       }),
     ].filter(Boolean),
-    assetsInclude: ['**/*.glsl'],
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -34,16 +33,15 @@ export default defineConfig(({ mode }) => {
     } : {
       lib: {
         entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
-        name: 'BgEffectsFireworks',
+        name: 'BgEffectsMathBeauty',
         formats: ['es', 'umd'],
         fileName: (format) => `index.${format === 'es' ? 'js' : 'umd.cjs'}`,
       },
       rollupOptions: {
-        external: ['vue', 'ogl'],
+        external: ['vue'],
         output: {
           globals: {
             vue: 'Vue',
-            ogl: 'OGL',
           },
         },
       },

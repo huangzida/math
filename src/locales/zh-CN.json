@@ -1,0 +1,36 @@
+{
+  "title": "调试面板",
+  "tabs": {
+    "basic": "基础",
+    "display": "显示"
+  },
+  "labels": {
+    "effectName": "当前效果",
+    "effectSelect": "效果列表",
+    "effectCategory": "效果分类",
+    "categoryAll": "全部分类",
+    "animationSpeed": "动画速度",
+    "lineWidth": "线宽",
+    "lineColor": "线条颜色",
+    "axisRange": "坐标范围",
+    "gridDensity": "网格密度",
+    "showGrid": "显示网格",
+    "showAxis": "显示坐标轴",
+    "showTrail": "轨迹残影",
+    "trailAlpha": "残影强度",
+    "modularPointCount": "模乘点数 N",
+    "modularMultiplier": "模乘倍率 k",
+    "modularRadius": "模乘半径 r"
+  },
+  "actions": {
+    "prevEffect": "上一个",
+    "nextEffect": "下一个"
+  },
+  "categories": {
+    "polar": "极坐标",
+    "parametric": "参数曲线",
+    "trochoid": "旋轮线",
+    "numberTheory": "数论图形",
+    "hybrid": "混合实验"
+  }
+}
