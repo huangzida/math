@@ -33,4 +33,27 @@ export interface MathBeautyProps {
   modularPointCount?: number
   modularMultiplier?: number
   modularRadius?: number
+  logSpiralGrowth?: number
+  logSpiralFrequency?: number
+  logSpiralScale?: number
+  fermatSpiralScale?: number
+  fermatSpiralTwist?: number
+  heartDepth?: number
+  heartWidth?: number
+  doubleHeartOffset?: number
+  doubleHeartBlend?: number
+  trochoidRatio?: number
+  trochoidOffset?: number
+  trochoidPhase?: number
+  juliaCRe?: number
+  juliaCIm?: number
+  mandelbrotBandWidth?: number
+  barnsleyProbabilityJitter?: number
+  chaosMode?: 'trace' | 'particles'
+  chaosSystem?: 'lorenz' | 'rossler' | 'aizawa'
+  chaosSteps?: number
+  chaosDt?: number
+  chaosScale?: number
+  chaosParticleCount?: number
+  chaosPhaseSpread?: number
 }

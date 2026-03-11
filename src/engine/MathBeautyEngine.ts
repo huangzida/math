@@ -6,6 +6,7 @@ import type { FormulaDefinition, MathBeautyProps } from '../types'
 type Point = { x: number, y: number } | null
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
+const chaosEffectIds = new Set(['lorenz-attractor', 'rossler-attractor', 'aizawa-attractor'])
 
 export class MathBeautyEngine {
   private container: HTMLElement
@@ -184,6 +185,10 @@ export class MathBeautyEngine {
     const { ctx } = this
     const total = this.sampledPoints.length
     if (!total) return
+    if (chaosEffectIds.has(this.formula.id) && this.config.chaosMode === 'particles') {
+      this.drawChaosParticles()
+      return
+    }
     const drawCount = Math.max(2, Math.floor(total * this.progress))
     ctx.beginPath()
     let drawing = false
@@ -209,6 +214,40 @@ export class MathBeautyEngine {
     ctx.shadowColor = color
     ctx.stroke()
     ctx.shadowBlur = 0
+  }
+
+  private drawChaosParticles() {
+    const { ctx } = this
+    const points = this.sampledPoints.filter((item): item is { x: number, y: number } => item !== null)
+    const total = points.length
+    if (!total) {
+      return
+    }
+    const headIndex = Math.max(1, Math.floor(total * this.progress))
+    const particleCount = clamp(Math.floor(this.config.chaosParticleCount || 180), 20, 720)
+    const spread = clamp(this.config.chaosPhaseSpread || 0.22, 0.02, 0.8)
+    const spreadWindow = Math.max(1, Math.floor(total * spread))
+    const color = this.config.lineColor || this.formula.stroke || '#f9fafb'
+    const baseRadius = clamp((this.config.lineWidth || 2.6) * 0.82, 0.9, 5.8)
+    for (let i = 0; i < particleCount; i += 1) {
+      const progress = particleCount <= 1 ? 0 : i / (particleCount - 1)
+      const offset = Math.floor(progress * spreadWindow)
+      const sourceIndex = (headIndex - 1 - offset + total) % total
+      const point = points[sourceIndex]
+      const { sx, sy } = this.worldToScreen(point.x, point.y)
+      const alpha = 0.08 + (1 - progress) * 0.9
+      const radius = baseRadius * (0.42 + (1 - progress) * 0.95)
+      ctx.beginPath()
+      ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.2})`
+      ctx.arc(sx, sy, radius * 2.2, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.beginPath()
+      ctx.fillStyle = color
+      ctx.globalAlpha = alpha
+      ctx.arc(sx, sy, radius, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.globalAlpha = 1
+    }
   }
 
   private render = (time: number) => {
@@ -244,7 +283,27 @@ export class MathBeautyEngine {
     const modularChanged = prev.modularPointCount !== this.config.modularPointCount
       || prev.modularMultiplier !== this.config.modularMultiplier
       || prev.modularRadius !== this.config.modularRadius
-    if (modularChanged) {
+    const chaosChanged = prev.chaosSystem !== this.config.chaosSystem
+      || prev.chaosSteps !== this.config.chaosSteps
+      || prev.chaosDt !== this.config.chaosDt
+      || prev.chaosScale !== this.config.chaosScale
+    const fractalChanged = prev.juliaCRe !== this.config.juliaCRe
+      || prev.juliaCIm !== this.config.juliaCIm
+      || prev.mandelbrotBandWidth !== this.config.mandelbrotBandWidth
+      || prev.barnsleyProbabilityJitter !== this.config.barnsleyProbabilityJitter
+    const classicCurveChanged = prev.logSpiralGrowth !== this.config.logSpiralGrowth
+      || prev.logSpiralFrequency !== this.config.logSpiralFrequency
+      || prev.logSpiralScale !== this.config.logSpiralScale
+      || prev.fermatSpiralScale !== this.config.fermatSpiralScale
+      || prev.fermatSpiralTwist !== this.config.fermatSpiralTwist
+      || prev.heartDepth !== this.config.heartDepth
+      || prev.heartWidth !== this.config.heartWidth
+      || prev.doubleHeartOffset !== this.config.doubleHeartOffset
+      || prev.doubleHeartBlend !== this.config.doubleHeartBlend
+      || prev.trochoidRatio !== this.config.trochoidRatio
+      || prev.trochoidOffset !== this.config.trochoidOffset
+      || prev.trochoidPhase !== this.config.trochoidPhase
+    if (modularChanged || chaosChanged || fractalChanged || classicCurveChanged) {
       this.resetFormulaPath()
     }
     const axisChanged = prev.axisRange !== this.config.axisRange

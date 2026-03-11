@@ -27,6 +27,29 @@ export const meta: EffectMeta<MathBeautyProps> = {
     modularPointCount: 360,
     modularMultiplier: 71,
     modularRadius: 12,
+    logSpiralGrowth: 0.12,
+    logSpiralFrequency: 2.4,
+    logSpiralScale: 0.45,
+    fermatSpiralScale: 11,
+    fermatSpiralTwist: 1.6,
+    heartDepth: 1,
+    heartWidth: 1,
+    doubleHeartOffset: 3.2,
+    doubleHeartBlend: 0.5,
+    trochoidRatio: 3.2,
+    trochoidOffset: 5.2,
+    trochoidPhase: 0,
+    juliaCRe: -0.745,
+    juliaCIm: 0.186,
+    mandelbrotBandWidth: 0.16,
+    barnsleyProbabilityJitter: 0,
+    chaosMode: 'trace',
+    chaosSystem: 'lorenz',
+    chaosSteps: 9000,
+    chaosDt: 0.008,
+    chaosScale: 1,
+    chaosParticleCount: 180,
+    chaosPhaseSpread: 0.22,
   },
   randomize: (current, tab) => {
     const result = { ...current }
@@ -39,6 +62,29 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.modularPointCount = Math.floor(rand(180, 640))
       result.modularMultiplier = Math.floor(rand(11, 160))
       result.modularRadius = rand(8, 18)
+      result.logSpiralGrowth = rand(0.05, 0.24)
+      result.logSpiralFrequency = rand(1.2, 4.8)
+      result.logSpiralScale = rand(0.2, 0.8)
+      result.fermatSpiralScale = rand(7, 16)
+      result.fermatSpiralTwist = rand(0.9, 3.2)
+      result.heartDepth = rand(0.7, 1.45)
+      result.heartWidth = rand(0.75, 1.45)
+      result.doubleHeartOffset = rand(1.4, 5.8)
+      result.doubleHeartBlend = rand(0.18, 0.82)
+      result.trochoidRatio = rand(1.8, 6.5)
+      result.trochoidOffset = rand(1.2, 7.2)
+      result.trochoidPhase = rand(0, Math.PI * 2)
+      result.juliaCRe = rand(-0.95, -0.35)
+      result.juliaCIm = rand(-0.3, 0.3)
+      result.mandelbrotBandWidth = rand(0.08, 0.28)
+      result.barnsleyProbabilityJitter = rand(0, 0.22)
+      result.chaosMode = Math.random() > 0.45 ? 'trace' : 'particles'
+      result.chaosSystem = ['lorenz', 'rossler', 'aizawa'][Math.floor(rand(0, 2.99))] as MathBeautyProps['chaosSystem']
+      result.chaosSteps = Math.floor(rand(5000, 14000))
+      result.chaosDt = rand(0.004, 0.02)
+      result.chaosScale = rand(0.65, 1.35)
+      result.chaosParticleCount = Math.floor(rand(80, 360))
+      result.chaosPhaseSpread = rand(0.06, 0.45)
     }
     const randomDisplay = () => {
       result.axisRange = rand(14, 26)

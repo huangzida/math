@@ -32,9 +32,9 @@ const subTabs = computed(() => [
   { id: 'display', label: t('tabs.display') },
 ])
 
-type FormulaCategory = 'polar' | 'parametric' | 'trochoid' | 'numberTheory' | 'hybrid'
+type FormulaCategory = 'polar' | 'parametric' | 'trochoid' | 'numberTheory' | 'fractal' | 'physics' | 'chaos' | 'hybrid'
 
-const categoryOrder: FormulaCategory[] = ['polar', 'parametric', 'trochoid', 'numberTheory', 'hybrid']
+const categoryOrder: FormulaCategory[] = ['polar', 'parametric', 'trochoid', 'numberTheory', 'fractal', 'physics', 'chaos', 'hybrid']
 
 const formulaCategoryMap: Record<string, FormulaCategory> = {
   cardioid: 'polar',
@@ -62,7 +62,22 @@ const formulaCategoryMap: Record<string, FormulaCategory> = {
   lissajous: 'parametric',
   nephroid: 'trochoid',
   'archimedean-spiral': 'polar',
+  'logarithmic-spiral': 'polar',
+  'fermat-spiral-weave': 'polar',
+  'cardioid-deluxe': 'parametric',
+  'double-heart': 'parametric',
+  'epitrochoid-bloom': 'trochoid',
+  'hypotrochoid-weave': 'trochoid',
   astroid: 'parametric',
+  'julia-fractal': 'fractal',
+  'mandelbrot-orbit': 'fractal',
+  'barnsley-fern': 'fractal',
+  'vector-field-streamlines': 'physics',
+  'gravity-well': 'physics',
+  'vortex-field': 'physics',
+  'lorenz-attractor': 'chaos',
+  'rossler-attractor': 'chaos',
+  'aizawa-attractor': 'chaos',
 }
 
 const getFormulaCategory = (effectId: string): FormulaCategory => formulaCategoryMap[effectId] || 'hybrid'
@@ -97,6 +112,68 @@ watch(
 const isModularTimesTable = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
   return effect.id === 'modular-times-table'
+})
+
+const isChaosEffect = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'lorenz-attractor' || effect.id === 'rossler-attractor' || effect.id === 'aizawa-attractor'
+})
+
+const isJuliaFractal = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'julia-fractal'
+})
+
+const isMandelbrotOrbit = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'mandelbrot-orbit'
+})
+
+const isBarnsleyFern = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'barnsley-fern'
+})
+
+const isLogarithmicSpiral = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'logarithmic-spiral'
+})
+
+const isFermatSpiralWeave = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'fermat-spiral-weave'
+})
+
+const isCardioidDeluxe = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'cardioid-deluxe'
+})
+
+const isDoubleHeart = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'double-heart'
+})
+
+const isAdvancedTrochoid = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'epitrochoid-bloom' || effect.id === 'hypotrochoid-weave'
+})
+
+const chaosSystemToEffectId: Record<'lorenz' | 'rossler' | 'aizawa', string> = {
+  lorenz: 'lorenz-attractor',
+  rossler: 'rossler-attractor',
+  aizawa: 'aizawa-attractor',
+}
+
+const effectIdToChaosSystem = (effectId: string): 'lorenz' | 'rossler' | 'aizawa' => {
+  if (effectId === 'rossler-attractor') return 'rossler'
+  if (effectId === 'aizawa-attractor') return 'aizawa'
+  return 'lorenz'
+}
+
+const currentChaosSystem = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effectIdToChaosSystem(effect.id)
 })
 
 const categoryOptions = computed(() => [
@@ -186,6 +263,19 @@ const changeCategory = (value: string) => {
   if (first >= 0) {
     updateConfig('effectIndex', first)
   }
+}
+
+const changeChaosSystem = (value: string) => {
+  if (value !== 'lorenz' && value !== 'rossler' && value !== 'aizawa') {
+    return
+  }
+  const effectId = chaosSystemToEffectId[value]
+  const nextIndex = formulaLibrary.findIndex(effect => effect.id === effectId)
+  emit('update:config', {
+    ...props.config,
+    chaosSystem: value,
+    effectIndex: nextIndex >= 0 ? nextIndex : props.config.effectIndex,
+  })
 }
 
 defineExpose({
@@ -285,6 +375,271 @@ defineExpose({
               </label>
               <span class="text-[11px] font-mono text-white/55">
                 {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(prop.step < 1 ? 1 : 0) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isLogarithmicSpiral">
+          <div v-for="prop in [
+            { id: 'logSpiralGrowth', min: 0.02, max: 0.35, step: 0.001, label: 'logSpiralGrowth' },
+            { id: 'logSpiralFrequency', min: 0.6, max: 8, step: 0.01, label: 'logSpiralFrequency' },
+            { id: 'logSpiralScale', min: 0.12, max: 1.2, step: 0.001, label: 'logSpiralScale' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isFermatSpiralWeave">
+          <div v-for="prop in [
+            { id: 'fermatSpiralScale', min: 4, max: 18, step: 0.01, label: 'fermatSpiralScale' },
+            { id: 'fermatSpiralTwist', min: 0.6, max: 4, step: 0.001, label: 'fermatSpiralTwist' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isCardioidDeluxe">
+          <div v-for="prop in [
+            { id: 'heartDepth', min: 0.5, max: 1.9, step: 0.001, label: 'heartDepth' },
+            { id: 'heartWidth', min: 0.55, max: 1.8, step: 0.001, label: 'heartWidth' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isDoubleHeart">
+          <div v-for="prop in [
+            { id: 'doubleHeartOffset', min: 0.2, max: 8, step: 0.001, label: 'doubleHeartOffset' },
+            { id: 'doubleHeartBlend', min: 0, max: 1, step: 0.001, label: 'doubleHeartBlend' },
+            { id: 'heartDepth', min: 0.5, max: 1.9, step: 0.001, label: 'heartDepth' },
+            { id: 'heartWidth', min: 0.55, max: 1.8, step: 0.001, label: 'heartWidth' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isAdvancedTrochoid">
+          <div v-for="prop in [
+            { id: 'trochoidRatio', min: 1.2, max: 8, step: 0.001, label: 'trochoidRatio' },
+            { id: 'trochoidOffset', min: 0.2, max: 8, step: 0.001, label: 'trochoidOffset' },
+            { id: 'trochoidPhase', min: 0, max: 6.283, step: 0.001, label: 'trochoidPhase' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isJuliaFractal">
+          <div v-for="prop in [
+            { id: 'juliaCRe', min: -1.2, max: 0.4, step: 0.001, label: 'juliaCRe' },
+            { id: 'juliaCIm', min: -0.8, max: 0.8, step: 0.001, label: 'juliaCIm' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isMandelbrotOrbit">
+          <div class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t('labels.mandelbrotBandWidth') }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config.mandelbrotBandWidth as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config.mandelbrotBandWidth"
+              type="range"
+              min="0.04"
+              max="0.42"
+              step="0.001"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig('mandelbrotBandWidth', Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isBarnsleyFern">
+          <div class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t('labels.barnsleyProbabilityJitter') }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config.barnsleyProbabilityJitter as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config.barnsleyProbabilityJitter"
+              type="range"
+              min="0"
+              max="0.35"
+              step="0.001"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig('barnsleyProbabilityJitter', Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isChaosEffect">
+          <div class="flex flex-col gap-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+              {{ t('labels.chaosSystem') }}
+            </label>
+            <select
+              :value="currentChaosSystem"
+              class="py-2 px-3 text-xs rounded-lg bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-all"
+              @change="(e: Event) => changeChaosSystem((e.target as HTMLSelectElement).value)"
+            >
+              <option value="lorenz" class="bg-slate-900 text-white">
+                {{ t('labels.chaosSystemLorenz') }}
+              </option>
+              <option value="rossler" class="bg-slate-900 text-white">
+                {{ t('labels.chaosSystemRossler') }}
+              </option>
+              <option value="aizawa" class="bg-slate-900 text-white">
+                {{ t('labels.chaosSystemAizawa') }}
+              </option>
+            </select>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+              {{ t('labels.chaosMode') }}
+            </label>
+            <select
+              :value="config.chaosMode || 'trace'"
+              class="py-2 px-3 text-xs rounded-lg bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-all"
+              @change="(e: Event) => updateConfig('chaosMode', (e.target as HTMLSelectElement).value)"
+            >
+              <option value="trace" class="bg-slate-900 text-white">
+                {{ t('labels.chaosModeTrace') }}
+              </option>
+              <option value="particles" class="bg-slate-900 text-white">
+                {{ t('labels.chaosModeParticles') }}
+              </option>
+            </select>
+          </div>
+
+          <div v-for="prop in [
+            { id: 'chaosSteps', min: 2200, max: 18000, step: 100, label: 'chaosSteps' },
+            { id: 'chaosDt', min: 0.001, max: 0.03, step: 0.001, label: 'chaosDt' },
+            { id: 'chaosScale', min: 0.35, max: 2.4, step: 0.01, label: 'chaosScale' },
+            { id: 'chaosParticleCount', min: 20, max: 720, step: 1, label: 'chaosParticleCount' },
+            { id: 'chaosPhaseSpread', min: 0.02, max: 0.8, step: 0.01, label: 'chaosPhaseSpread' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(prop.step < 1 ? 3 : 0) }}
               </span>
             </div>
             <input
