@@ -44,6 +44,12 @@ export const meta: EffectMeta<MathBeautyProps> = {
     logSpiralScale: 0.45,
     fermatSpiralScale: 11,
     fermatSpiralTwist: 1.6,
+    cardioidScale: 1,
+    cardioidDistortion: 0,
+    limaconLoopScale: 1,
+    limaconOffset: 0,
+    bloomFrequency1: 7,
+    bloomFrequency2: 13,
     heartDepth: 1,
     heartWidth: 1,
     doubleHeartOffset: 3.2,
@@ -91,6 +97,12 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.logSpiralScale = rand(0.2, 0.8)
       result.fermatSpiralScale = rand(7, 16)
       result.fermatSpiralTwist = rand(0.9, 3.2)
+      result.cardioidScale = rand(0.55, 1.9)
+      result.cardioidDistortion = rand(0, 3.2)
+      result.limaconLoopScale = rand(0.35, 2.4)
+      result.limaconOffset = rand(-5, 5)
+      result.bloomFrequency1 = rand(2, 14)
+      result.bloomFrequency2 = rand(6, 22)
       result.heartDepth = rand(0.7, 1.45)
       result.heartWidth = rand(0.75, 1.45)
       result.doubleHeartOffset = rand(1.4, 5.8)

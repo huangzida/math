@@ -8,16 +8,18 @@ export const cardioidFormula: FormulaDefinition = {
     'zh-CN': '心形线',
   },
   formulaText: {
-    en: 'r = 8(1 - cos(t)),  x = rcos(t),  y = rsin(t)',
-    'zh-CN': 'r = 8(1 - cos(t)),  x = rcos(t),  y = rsin(t)',
+    en: 'r = 8s(1 - cos(t)) + d·sin(3t),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = 8s(1 - cos(t)) + d·sin(3t),  x = rcos(t),  y = rsin(t)',
   },
   tMin: 0,
   tMax: Math.PI * 2,
-  step: 0.003,
+  step: 0.1,
   scale: 1.05,
   stroke: '#fb7185',
-  sampler: t => {
-    const r = 8 * (1 - Math.cos(t))
+  sampler: (t, config) => {
+    const scale = clamp(config?.cardioidScale ?? 1, 0.55, 1.9)
+    const distortion = clamp(config?.cardioidDistortion ?? 0, 0, 3.2)
+    const r = 8 * scale * (1 - Math.cos(t)) + distortion * Math.sin(3 * t)
     return {
       x: r * Math.cos(t),
       y: r * Math.sin(t),
@@ -32,16 +34,18 @@ export const limaconFormula: FormulaDefinition = {
     'zh-CN': '帕斯卡蜗线',
   },
   formulaText: {
-    en: 'r = 6 + 9cos(t),  x = rcos(t),  y = rsin(t)',
-    'zh-CN': 'r = 6 + 9cos(t),  x = rcos(t),  y = rsin(t)',
+    en: 'r = (6 + o) + 9ℓcos(t),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = (6 + o) + 9ℓcos(t),  x = rcos(t),  y = rsin(t)',
   },
   tMin: 0,
   tMax: Math.PI * 2,
   step: 0.003,
   scale: 1.05,
   stroke: '#c084fc',
-  sampler: t => {
-    const r = 6 + 9 * Math.cos(t)
+  sampler: (t, config) => {
+    const loopScale = clamp(config?.limaconLoopScale ?? 1, 0.35, 2.4)
+    const offset = clamp(config?.limaconOffset ?? 0, -5, 5)
+    const r = 6 + offset + 9 * loopScale * Math.cos(t)
     return {
       x: r * Math.cos(t),
       y: r * Math.sin(t),
@@ -56,16 +60,18 @@ export const dualFrequencyBloomFormula: FormulaDefinition = {
     'zh-CN': '双频花盘',
   },
   formulaText: {
-    en: 'r = 5sin(7t) + 3sin(13t),  x = rcos(t),  y = rsin(t)',
-    'zh-CN': 'r = 5sin(7t) + 3sin(13t),  x = rcos(t),  y = rsin(t)',
+    en: 'r = 5sin(f₁t) + 3sin(f₂t),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = 5sin(f₁t) + 3sin(f₂t),  x = rcos(t),  y = rsin(t)',
   },
   tMin: 0,
   tMax: Math.PI * 16,
   step: 0.004,
   scale: 1.65,
   stroke: '#34d399',
-  sampler: t => {
-    const r = 5 * Math.sin(7 * t) + 3 * Math.sin(13 * t)
+  sampler: (t, config) => {
+    const frequency1 = clamp(config?.bloomFrequency1 ?? 7, 2, 14)
+    const frequency2 = clamp(config?.bloomFrequency2 ?? 13, 6, 22)
+    const r = 5 * Math.sin(frequency1 * t) + 3 * Math.sin(frequency2 * t)
     return {
       x: r * Math.cos(t),
       y: r * Math.sin(t),

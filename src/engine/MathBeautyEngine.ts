@@ -308,6 +308,12 @@ export class MathBeautyEngine {
       || prev.logSpiralScale !== this.config.logSpiralScale
       || prev.fermatSpiralScale !== this.config.fermatSpiralScale
       || prev.fermatSpiralTwist !== this.config.fermatSpiralTwist
+      || prev.cardioidScale !== this.config.cardioidScale
+      || prev.cardioidDistortion !== this.config.cardioidDistortion
+      || prev.limaconLoopScale !== this.config.limaconLoopScale
+      || prev.limaconOffset !== this.config.limaconOffset
+      || prev.bloomFrequency1 !== this.config.bloomFrequency1
+      || prev.bloomFrequency2 !== this.config.bloomFrequency2
       || prev.heartDepth !== this.config.heartDepth
       || prev.heartWidth !== this.config.heartWidth
       || prev.doubleHeartOffset !== this.config.doubleHeartOffset

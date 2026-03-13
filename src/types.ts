@@ -50,6 +50,12 @@ export interface MathBeautyProps {
   logSpiralScale?: number
   fermatSpiralScale?: number
   fermatSpiralTwist?: number
+  cardioidScale?: number
+  cardioidDistortion?: number
+  limaconLoopScale?: number
+  limaconOffset?: number
+  bloomFrequency1?: number
+  bloomFrequency2?: number
   heartDepth?: number
   heartWidth?: number
   doubleHeartOffset?: number
