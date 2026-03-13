@@ -32,6 +32,183 @@ const configContentRef = ref<InstanceType<typeof ConfigContent> | null>(null)
 const resolveInitialConfig = () => defu(resolveProvidedProps(props), meta.defaultConfig) as MathBeautyProps
 const config = ref<MathBeautyProps>(resolveInitialConfig())
 const internalLang = ref<'zh-CN' | 'en'>(config.value.lang || 'zh-CN')
+const effectPresetGroups: Record<string, Partial<MathBeautyProps>[]> = {
+  cardioid: [
+    {
+      cardioidScale: 1.1,
+      cardioidDistortion: 0.3,
+      animationSpeed: 0.2,
+      lineWidth: 2.2,
+      lineColor: '#fda4af',
+      showTrail: true,
+      trailAlpha: 0.14,
+    },
+    {
+      cardioidScale: 1.4,
+      cardioidDistortion: 1.2,
+      animationSpeed: 0.2,
+      lineWidth: 2.4,
+      lineColor: '#fb7185',
+      showTrail: true,
+      trailAlpha: 0.12,
+    },
+    {
+      cardioidScale: 1.8,
+      cardioidDistortion: 1.9,
+      animationSpeed: 0.22,
+      lineWidth: 2.8,
+      lineColor: '#f43f5e',
+      showTrail: true,
+      trailAlpha: 0.1,
+    },
+  ],
+  limacon: [
+    {
+      limaconLoopScale: 1.0,
+      limaconOffset: 0,
+      animationSpeed: 0.2,
+      lineWidth: 2.2,
+      lineColor: '#7dd3fc',
+      showTrail: true,
+      trailAlpha: 0.14,
+    },
+    {
+      limaconLoopScale: 1.6,
+      limaconOffset: -1.8,
+      animationSpeed: 0.2,
+      lineWidth: 2.6,
+      lineColor: '#38bdf8',
+      showTrail: true,
+      trailAlpha: 0.12,
+    },
+    {
+      limaconLoopScale: 0.7,
+      limaconOffset: 2.6,
+      animationSpeed: 0.18,
+      lineWidth: 2.6,
+      lineColor: '#0ea5e9',
+      showTrail: true,
+      trailAlpha: 0.1,
+    },
+  ],
+  'dual-frequency-bloom': [
+    {
+      bloomFrequency1: 6,
+      bloomFrequency2: 12,
+      animationSpeed: 0.2,
+      lineWidth: 2.4,
+      lineColor: '#c4b5fd',
+      showTrail: true,
+      trailAlpha: 0.12,
+    },
+    {
+      bloomFrequency1: 7,
+      bloomFrequency2: 17,
+      animationSpeed: 0.2,
+      lineWidth: 2.8,
+      lineColor: '#a78bfa',
+      showTrail: true,
+      trailAlpha: 0.1,
+    },
+    {
+      bloomFrequency1: 9,
+      bloomFrequency2: 20,
+      animationSpeed: 0.24,
+      lineWidth: 3.1,
+      lineColor: '#8b5cf6',
+      showTrail: true,
+      trailAlpha: 0.08,
+    },
+  ],
+  'star-rose': [
+    {
+      starRosePetalCount: 6,
+      starRoseRadius: 9.6,
+      animationSpeed: 0.2,
+      lineWidth: 2.6,
+      lineColor: '#fb7185',
+      showTrail: true,
+      trailAlpha: 0.12,
+    },
+    {
+      starRosePetalCount: 7,
+      starRoseRadius: 9,
+      animationSpeed: 0.2,
+      lineWidth: 2.5,
+      lineColor: '#f43f5e',
+      showTrail: true,
+      trailAlpha: 0.11,
+    },
+    {
+      starRosePetalCount: 8.5,
+      starRoseRadius: 8.4,
+      animationSpeed: 0.19,
+      lineWidth: 2.4,
+      lineColor: '#e11d48',
+      showTrail: true,
+      trailAlpha: 0.1,
+    },
+  ],
+  'butterfly-variation': [
+    {
+      butterflyVariationWave: 0.18,
+      butterflyVariationExponent: 4.2,
+      animationSpeed: 0.18,
+      lineWidth: 2.6,
+      lineColor: '#f472b6',
+      showTrail: true,
+      trailAlpha: 0.12,
+    },
+    {
+      butterflyVariationWave: 0.35,
+      butterflyVariationExponent: 5,
+      animationSpeed: 0.2,
+      lineWidth: 2.7,
+      lineColor: '#ec4899',
+      showTrail: true,
+      trailAlpha: 0.11,
+    },
+    {
+      butterflyVariationWave: 0.52,
+      butterflyVariationExponent: 6.2,
+      animationSpeed: 0.23,
+      lineWidth: 2.9,
+      lineColor: '#db2777',
+      showTrail: true,
+      trailAlpha: 0.09,
+    },
+  ],
+  'ribbon-orbit': [
+    {
+      ribbonOrbitAmplitude: 3.2,
+      ribbonOrbitBaseRadius: 10.8,
+      animationSpeed: 0.2,
+      lineWidth: 2.5,
+      lineColor: '#d946ef',
+      showTrail: true,
+      trailAlpha: 0.11,
+    },
+    {
+      ribbonOrbitAmplitude: 4,
+      ribbonOrbitBaseRadius: 10,
+      animationSpeed: 0.2,
+      lineWidth: 2.6,
+      lineColor: '#c026d3',
+      showTrail: true,
+      trailAlpha: 0.1,
+    },
+    {
+      ribbonOrbitAmplitude: 5.1,
+      ribbonOrbitBaseRadius: 9.2,
+      animationSpeed: 0.24,
+      lineWidth: 2.9,
+      lineColor: '#a21caf',
+      showTrail: true,
+      trailAlpha: 0.09,
+    },
+  ],
+}
+const effectPresetCursor = ref<Record<string, number>>({})
 
 const containerRef = ref<HTMLElement | null>(null)
 let engine: MathBeautyEngine | null = null
@@ -61,6 +238,31 @@ watch(
     }
   },
   { deep: true },
+)
+
+watch(
+  () => config.value.effectIndex,
+  (nextIndex, prevIndex) => {
+    if (nextIndex === undefined || nextIndex === prevIndex) return
+    if (config.value.presetLock) return
+    const effect = getFormulaByIndex(nextIndex)
+    const presets = effectPresetGroups[effect.id]
+    if (!presets?.length) return
+    const currentCursor = effectPresetCursor.value[effect.id] ?? -1
+    const nextCursor = (currentCursor + 1) % presets.length
+    effectPresetCursor.value = {
+      ...effectPresetCursor.value,
+      [effect.id]: nextCursor,
+    }
+    const preset = presets[nextCursor]
+    const shouldApply = Object.entries(preset).some(([key, value]) => config.value[key as keyof MathBeautyProps] !== value)
+    if (!shouldApply) return
+    config.value = {
+      ...config.value,
+      ...preset,
+      effectIndex: nextIndex,
+    }
+  },
 )
 
 watch(

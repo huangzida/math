@@ -30,6 +30,8 @@ export interface MathBeautyProps {
   showAxis?: boolean
   showTrail?: boolean
   trailAlpha?: number
+  presetLock?: boolean
+  lockOnComplete?: boolean
   modularPointCount?: number
   modularMultiplier?: number
   modularRadius?: number
@@ -56,6 +58,12 @@ export interface MathBeautyProps {
   limaconOffset?: number
   bloomFrequency1?: number
   bloomFrequency2?: number
+  starRosePetalCount?: number
+  starRoseRadius?: number
+  butterflyVariationWave?: number
+  butterflyVariationExponent?: number
+  ribbonOrbitAmplitude?: number
+  ribbonOrbitBaseRadius?: number
   heartDepth?: number
   heartWidth?: number
   doubleHeartOffset?: number

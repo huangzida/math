@@ -257,11 +257,18 @@ export class MathBeautyEngine {
     const delta = (time - this.lastTime) / 1000
     this.lastTime = time
     const speed = clamp(this.config.animationSpeed || 0.2, 0.02, 3)
-    this.progress += delta * speed
-    if (this.progress > 1) {
-      this.progress = 0
+    const lockOnComplete = Boolean(this.config.lockOnComplete)
+    if (lockOnComplete) {
+      this.progress = Math.min(1, this.progress + delta * speed)
     }
-    if (this.config.showTrail) {
+    else {
+      this.progress += delta * speed
+      if (this.progress > 1) {
+        this.progress = 0
+      }
+    }
+    const lockedFinalFrame = lockOnComplete && this.progress >= 1
+    if (this.config.showTrail && !lockedFinalFrame) {
       this.drawTrailFade()
     }
     else {
@@ -314,6 +321,12 @@ export class MathBeautyEngine {
       || prev.limaconOffset !== this.config.limaconOffset
       || prev.bloomFrequency1 !== this.config.bloomFrequency1
       || prev.bloomFrequency2 !== this.config.bloomFrequency2
+      || prev.starRosePetalCount !== this.config.starRosePetalCount
+      || prev.starRoseRadius !== this.config.starRoseRadius
+      || prev.butterflyVariationWave !== this.config.butterflyVariationWave
+      || prev.butterflyVariationExponent !== this.config.butterflyVariationExponent
+      || prev.ribbonOrbitAmplitude !== this.config.ribbonOrbitAmplitude
+      || prev.ribbonOrbitBaseRadius !== this.config.ribbonOrbitBaseRadius
       || prev.heartDepth !== this.config.heartDepth
       || prev.heartWidth !== this.config.heartWidth
       || prev.doubleHeartOffset !== this.config.doubleHeartOffset

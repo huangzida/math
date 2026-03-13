@@ -170,6 +170,21 @@ const isDualFrequencyBloom = computed(() => {
   return effect.id === 'dual-frequency-bloom'
 })
 
+const isStarRose = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'star-rose'
+})
+
+const isButterflyVariation = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'butterfly-variation'
+})
+
+const isRibbonOrbit = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'ribbon-orbit'
+})
+
 const isCardioidDeluxe = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
   return effect.id === 'cardioid-deluxe'
@@ -448,11 +463,41 @@ defineExpose({
               </option>
             </optgroup>
           </select>
+          <div class="flex items-center justify-between gap-3 mt-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+              {{ t('labels.presetLock') }}
+            </label>
+            <button
+              class="w-12 h-6 rounded-full transition-all p-0.5 flex items-center"
+              :class="config.presetLock ? 'bg-blue-500' : 'bg-white/20'"
+              @click="updateConfig('presetLock', !config.presetLock)"
+            >
+              <span
+                class="block w-5 h-5 bg-white rounded-full transition-all"
+                :class="config.presetLock ? 'ml-auto' : 'ml-0'"
+              />
+            </button>
+          </div>
+          <div class="flex items-center justify-between gap-3 mt-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+              {{ t('labels.lockOnComplete') }}
+            </label>
+            <button
+              class="w-12 h-6 rounded-full transition-all p-0.5 flex items-center"
+              :class="config.lockOnComplete ? 'bg-blue-500' : 'bg-white/20'"
+              @click="updateConfig('lockOnComplete', !config.lockOnComplete)"
+            >
+              <span
+                class="block w-5 h-5 bg-white rounded-full transition-all"
+                :class="config.lockOnComplete ? 'ml-auto' : 'ml-0'"
+              />
+            </button>
+          </div>
         </div>
 
         <div v-for="prop in [
-          { id: 'animationSpeed', min: 0.02, max: 0.8, step: 0.01, label: 'animationSpeed' },
-          { id: 'lineWidth', min: 0.8, max: 8, step: 0.1, label: 'lineWidth' }
+          { id: 'animationSpeed', min: 0.05, max: 1, step: 0.05, label: 'animationSpeed' },
+          { id: 'lineWidth', min: 0.5, max: 5, step: 0.5, label: 'lineWidth' }
         ]" :key="prop.id" class="flex flex-col gap-2">
           <div class="flex justify-between items-center">
             <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
@@ -553,6 +598,81 @@ defineExpose({
           <div v-for="prop in [
             { id: 'bloomFrequency1', min: 2, max: 14, step: 1, label: 'bloomFrequency1' },
             { id: 'bloomFrequency2', min: 6, max: 22, step: 1, label: 'bloomFrequency2' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(2) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isStarRose">
+          <div v-for="prop in [
+            { id: 'starRosePetalCount', min: 4, max: 12, step: 0.5, label: 'starRosePetalCount' },
+            { id: 'starRoseRadius', min: 5, max: 15, step: 0.5, label: 'starRoseRadius' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(2) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isButterflyVariation">
+          <div v-for="prop in [
+            { id: 'butterflyVariationWave', min: 0, max: 1, step: 0.05, label: 'butterflyVariationWave' },
+            { id: 'butterflyVariationExponent', min: 2, max: 8, step: 0.25, label: 'butterflyVariationExponent' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(2) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isRibbonOrbit">
+          <div v-for="prop in [
+            { id: 'ribbonOrbitAmplitude', min: 1.5, max: 7, step: 0.25, label: 'ribbonOrbitAmplitude' },
+            { id: 'ribbonOrbitBaseRadius', min: 5, max: 16, step: 0.5, label: 'ribbonOrbitBaseRadius' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">

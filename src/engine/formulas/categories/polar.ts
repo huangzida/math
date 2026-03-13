@@ -86,16 +86,18 @@ export const starRoseFormula: FormulaDefinition = {
     'zh-CN': '星芒玫瑰',
   },
   formulaText: {
-    en: 'r = 9cos(7t),  x = rcos(t),  y = rsin(t)',
-    'zh-CN': 'r = 9cos(7t),  x = rcos(t),  y = rsin(t)',
+    en: 'r = a·cos(kt),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = a·cos(kt),  x = rcos(t),  y = rsin(t)',
   },
   tMin: 0,
   tMax: Math.PI * 2,
   step: 0.002,
   scale: 1.2,
   stroke: '#f43f5e',
-  sampler: t => {
-    const r = 9 * Math.cos(7 * t)
+  sampler: (t, config) => {
+    const petalCount = clamp(config?.starRosePetalCount ?? 7, 4, 12)
+    const radius = clamp(config?.starRoseRadius ?? 9, 5, 15)
+    const r = radius * Math.cos(petalCount * t)
     return {
       x: r * Math.cos(t),
       y: r * Math.sin(t),
@@ -110,16 +112,18 @@ export const butterflyVariationFormula: FormulaDefinition = {
     'zh-CN': '蝶形变奏',
   },
   formulaText: {
-    en: 'r = e^(sin(t)) - 2cos(4t) + sin⁵((2t-π)/24) + 0.35sin(9t)',
-    'zh-CN': 'r = e^(sin(t)) - 2cos(4t) + sin⁵((2t-π)/24) + 0.35sin(9t)',
+    en: 'r = e^(sin(t)) - 2cos(4t) + sinᵖ((2t-π)/24) + w·sin(9t)',
+    'zh-CN': 'r = e^(sin(t)) - 2cos(4t) + sinᵖ((2t-π)/24) + w·sin(9t)',
   },
   tMin: 0,
   tMax: Math.PI * 24,
   step: 0.01,
   scale: 3,
   stroke: '#f472b6',
-  sampler: t => {
-    const r = Math.exp(Math.sin(t)) - 2 * Math.cos(4 * t) + Math.sin((2 * t - Math.PI) / 24) ** 5 + 0.35 * Math.sin(9 * t)
+  sampler: (t, config) => {
+    const wingWave = clamp(config?.butterflyVariationWave ?? 0.35, 0, 1)
+    const exponent = clamp(config?.butterflyVariationExponent ?? 5, 2, 8)
+    const r = Math.exp(Math.sin(t)) - 2 * Math.cos(4 * t) + Math.sin((2 * t - Math.PI) / 24) ** exponent + wingWave * Math.sin(9 * t)
     return {
       x: r * Math.cos(t),
       y: r * Math.sin(t),
@@ -134,16 +138,18 @@ export const ribbonOrbitFormula: FormulaDefinition = {
     'zh-CN': '丝带环',
   },
   formulaText: {
-    en: 'r = 4sin(24t/25) + 10,  x = rcos(t),  y = rsin(t)',
-    'zh-CN': 'r = 4sin(24t/25) + 10,  x = rcos(t),  y = rsin(t)',
+    en: 'r = A·sin(24t/25) + B,  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = A·sin(24t/25) + B,  x = rcos(t),  y = rsin(t)',
   },
   tMin: 0,
   tMax: Math.PI * 50,
   step: 0.01,
   scale: 1,
   stroke: '#d946ef',
-  sampler: t => {
-    const r = 4 * Math.sin((24 * t) / 25) + 10
+  sampler: (t, config) => {
+    const amplitude = clamp(config?.ribbonOrbitAmplitude ?? 4, 1.5, 7)
+    const baseRadius = clamp(config?.ribbonOrbitBaseRadius ?? 10, 5, 16)
+    const r = amplitude * Math.sin((24 * t) / 25) + baseRadius
     return {
       x: r * Math.cos(t),
       y: r * Math.sin(t),
