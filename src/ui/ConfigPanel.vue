@@ -53,11 +53,9 @@ const formulaCategoryMap: Record<string, FormulaCategory> = {
   'flower-web': 'polar',
   'petal-chain': 'polar',
   'petal-orbit': 'parametric',
-  'rose-curve': 'polar',
   hypotrochoid: 'trochoid',
   epicycloid: 'trochoid',
   lemniscate: 'parametric',
-  butterfly: 'polar',
   'tan-cot-burst': 'polar',
   lissajous: 'parametric',
   nephroid: 'trochoid',
@@ -183,6 +181,21 @@ const isButterflyVariation = computed(() => {
 const isRibbonOrbit = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
   return effect.id === 'ribbon-orbit'
+})
+
+const isFlowerWeb = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'flower-web'
+})
+
+const isPetalChain = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'petal-chain'
+})
+
+const isTanCotBurst = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'tan-cot-burst'
 })
 
 const isCardioidDeluxe = computed(() => {
@@ -673,6 +686,84 @@ defineExpose({
           <div v-for="prop in [
             { id: 'ribbonOrbitAmplitude', min: 1.5, max: 7, step: 0.25, label: 'ribbonOrbitAmplitude' },
             { id: 'ribbonOrbitBaseRadius', min: 5, max: 16, step: 0.5, label: 'ribbonOrbitBaseRadius' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(2) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isFlowerWeb">
+          <div v-for="prop in [
+            { id: 'flowerWebAmplitude', min: 1.5, max: 6.5, step: 0.25, label: 'flowerWebAmplitude' },
+            { id: 'flowerWebFrequency', min: 0.5, max: 1.5, step: 0.05, label: 'flowerWebFrequency' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(2) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isPetalChain">
+          <div v-for="prop in [
+            { id: 'petalChainAmplitude', min: 1.5, max: 6.5, step: 0.25, label: 'petalChainAmplitude' },
+            { id: 'petalChainFrequency', min: 0.25, max: 1.5, step: 0.05, label: 'petalChainFrequency' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(2) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isTanCotBurst">
+          <div v-for="prop in [
+            { id: 'tanCotBurstScale', min: 10, max: 30, step: 1, label: 'tanCotBurstScale' },
+            { id: 'tanCotBurstFrequency', min: 10, max: 25, step: 0.5, label: 'tanCotBurstFrequency' },
+            { id: 'tanCotBurstHole', min: 0, max: 6, step: 0.1, label: 'tanCotBurstHole' },
+            { id: 'tanCotBurstCross', min: 0, max: 60, step: 1, label: 'tanCotBurstCross' },
+            { id: 'tanCotBurstClamp', min: 0, max: 240, step: 1, label: 'tanCotBurstClamp' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">

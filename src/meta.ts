@@ -58,6 +58,15 @@ export const meta: EffectMeta<MathBeautyProps> = {
     butterflyVariationExponent: 5,
     ribbonOrbitAmplitude: 4,
     ribbonOrbitBaseRadius: 10,
+    flowerWebAmplitude: 3,
+    flowerWebFrequency: 0.96,
+    petalChainAmplitude: 3,
+    petalChainFrequency: 0.75,
+    tanCotBurstScale: 20,
+    tanCotBurstFrequency: 17,
+    tanCotBurstHole: 0,
+    tanCotBurstCross: 0,
+    tanCotBurstClamp: 0,
     heartDepth: 1,
     heartWidth: 1,
     doubleHeartOffset: 3.2,
@@ -117,6 +126,15 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.butterflyVariationExponent = rand(3.2, 6.8)
       result.ribbonOrbitAmplitude = rand(2.2, 5.8)
       result.ribbonOrbitBaseRadius = rand(7.5, 12.5)
+      result.flowerWebAmplitude = rand(2, 5.5)
+      result.flowerWebFrequency = rand(0.6, 1.3)
+      result.petalChainAmplitude = rand(2, 5.5)
+      result.petalChainFrequency = rand(0.35, 1.25)
+      result.tanCotBurstScale = rand(12, 28)
+      result.tanCotBurstFrequency = rand(12, 23)
+      result.tanCotBurstHole = rand(0, 3.5)
+      result.tanCotBurstCross = rand(0, 48)
+      result.tanCotBurstClamp = rand(0, 180)
       result.heartDepth = rand(0.7, 1.45)
       result.heartWidth = rand(0.75, 1.45)
       result.doubleHeartOffset = rand(1.4, 5.8)
@@ -529,6 +547,72 @@ export const meta: EffectMeta<MathBeautyProps> = {
         showAxis: true,
         showTrail: true,
         trailAlpha: 0.09,
+      },
+    },
+    {
+      id: 'math_beauty_flower_web_nebula',
+      name: {
+        en: 'Flower Web Nebula',
+        'zh-CN': '花心网·星云',
+      },
+      config: {
+        effectIndex: 13,
+        flowerWebAmplitude: 2.6,
+        flowerWebFrequency: 0.85,
+        animationSpeed: 0.18,
+        lineWidth: 2.4,
+        lineColor: '#f472b6',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.11,
+      },
+    },
+    {
+      id: 'math_beauty_petal_chain_crimson',
+      name: {
+        en: 'Petal Chain Crimson',
+        'zh-CN': '花瓣链·绯红',
+      },
+      config: {
+        effectIndex: 14,
+        petalChainAmplitude: 4.6,
+        petalChainFrequency: 1.15,
+        animationSpeed: 0.23,
+        lineWidth: 2.8,
+        lineColor: '#dc2626',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.09,
+      },
+    },
+    {
+      id: 'math_beauty_tan_cot_burst_core',
+      name: {
+        en: 'Tan Cot Burst Core',
+        'zh-CN': '正切余切爆裂线·核心',
+      },
+      config: {
+        effectIndex: 19,
+        tanCotBurstScale: 26,
+        tanCotBurstFrequency: 22,
+        tanCotBurstHole: 2.8,
+        tanCotBurstCross: 36,
+        tanCotBurstClamp: 130,
+        animationSpeed: 0.23,
+        lineWidth: 2.8,
+        lineColor: '#f43f5e',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.08,
       },
     },
   ],

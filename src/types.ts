@@ -64,6 +64,15 @@ export interface MathBeautyProps {
   butterflyVariationExponent?: number
   ribbonOrbitAmplitude?: number
   ribbonOrbitBaseRadius?: number
+  flowerWebAmplitude?: number
+  flowerWebFrequency?: number
+  petalChainAmplitude?: number
+  petalChainFrequency?: number
+  tanCotBurstScale?: number
+  tanCotBurstFrequency?: number
+  tanCotBurstHole?: number
+  tanCotBurstCross?: number
+  tanCotBurstClamp?: number
   heartDepth?: number
   heartWidth?: number
   doubleHeartOffset?: number

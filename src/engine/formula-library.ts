@@ -1,5 +1,5 @@
 import type { FormulaDefinition } from '../types'
-import { cardioidFormula, limaconFormula, dualFrequencyBloomFormula, starRoseFormula, butterflyVariationFormula, ribbonOrbitFormula, flowerWebFormula, petalChainFormula, roseCurveFormula, butterflyFormula, tanCotBurstFormula, archimedeanSpiralFormula, fermatR2SpiralFormula, logarithmicSpiralFormula, fermatSpiralWeaveFormula } from './formulas/categories/polar'
+import { cardioidFormula, limaconFormula, dualFrequencyBloomFormula, starRoseFormula, butterflyVariationFormula, ribbonOrbitFormula, flowerWebFormula, petalChainFormula, tanCotBurstFormula, archimedeanSpiralFormula, fermatR2SpiralFormula, logarithmicSpiralFormula, fermatSpiralWeaveFormula } from './formulas/categories/polar'
 import { superellipseFormula, pentagramWaveFormula, petalOrbitFormula, lemniscateFormula, cardioidDeluxeFormula, doubleHeartFormula, astroidFormula, lissajousFormula } from './formulas/categories/parametric'
 import { spiralSpirographFormula, hypotrochoidFormula, epicycloidFormula, nephroidFormula, epitrochoidBloomFormula, hypotrochoidWeaveFormula } from './formulas/categories/trochoid'
 import { modularTimesTableFormula, gcdLayerFormula, quadraticResidueGridFormula, gcdLatticeFormula } from './formulas/categories/number-theory'
@@ -25,11 +25,9 @@ export const formulaLibrary: FormulaDefinition[] = [
   flowerWebFormula,
   petalChainFormula,
   petalOrbitFormula,
-  roseCurveFormula,
   hypotrochoidFormula,
   epicycloidFormula,
   lemniscateFormula,
-  butterflyFormula,
   tanCotBurstFormula,
   nephroidFormula,
   archimedeanSpiralFormula,

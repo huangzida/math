@@ -172,8 +172,10 @@ export const flowerWebFormula: FormulaDefinition = {
   step: 0.008,
   scale: 2.4,
   stroke: '#ec4899',
-  sampler: t => {
-    const r = 3 * Math.sin((24 * t) / 25)
+  sampler: (t, config) => {
+    const amplitude = clamp(config?.flowerWebAmplitude ?? 3, 1.5, 6.5)
+    const frequency = clamp(config?.flowerWebFrequency ?? 0.96, 0.5, 1.5)
+    const r = amplitude * Math.sin(frequency * t)
     return {
       x: r * Math.cos(t),
       y: r * Math.sin(t),
@@ -196,56 +198,10 @@ export const petalChainFormula: FormulaDefinition = {
   step: 0.01,
   scale: 1.9,
   stroke: '#ef4444',
-  sampler: t => {
-    const r = 3 * Math.sin(0.75 * t)
-    return {
-      x: r * Math.cos(t),
-      y: r * Math.sin(t),
-    }
-  },
-}
-
-export const roseCurveFormula: FormulaDefinition = {
-  id: 'rose-curve',
-  name: {
-    en: 'Rose Curve',
-    'zh-CN': '玫瑰线',
-  },
-  formulaText: {
-    en: 'r = 10cos(5t),  x = rcos(t),  y = rsin(t)',
-    'zh-CN': 'r = 10cos(5t),  x = rcos(t),  y = rsin(t)',
-  },
-  tMin: 0,
-  tMax: Math.PI * 2,
-  step: 0.0025,
-  scale: 1.2,
-  stroke: '#facc15',
-  sampler: t => {
-    const r = 10 * Math.cos(5 * t)
-    return {
-      x: r * Math.cos(t),
-      y: r * Math.sin(t),
-    }
-  },
-}
-
-export const butterflyFormula: FormulaDefinition = {
-  id: 'butterfly',
-  name: {
-    en: 'Butterfly Curve',
-    'zh-CN': '蝴蝶曲线',
-  },
-  formulaText: {
-    en: 'r = e^(sin(t)) - 2cos(4t) + sin⁵((2t-π)/24), x = rcos(t), y = rsin(t)',
-    'zh-CN': 'r = e^(sin(t)) - 2cos(4t) + sin⁵((2t-π)/24), x = rcos(t), y = rsin(t)',
-  },
-  tMin: 0,
-  tMax: Math.PI * 24,
-  step: 0.01,
-  scale: 3.2,
-  stroke: '#fb7185',
-  sampler: t => {
-    const r = Math.exp(Math.sin(t)) - 2 * Math.cos(4 * t) + Math.sin((2 * t - Math.PI) / 24) ** 5
+  sampler: (t, config) => {
+    const amplitude = clamp(config?.petalChainAmplitude ?? 3, 1.5, 6.5)
+    const frequency = clamp(config?.petalChainFrequency ?? 0.75, 0.25, 1.5)
+    const r = amplitude * Math.sin(frequency * t)
     return {
       x: r * Math.cos(t),
       y: r * Math.sin(t),
@@ -268,11 +224,22 @@ export const tanCotBurstFormula: FormulaDefinition = {
   step: 0.0009,
   scale: 0.08,
   stroke: '#fda4af',
-  sampler: t => {
-    const a = 17 * t
+  sampler: (t, config) => {
+    const burstScale = clamp(config?.tanCotBurstScale ?? 20, 10, 30)
+    const burstFrequency = clamp(config?.tanCotBurstFrequency ?? 17, 10, 25)
+    const holeRadius = clamp(config?.tanCotBurstHole ?? 0, 0, 6)
+    const crossFrequency = clamp(config?.tanCotBurstCross ?? 0, 0, 60)
+    const radiusClamp = clamp(config?.tanCotBurstClamp ?? 0, 0, 240)
+    const a = burstFrequency * t
     const tanValue = Math.tan(a)
     const cotValue = 1 / tanValue
-    const r = 20 * (tanValue + cotValue)
+    const base = burstScale * (tanValue + cotValue)
+    const clampedBase = radiusClamp > 0 ? Math.sign(base) * Math.min(Math.abs(base), radiusClamp) : base
+    const radialMagnitude = holeRadius > 0 ? Math.abs(clampedBase) + holeRadius : Math.abs(clampedBase)
+    const radialSign = crossFrequency > 0
+      ? Math.sign(Math.sin(crossFrequency * t)) || 1
+      : Math.sign(clampedBase) || 1
+    const r = radialSign * radialMagnitude
     return {
       x: r * Math.cos(t),
       y: r * Math.sin(t),
@@ -395,8 +362,6 @@ export const polarFormulas: FormulaDefinition[] = [
   ribbonOrbitFormula,
   flowerWebFormula,
   petalChainFormula,
-  roseCurveFormula,
-  butterflyFormula,
   tanCotBurstFormula,
   archimedeanSpiralFormula,
   fermatR2SpiralFormula,

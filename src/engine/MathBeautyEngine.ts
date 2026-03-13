@@ -327,6 +327,15 @@ export class MathBeautyEngine {
       || prev.butterflyVariationExponent !== this.config.butterflyVariationExponent
       || prev.ribbonOrbitAmplitude !== this.config.ribbonOrbitAmplitude
       || prev.ribbonOrbitBaseRadius !== this.config.ribbonOrbitBaseRadius
+      || prev.flowerWebAmplitude !== this.config.flowerWebAmplitude
+      || prev.flowerWebFrequency !== this.config.flowerWebFrequency
+      || prev.petalChainAmplitude !== this.config.petalChainAmplitude
+      || prev.petalChainFrequency !== this.config.petalChainFrequency
+      || prev.tanCotBurstScale !== this.config.tanCotBurstScale
+      || prev.tanCotBurstFrequency !== this.config.tanCotBurstFrequency
+      || prev.tanCotBurstHole !== this.config.tanCotBurstHole
+      || prev.tanCotBurstCross !== this.config.tanCotBurstCross
+      || prev.tanCotBurstClamp !== this.config.tanCotBurstClamp
       || prev.heartDepth !== this.config.heartDepth
       || prev.heartWidth !== this.config.heartWidth
       || prev.doubleHeartOffset !== this.config.doubleHeartOffset
