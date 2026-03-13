@@ -35,8 +35,11 @@ export interface MathBeautyProps {
   modularPointCount?: number
   modularMultiplier?: number
   modularRadius?: number
+  archimedeanPitch?: number
+  archimedeanTwist?: number
   fermatR2Turns?: number
   fermatR2Scale?: number
+  fermatR2AngularScale?: number
   implicitRange?: number
   implicitStep?: number
   implicitWaveMix?: number
@@ -50,8 +53,10 @@ export interface MathBeautyProps {
   logSpiralGrowth?: number
   logSpiralFrequency?: number
   logSpiralScale?: number
+  logSpiralRadialWarp?: number
   fermatSpiralScale?: number
   fermatSpiralTwist?: number
+  fermatSpiralMirror?: number
   cardioidScale?: number
   cardioidDistortion?: number
   limaconLoopScale?: number

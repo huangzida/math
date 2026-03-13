@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { SubTabs } from '@bg-effects/shared'
 import zhCN from '../locales/zh-CN.json'
 import en from '../locales/en.json'
-import { formulaLibrary, getFormulaByIndex } from '../engine/formula-library'
+import { formulaLibrary, getFormulaByIndex } from '../engine'
 import type { MathBeautyProps } from '../types'
 
 const props = defineProps<{
@@ -211,6 +211,11 @@ const isDoubleHeart = computed(() => {
 const isFermatR2Spiral = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
   return effect.id === 'fermat-r2-spiral'
+})
+
+const isArchimedeanSpiral = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'archimedean-spiral'
 })
 
 const isImplicitEffect = computed(() => {
@@ -785,11 +790,37 @@ defineExpose({
           </div>
         </template>
 
+        <template v-if="isArchimedeanSpiral">
+          <div v-for="prop in [
+            { id: 'archimedeanPitch', min: 0.08, max: 0.6, step: 0.01, label: 'archimedeanPitch' },
+            { id: 'archimedeanTwist', min: 0.4, max: 2.8, step: 0.05, label: 'archimedeanTwist' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
         <template v-if="isLogarithmicSpiral">
           <div v-for="prop in [
-            { id: 'logSpiralGrowth', min: 0.02, max: 0.35, step: 0.001, label: 'logSpiralGrowth' },
+            { id: 'logSpiralGrowth', min: 0.02, max: 0.35, step: 0.01, label: 'logSpiralGrowth' },
             { id: 'logSpiralFrequency', min: 0.6, max: 8, step: 0.01, label: 'logSpiralFrequency' },
-            { id: 'logSpiralScale', min: 0.12, max: 1.2, step: 0.001, label: 'logSpiralScale' }
+            { id: 'logSpiralScale', min: 0.12, max: 1.2, step: 0.01, label: 'logSpiralScale' },
+            { id: 'logSpiralRadialWarp', min: 0.3, max: 1.8, step: 0.05, label: 'logSpiralRadialWarp' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
@@ -813,8 +844,9 @@ defineExpose({
 
         <template v-if="isFermatR2Spiral">
           <div v-for="prop in [
-            { id: 'fermatR2Turns', min: 8, max: 52, step: 0.01, label: 'fermatR2Turns' },
-            { id: 'fermatR2Scale', min: 0.4, max: 2.4, step: 0.001, label: 'fermatR2Scale' }
+            { id: 'fermatR2Turns', min: 8, max: 52, step: 1, label: 'fermatR2Turns' },
+            { id: 'fermatR2Scale', min: 0.4, max: 2.4, step: 0.05, label: 'fermatR2Scale' },
+            { id: 'fermatR2AngularScale', min: 0.5, max: 2.4, step: 0.05, label: 'fermatR2AngularScale' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
@@ -838,8 +870,9 @@ defineExpose({
 
         <template v-if="isFermatSpiralWeave">
           <div v-for="prop in [
-            { id: 'fermatSpiralScale', min: 4, max: 18, step: 0.01, label: 'fermatSpiralScale' },
-            { id: 'fermatSpiralTwist', min: 0.6, max: 4, step: 0.001, label: 'fermatSpiralTwist' }
+            { id: 'fermatSpiralScale', min: 4, max: 18, step: 0.1, label: 'fermatSpiralScale' },
+            { id: 'fermatSpiralTwist', min: 0.6, max: 4, step: 0.05, label: 'fermatSpiralTwist' },
+            { id: 'fermatSpiralMirror', min: 0, max: 1.8, step: 0.05, label: 'fermatSpiralMirror' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
@@ -885,8 +918,8 @@ defineExpose({
 
         <template v-if="isCardioidDeluxe">
           <div v-for="prop in [
-            { id: 'heartDepth', min: 0.5, max: 1.9, step: 0.001, label: 'heartDepth' },
-            { id: 'heartWidth', min: 0.55, max: 1.8, step: 0.001, label: 'heartWidth' }
+            { id: 'heartDepth', min: 0.5, max: 1.9, step: 0.01, label: 'heartDepth' },
+            { id: 'heartWidth', min: 0.55, max: 1.8, step: 0.01, label: 'heartWidth' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
@@ -910,10 +943,10 @@ defineExpose({
 
         <template v-if="isDoubleHeart">
           <div v-for="prop in [
-            { id: 'doubleHeartOffset', min: 0.2, max: 8, step: 0.001, label: 'doubleHeartOffset' },
-            { id: 'doubleHeartBlend', min: 0, max: 1, step: 0.001, label: 'doubleHeartBlend' },
-            { id: 'heartDepth', min: 0.5, max: 1.9, step: 0.001, label: 'heartDepth' },
-            { id: 'heartWidth', min: 0.55, max: 1.8, step: 0.001, label: 'heartWidth' }
+            { id: 'doubleHeartOffset', min: 0.2, max: 8, step: 0.05, label: 'doubleHeartOffset' },
+            { id: 'doubleHeartBlend', min: 0, max: 1, step: 0.02, label: 'doubleHeartBlend' },
+            { id: 'heartDepth', min: 0.5, max: 1.9, step: 0.01, label: 'heartDepth' },
+            { id: 'heartWidth', min: 0.55, max: 1.8, step: 0.01, label: 'heartWidth' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
@@ -937,9 +970,9 @@ defineExpose({
 
         <template v-if="isAdvancedTrochoid">
           <div v-for="prop in [
-            { id: 'trochoidRatio', min: 1.2, max: 8, step: 0.001, label: 'trochoidRatio' },
-            { id: 'trochoidOffset', min: 0.2, max: 8, step: 0.001, label: 'trochoidOffset' },
-            { id: 'trochoidPhase', min: 0, max: 6.283, step: 0.001, label: 'trochoidPhase' }
+            { id: 'trochoidRatio', min: 1.2, max: 8, step: 0.05, label: 'trochoidRatio' },
+            { id: 'trochoidOffset', min: 0.2, max: 8, step: 0.05, label: 'trochoidOffset' },
+            { id: 'trochoidPhase', min: 0, max: 6.283, step: 0.01, label: 'trochoidPhase' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
@@ -963,8 +996,8 @@ defineExpose({
 
         <template v-if="isJuliaFractal">
           <div v-for="prop in [
-            { id: 'juliaCRe', min: -1.2, max: 0.4, step: 0.001, label: 'juliaCRe' },
-            { id: 'juliaCIm', min: -0.8, max: 0.8, step: 0.001, label: 'juliaCIm' }
+            { id: 'juliaCRe', min: -1.2, max: 0.4, step: 0.01, label: 'juliaCRe' },
+            { id: 'juliaCIm', min: -0.8, max: 0.8, step: 0.01, label: 'juliaCIm' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
@@ -1001,7 +1034,7 @@ defineExpose({
               type="range"
               min="0.04"
               max="0.42"
-              step="0.001"
+              step="0.01"
               class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
               @input="(e: Event) => updateConfig('mandelbrotBandWidth', Number((e.target as HTMLInputElement).value))"
             >
@@ -1023,7 +1056,7 @@ defineExpose({
               type="range"
               min="0"
               max="0.35"
-              step="0.001"
+              step="0.01"
               class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
               @input="(e: Event) => updateConfig('barnsleyProbabilityJitter', Number((e.target as HTMLInputElement).value))"
             >

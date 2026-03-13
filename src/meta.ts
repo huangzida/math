@@ -1,7 +1,12 @@
 import { generateRandomPalette, rand } from '@bg-effects/shared'
 import type { EffectMeta } from '@bg-effects/core'
 import type { MathBeautyProps } from './types'
-import { formulaLibrary } from './engine/formula-library'
+import { formulaLibrary } from './engine'
+
+const effectIndexById = new Map<string, number>(
+  formulaLibrary.map((formula, index): [string, number] => [formula.id, index]),
+)
+const resolveEffectIndex = (effectId: string) => effectIndexById.get(effectId) ?? 0
 
 export const meta: EffectMeta<MathBeautyProps> = {
   id: 'math-beauty',
@@ -14,7 +19,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
   defaultConfig: {
     debug: false,
     lang: 'zh-CN',
-    effectIndex: 0,
+    effectIndex: resolveEffectIndex('cardioid'),
     animationSpeed: 0.2,
     lineWidth: 2.0,
     lineColor: '#c8287d',
@@ -41,11 +46,16 @@ export const meta: EffectMeta<MathBeautyProps> = {
     implicitGcdScale: 6,
     implicitBias: 0.8,
     implicitParabolaTarget: 1,
+    archimedeanPitch: 0.26,
+    archimedeanTwist: 1,
+    fermatR2AngularScale: 1,
     logSpiralGrowth: 0.12,
     logSpiralFrequency: 2.4,
     logSpiralScale: 0.45,
+    logSpiralRadialWarp: 0.8,
     fermatSpiralScale: 11,
     fermatSpiralTwist: 1.6,
+    fermatSpiralMirror: 1,
     cardioidScale: 1,
     cardioidDistortion: 0,
     limaconLoopScale: 1,
@@ -97,8 +107,11 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.modularPointCount = Math.floor(rand(180, 640))
       result.modularMultiplier = Math.floor(rand(11, 160))
       result.modularRadius = rand(8, 18)
+      result.archimedeanPitch = rand(0.12, 0.5)
+      result.archimedeanTwist = rand(0.55, 2.4)
       result.fermatR2Turns = rand(12, 44)
       result.fermatR2Scale = rand(0.6, 1.9)
+      result.fermatR2AngularScale = rand(0.65, 2.1)
       result.implicitRange = rand(6, 13.5)
       result.implicitStep = rand(0.12, 0.35)
       result.implicitWaveMix = rand(0.5, 1.8)
@@ -112,8 +125,10 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.logSpiralGrowth = rand(0.05, 0.24)
       result.logSpiralFrequency = rand(1.2, 4.8)
       result.logSpiralScale = rand(0.2, 0.8)
+      result.logSpiralRadialWarp = rand(0.45, 1.4)
       result.fermatSpiralScale = rand(7, 16)
       result.fermatSpiralTwist = rand(0.9, 3.2)
+      result.fermatSpiralMirror = rand(0.35, 1.5)
       result.cardioidScale = rand(0.55, 1.9)
       result.cardioidDistortion = rand(0, 3.2)
       result.limaconLoopScale = rand(0.35, 2.4)
@@ -185,7 +200,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '经典白板',
       },
       config: {
-        effectIndex: 0,
+        effectIndex: resolveEffectIndex('cardioid'),
         animationSpeed: 0.2,
         lineWidth: 2.8,
         lineColor: '#f9fafb',
@@ -203,7 +218,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '霓虹几何',
       },
       config: {
-        effectIndex: 2,
+        effectIndex: resolveEffectIndex('modular-times-table'),
         animationSpeed: 0.32,
         lineWidth: 3.2,
         lineColor: '#22d3ee',
@@ -222,7 +237,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '柔和轨迹',
       },
       config: {
-        effectIndex: 5,
+        effectIndex: resolveEffectIndex('star-rose'),
         animationSpeed: 0.16,
         lineWidth: 2.2,
         lineColor: '#f472b6',
@@ -241,7 +256,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '心形花绽',
       },
       config: {
-        effectIndex: 0,
+        effectIndex: resolveEffectIndex('cardioid'),
         cardioidScale: 1.4,
         cardioidDistortion: 1.2,
         animationSpeed: 0.2,
@@ -262,7 +277,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '心形柔光',
       },
       config: {
-        effectIndex: 0,
+        effectIndex: resolveEffectIndex('cardioid'),
         cardioidScale: 1.1,
         cardioidDistortion: 0.3,
         animationSpeed: 0.2,
@@ -283,7 +298,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '心形张力',
       },
       config: {
-        effectIndex: 0,
+        effectIndex: resolveEffectIndex('cardioid'),
         cardioidScale: 1.8,
         cardioidDistortion: 1.9,
         animationSpeed: 0.22,
@@ -304,7 +319,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '蜗线蝶影',
       },
       config: {
-        effectIndex: 1,
+        effectIndex: resolveEffectIndex('limacon'),
         limaconLoopScale: 1.6,
         limaconOffset: -1.8,
         animationSpeed: 0.2,
@@ -325,7 +340,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '蜗线经典',
       },
       config: {
-        effectIndex: 1,
+        effectIndex: resolveEffectIndex('limacon'),
         limaconLoopScale: 1.0,
         limaconOffset: 0,
         animationSpeed: 0.2,
@@ -346,7 +361,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '蜗线流体',
       },
       config: {
-        effectIndex: 1,
+        effectIndex: resolveEffectIndex('limacon'),
         limaconLoopScale: 0.7,
         limaconOffset: 2.6,
         animationSpeed: 0.18,
@@ -367,7 +382,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '花盘曼陀罗',
       },
       config: {
-        effectIndex: 3,
+        effectIndex: resolveEffectIndex('dual-frequency-bloom'),
         bloomFrequency1: 7,
         bloomFrequency2: 17,
         animationSpeed: 0.2,
@@ -388,7 +403,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '花盘花窗',
       },
       config: {
-        effectIndex: 3,
+        effectIndex: resolveEffectIndex('dual-frequency-bloom'),
         bloomFrequency1: 6,
         bloomFrequency2: 12,
         animationSpeed: 0.2,
@@ -409,7 +424,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '花盘赛博',
       },
       config: {
-        effectIndex: 3,
+        effectIndex: resolveEffectIndex('dual-frequency-bloom'),
         bloomFrequency1: 9,
         bloomFrequency2: 20,
         animationSpeed: 0.24,
@@ -430,7 +445,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '星芒玫瑰·星群',
       },
       config: {
-        effectIndex: 5,
+        effectIndex: resolveEffectIndex('star-rose'),
         starRosePetalCount: 6,
         starRoseRadius: 9.6,
         animationSpeed: 0.2,
@@ -451,7 +466,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '星芒玫瑰·丝绒',
       },
       config: {
-        effectIndex: 5,
+        effectIndex: resolveEffectIndex('star-rose'),
         starRosePetalCount: 8.5,
         starRoseRadius: 8.4,
         animationSpeed: 0.19,
@@ -472,7 +487,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '蝶形变奏·极光',
       },
       config: {
-        effectIndex: 7,
+        effectIndex: resolveEffectIndex('butterfly-variation'),
         butterflyVariationWave: 0.18,
         butterflyVariationExponent: 4.2,
         animationSpeed: 0.18,
@@ -493,7 +508,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '蝶形变奏·绒翼',
       },
       config: {
-        effectIndex: 7,
+        effectIndex: resolveEffectIndex('butterfly-variation'),
         butterflyVariationWave: 0.52,
         butterflyVariationExponent: 6.2,
         animationSpeed: 0.23,
@@ -514,7 +529,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '丝带环·莲纹',
       },
       config: {
-        effectIndex: 12,
+        effectIndex: resolveEffectIndex('ribbon-orbit'),
         ribbonOrbitAmplitude: 3.2,
         ribbonOrbitBaseRadius: 10.8,
         animationSpeed: 0.2,
@@ -535,7 +550,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '丝带环·流光',
       },
       config: {
-        effectIndex: 12,
+        effectIndex: resolveEffectIndex('ribbon-orbit'),
         ribbonOrbitAmplitude: 5.1,
         ribbonOrbitBaseRadius: 9.2,
         animationSpeed: 0.24,
@@ -556,7 +571,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '花心网·星云',
       },
       config: {
-        effectIndex: 13,
+        effectIndex: resolveEffectIndex('flower-web'),
         flowerWebAmplitude: 2.6,
         flowerWebFrequency: 0.85,
         animationSpeed: 0.18,
@@ -577,7 +592,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '花瓣链·绯红',
       },
       config: {
-        effectIndex: 14,
+        effectIndex: resolveEffectIndex('petal-chain'),
         petalChainAmplitude: 4.6,
         petalChainFrequency: 1.15,
         animationSpeed: 0.23,
@@ -598,7 +613,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '正切余切爆裂线·核心',
       },
       config: {
-        effectIndex: 19,
+        effectIndex: resolveEffectIndex('tan-cot-burst'),
         tanCotBurstScale: 26,
         tanCotBurstFrequency: 22,
         tanCotBurstHole: 2.8,
@@ -613,6 +628,94 @@ export const meta: EffectMeta<MathBeautyProps> = {
         showAxis: true,
         showTrail: true,
         trailAlpha: 0.08,
+      },
+    },
+    {
+      id: 'math_beauty_archimedean_spiral_glass',
+      name: {
+        en: 'Archimedean Glass',
+        'zh-CN': '阿基米德螺线·琉璃',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('archimedean-spiral'),
+        archimedeanPitch: 0.22,
+        archimedeanTwist: 1.5,
+        animationSpeed: 0.2,
+        lineWidth: 2.4,
+        lineColor: '#38bdf8',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.11,
+      },
+    },
+    {
+      id: 'math_beauty_fermat_r2_helix',
+      name: {
+        en: 'Fermat Helix',
+        'zh-CN': '费马螺线·旋核',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('fermat-r2-spiral'),
+        fermatR2Turns: 30,
+        fermatR2Scale: 1.25,
+        fermatR2AngularScale: 1.45,
+        animationSpeed: 0.21,
+        lineWidth: 2.7,
+        lineColor: '#facc15',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_log_spiral_aurora',
+      name: {
+        en: 'Log Spiral Aurora',
+        'zh-CN': '对数螺线·极光',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('logarithmic-spiral'),
+        logSpiralGrowth: 0.17,
+        logSpiralFrequency: 3.4,
+        logSpiralScale: 0.36,
+        logSpiralRadialWarp: 1.2,
+        animationSpeed: 0.19,
+        lineWidth: 2.5,
+        lineColor: '#60a5fa',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_fermat_weave_mirror',
+      name: {
+        en: 'Fermat Weave Mirror',
+        'zh-CN': '费马编织·镜潮',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('fermat-spiral-weave'),
+        fermatSpiralScale: 12.4,
+        fermatSpiralTwist: 1.95,
+        fermatSpiralMirror: 1.3,
+        animationSpeed: 0.22,
+        lineWidth: 2.8,
+        lineColor: '#22d3ee',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.09,
       },
     },
   ],

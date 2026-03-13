@@ -298,9 +298,12 @@ export class MathBeautyEngine {
       || prev.juliaCIm !== this.config.juliaCIm
       || prev.mandelbrotBandWidth !== this.config.mandelbrotBandWidth
       || prev.barnsleyProbabilityJitter !== this.config.barnsleyProbabilityJitter
-    const classicCurveChanged = prev.logSpiralGrowth !== this.config.logSpiralGrowth
+    const classicCurveChanged = prev.archimedeanPitch !== this.config.archimedeanPitch
+      || prev.archimedeanTwist !== this.config.archimedeanTwist
+      || prev.logSpiralGrowth !== this.config.logSpiralGrowth
       || prev.fermatR2Turns !== this.config.fermatR2Turns
       || prev.fermatR2Scale !== this.config.fermatR2Scale
+      || prev.fermatR2AngularScale !== this.config.fermatR2AngularScale
       || prev.implicitRange !== this.config.implicitRange
       || prev.implicitStep !== this.config.implicitStep
       || prev.implicitWaveMix !== this.config.implicitWaveMix
@@ -313,8 +316,10 @@ export class MathBeautyEngine {
       || prev.implicitParabolaTarget !== this.config.implicitParabolaTarget
       || prev.logSpiralFrequency !== this.config.logSpiralFrequency
       || prev.logSpiralScale !== this.config.logSpiralScale
+      || prev.logSpiralRadialWarp !== this.config.logSpiralRadialWarp
       || prev.fermatSpiralScale !== this.config.fermatSpiralScale
       || prev.fermatSpiralTwist !== this.config.fermatSpiralTwist
+      || prev.fermatSpiralMirror !== this.config.fermatSpiralMirror
       || prev.cardioidScale !== this.config.cardioidScale
       || prev.cardioidDistortion !== this.config.cardioidDistortion
       || prev.limaconLoopScale !== this.config.limaconLoopScale

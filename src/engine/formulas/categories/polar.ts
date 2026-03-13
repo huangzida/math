@@ -254,19 +254,22 @@ export const archimedeanSpiralFormula: FormulaDefinition = {
     'zh-CN': '阿基米德螺线',
   },
   formulaText: {
-    en: 'r = 0.26t,  x = rcos(t),  y = rsin(t)',
-    'zh-CN': 'r = 0.26t,  x = rcos(t),  y = rsin(t)',
+    en: 'r = a·t,  θ = ωt,  x = rcos(θ),  y = rsin(θ)',
+    'zh-CN': 'r = a·t,  θ = ωt,  x = rcos(θ),  y = rsin(θ)',
   },
   tMin: 0,
   tMax: Math.PI * 20,
   step: 0.01,
   scale: 1,
   stroke: '#38bdf8',
-  sampler: t => {
-    const r = 0.26 * t
+  sampler: (t, config) => {
+    const pitch = clamp(config?.archimedeanPitch ?? 0.26, 0.08, 0.6)
+    const twist = clamp(config?.archimedeanTwist ?? 1, 0.4, 2.8)
+    const r = pitch * t
+    const angle = twist * t
     return {
-      x: r * Math.cos(t),
-      y: r * Math.sin(t),
+      x: r * Math.cos(angle),
+      y: r * Math.sin(angle),
     }
   },
 }
@@ -278,8 +281,8 @@ export const fermatR2SpiralFormula: FormulaDefinition = {
     'zh-CN': '费马螺线 r²=t',
   },
   formulaText: {
-    en: 'r² = t,  x = rcos(t),  y = rsin(t)',
-    'zh-CN': 'r² = t,  x = rcos(t),  y = rsin(t)',
+    en: 'r² = s·t,  θ = k·t,  x = rcos(θ),  y = rsin(θ)',
+    'zh-CN': 'r² = s·t,  θ = k·t,  x = rcos(θ),  y = rsin(θ)',
   },
   tMin: 0,
   tMax: Math.PI * 52,
@@ -289,11 +292,13 @@ export const fermatR2SpiralFormula: FormulaDefinition = {
   sampler: (t, config) => {
     const turns = clamp(config?.fermatR2Turns ?? 26, 8, 52)
     const radialScale = clamp(config?.fermatR2Scale ?? 1.1, 0.4, 2.4)
+    const angularScale = clamp(config?.fermatR2AngularScale ?? 1, 0.5, 2.4)
     const mappedT = t * (turns / 52)
     const r = radialScale * Math.sqrt(Math.max(mappedT, 0))
+    const theta = angularScale * mappedT
     return {
-      x: r * Math.cos(mappedT),
-      y: r * Math.sin(mappedT),
+      x: r * Math.cos(theta),
+      y: r * Math.sin(theta),
     }
   },
 }
@@ -305,8 +310,8 @@ export const logarithmicSpiralFormula: FormulaDefinition = {
     'zh-CN': '对数螺线',
   },
   formulaText: {
-    en: 'r = a·exp(b·t),  x = rcos(ωt),  y = rsin(ωt)',
-    'zh-CN': 'r = a·exp(b·t),  x = rcos(ωt),  y = rsin(ωt)',
+    en: 'r = a·exp(b·w·t),  θ = ωt,  x = rcos(θ),  y = rsin(θ)',
+    'zh-CN': 'r = a·exp(b·w·t),  θ = ωt,  x = rcos(θ),  y = rsin(θ)',
   },
   tMin: 0,
   tMax: Math.PI * 8,
@@ -317,7 +322,8 @@ export const logarithmicSpiralFormula: FormulaDefinition = {
     const growth = clamp(config?.logSpiralGrowth ?? 0.12, 0.02, 0.35)
     const frequency = clamp(config?.logSpiralFrequency ?? 2.4, 0.6, 8)
     const scale = clamp(config?.logSpiralScale ?? 0.45, 0.12, 1.2)
-    const r = scale * Math.exp(growth * t * 0.8)
+    const radialWarp = clamp(config?.logSpiralRadialWarp ?? 0.8, 0.3, 1.8)
+    const r = scale * Math.exp(growth * t * radialWarp)
     return {
       x: r * Math.cos(frequency * t),
       y: r * Math.sin(frequency * t),
@@ -332,8 +338,8 @@ export const fermatSpiralWeaveFormula: FormulaDefinition = {
     'zh-CN': '费马螺线编织',
   },
   formulaText: {
-    en: 'r = a√|t|,  θ = kt,  x = sgn(t)·r·cos(θ),  y = r·sin(θ)',
-    'zh-CN': 'r = a√|t|,  θ = kt,  x = sgn(t)·r·cos(θ),  y = r·sin(θ)',
+    en: 'r = a√|t|,  θ = kt,  x = q(t,m)·r·cos(θ),  y = r·sin(θ)',
+    'zh-CN': 'r = a√|t|,  θ = kt,  x = q(t,m)·r·cos(θ),  y = r·sin(θ)',
   },
   tMin: -Math.PI * 16,
   tMax: Math.PI * 16,
@@ -343,9 +349,10 @@ export const fermatSpiralWeaveFormula: FormulaDefinition = {
   sampler: (t, config) => {
     const a = clamp(config?.fermatSpiralScale ?? 11, 4, 18)
     const twist = clamp(config?.fermatSpiralTwist ?? 1.6, 0.6, 4)
+    const mirror = clamp(config?.fermatSpiralMirror ?? 1, 0, 1.8)
     const radius = a * Math.sqrt(Math.abs(t) / (Math.PI * 2))
     const theta = twist * t
-    const direction = t >= 0 ? 1 : -1
+    const direction = t >= 0 ? 1 : -mirror
     return {
       x: direction * radius * Math.cos(theta),
       y: radius * Math.sin(theta),
