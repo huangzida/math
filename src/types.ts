@@ -33,6 +33,12 @@ export interface MathBeautyProps {
   modularPointCount?: number
   modularMultiplier?: number
   modularRadius?: number
+  fermatR2Turns?: number
+  fermatR2Scale?: number
+  implicitRange?: number
+  implicitStep?: number
+  implicitWaveMix?: number
+  implicitSingularityGuard?: number
   logSpiralGrowth?: number
   logSpiralFrequency?: number
   logSpiralScale?: number

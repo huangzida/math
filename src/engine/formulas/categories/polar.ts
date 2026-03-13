@@ -1,0 +1,393 @@
+import type { FormulaDefinition } from '../../../types'
+import { clamp } from '../shared'
+
+export const cardioidFormula: FormulaDefinition = {
+  id: 'cardioid',
+  name: {
+    en: 'Cardioid',
+    'zh-CN': '心形线',
+  },
+  formulaText: {
+    en: 'r = 8(1 - cos(t)),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = 8(1 - cos(t)),  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 2,
+  step: 0.003,
+  scale: 1.05,
+  stroke: '#fb7185',
+  sampler: t => {
+    const r = 8 * (1 - Math.cos(t))
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const limaconFormula: FormulaDefinition = {
+  id: 'limacon',
+  name: {
+    en: 'Limaçon',
+    'zh-CN': '帕斯卡蜗线',
+  },
+  formulaText: {
+    en: 'r = 6 + 9cos(t),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = 6 + 9cos(t),  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 2,
+  step: 0.003,
+  scale: 1.05,
+  stroke: '#c084fc',
+  sampler: t => {
+    const r = 6 + 9 * Math.cos(t)
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const dualFrequencyBloomFormula: FormulaDefinition = {
+  id: 'dual-frequency-bloom',
+  name: {
+    en: 'Dual-Frequency Bloom',
+    'zh-CN': '双频花盘',
+  },
+  formulaText: {
+    en: 'r = 5sin(7t) + 3sin(13t),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = 5sin(7t) + 3sin(13t),  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 16,
+  step: 0.004,
+  scale: 1.65,
+  stroke: '#34d399',
+  sampler: t => {
+    const r = 5 * Math.sin(7 * t) + 3 * Math.sin(13 * t)
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const starRoseFormula: FormulaDefinition = {
+  id: 'star-rose',
+  name: {
+    en: 'Star Rose',
+    'zh-CN': '星芒玫瑰',
+  },
+  formulaText: {
+    en: 'r = 9cos(7t),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = 9cos(7t),  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 2,
+  step: 0.002,
+  scale: 1.2,
+  stroke: '#f43f5e',
+  sampler: t => {
+    const r = 9 * Math.cos(7 * t)
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const butterflyVariationFormula: FormulaDefinition = {
+  id: 'butterfly-variation',
+  name: {
+    en: 'Butterfly Variation',
+    'zh-CN': '蝶形变奏',
+  },
+  formulaText: {
+    en: 'r = e^(sin(t)) - 2cos(4t) + sin⁵((2t-π)/24) + 0.35sin(9t)',
+    'zh-CN': 'r = e^(sin(t)) - 2cos(4t) + sin⁵((2t-π)/24) + 0.35sin(9t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 24,
+  step: 0.01,
+  scale: 3,
+  stroke: '#f472b6',
+  sampler: t => {
+    const r = Math.exp(Math.sin(t)) - 2 * Math.cos(4 * t) + Math.sin((2 * t - Math.PI) / 24) ** 5 + 0.35 * Math.sin(9 * t)
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const ribbonOrbitFormula: FormulaDefinition = {
+  id: 'ribbon-orbit',
+  name: {
+    en: 'Ribbon Orbit',
+    'zh-CN': '丝带环',
+  },
+  formulaText: {
+    en: 'r = 4sin(24t/25) + 10,  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = 4sin(24t/25) + 10,  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 50,
+  step: 0.01,
+  scale: 1,
+  stroke: '#d946ef',
+  sampler: t => {
+    const r = 4 * Math.sin((24 * t) / 25) + 10
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const flowerWebFormula: FormulaDefinition = {
+  id: 'flower-web',
+  name: {
+    en: 'Flower Web',
+    'zh-CN': '花心网',
+  },
+  formulaText: {
+    en: 'r = 3sin(24t/25),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = 3sin(24t/25),  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 80,
+  step: 0.008,
+  scale: 2.4,
+  stroke: '#ec4899',
+  sampler: t => {
+    const r = 3 * Math.sin((24 * t) / 25)
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const petalChainFormula: FormulaDefinition = {
+  id: 'petal-chain',
+  name: {
+    en: 'Petal Chain',
+    'zh-CN': '花瓣链',
+  },
+  formulaText: {
+    en: 'r = 3sin(0.75t),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = 3sin(0.75t),  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 32,
+  step: 0.01,
+  scale: 1.9,
+  stroke: '#ef4444',
+  sampler: t => {
+    const r = 3 * Math.sin(0.75 * t)
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const roseCurveFormula: FormulaDefinition = {
+  id: 'rose-curve',
+  name: {
+    en: 'Rose Curve',
+    'zh-CN': '玫瑰线',
+  },
+  formulaText: {
+    en: 'r = 10cos(5t),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = 10cos(5t),  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 2,
+  step: 0.0025,
+  scale: 1.2,
+  stroke: '#facc15',
+  sampler: t => {
+    const r = 10 * Math.cos(5 * t)
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const butterflyFormula: FormulaDefinition = {
+  id: 'butterfly',
+  name: {
+    en: 'Butterfly Curve',
+    'zh-CN': '蝴蝶曲线',
+  },
+  formulaText: {
+    en: 'r = e^(sin(t)) - 2cos(4t) + sin⁵((2t-π)/24), x = rcos(t), y = rsin(t)',
+    'zh-CN': 'r = e^(sin(t)) - 2cos(4t) + sin⁵((2t-π)/24), x = rcos(t), y = rsin(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 24,
+  step: 0.01,
+  scale: 3.2,
+  stroke: '#fb7185',
+  sampler: t => {
+    const r = Math.exp(Math.sin(t)) - 2 * Math.cos(4 * t) + Math.sin((2 * t - Math.PI) / 24) ** 5
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const tanCotBurstFormula: FormulaDefinition = {
+  id: 'tan-cot-burst',
+  name: {
+    en: 'Tan Cot Burst',
+    'zh-CN': '正切余切爆裂线',
+  },
+  formulaText: {
+    en: 'r = 20 × (tan(17t) + cot(17t)),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = 20 × (tan(17t) + cot(17t)),  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: 0.001,
+  tMax: Math.PI * 2 - 0.001,
+  step: 0.0009,
+  scale: 0.08,
+  stroke: '#fda4af',
+  sampler: t => {
+    const a = 17 * t
+    const tanValue = Math.tan(a)
+    const cotValue = 1 / tanValue
+    const r = 20 * (tanValue + cotValue)
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const archimedeanSpiralFormula: FormulaDefinition = {
+  id: 'archimedean-spiral',
+  name: {
+    en: 'Archimedean Spiral',
+    'zh-CN': '阿基米德螺线',
+  },
+  formulaText: {
+    en: 'r = 0.26t,  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = 0.26t,  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 20,
+  step: 0.01,
+  scale: 1,
+  stroke: '#38bdf8',
+  sampler: t => {
+    const r = 0.26 * t
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const fermatR2SpiralFormula: FormulaDefinition = {
+  id: 'fermat-r2-spiral',
+  name: {
+    en: 'Fermat Spiral r²=t',
+    'zh-CN': '费马螺线 r²=t',
+  },
+  formulaText: {
+    en: 'r² = t,  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r² = t,  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 52,
+  step: 0.01,
+  scale: 1,
+  stroke: '#eab308',
+  sampler: (t, config) => {
+    const turns = clamp(config?.fermatR2Turns ?? 26, 8, 52)
+    const radialScale = clamp(config?.fermatR2Scale ?? 1.1, 0.4, 2.4)
+    const mappedT = t * (turns / 52)
+    const r = radialScale * Math.sqrt(Math.max(mappedT, 0))
+    return {
+      x: r * Math.cos(mappedT),
+      y: r * Math.sin(mappedT),
+    }
+  },
+}
+
+export const logarithmicSpiralFormula: FormulaDefinition = {
+  id: 'logarithmic-spiral',
+  name: {
+    en: 'Logarithmic Spiral',
+    'zh-CN': '对数螺线',
+  },
+  formulaText: {
+    en: 'r = a·exp(b·t),  x = rcos(ωt),  y = rsin(ωt)',
+    'zh-CN': 'r = a·exp(b·t),  x = rcos(ωt),  y = rsin(ωt)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 8,
+  step: 0.006,
+  scale: 1,
+  stroke: '#60a5fa',
+  sampler: (t, config) => {
+    const growth = clamp(config?.logSpiralGrowth ?? 0.12, 0.02, 0.35)
+    const frequency = clamp(config?.logSpiralFrequency ?? 2.4, 0.6, 8)
+    const scale = clamp(config?.logSpiralScale ?? 0.45, 0.12, 1.2)
+    const r = scale * Math.exp(growth * t * 0.8)
+    return {
+      x: r * Math.cos(frequency * t),
+      y: r * Math.sin(frequency * t),
+    }
+  },
+}
+
+export const fermatSpiralWeaveFormula: FormulaDefinition = {
+  id: 'fermat-spiral-weave',
+  name: {
+    en: 'Fermat Spiral Weave',
+    'zh-CN': '费马螺线编织',
+  },
+  formulaText: {
+    en: 'r = a√|t|,  θ = kt,  x = sgn(t)·r·cos(θ),  y = r·sin(θ)',
+    'zh-CN': 'r = a√|t|,  θ = kt,  x = sgn(t)·r·cos(θ),  y = r·sin(θ)',
+  },
+  tMin: -Math.PI * 16,
+  tMax: Math.PI * 16,
+  step: 0.01,
+  scale: 0.64,
+  stroke: '#22d3ee',
+  sampler: (t, config) => {
+    const a = clamp(config?.fermatSpiralScale ?? 11, 4, 18)
+    const twist = clamp(config?.fermatSpiralTwist ?? 1.6, 0.6, 4)
+    const radius = a * Math.sqrt(Math.abs(t) / (Math.PI * 2))
+    const theta = twist * t
+    const direction = t >= 0 ? 1 : -1
+    return {
+      x: direction * radius * Math.cos(theta),
+      y: radius * Math.sin(theta),
+    }
+  },
+}
+
+export const polarFormulas: FormulaDefinition[] = [
+  cardioidFormula,
+  limaconFormula,
+  dualFrequencyBloomFormula,
+  starRoseFormula,
+  butterflyVariationFormula,
+  ribbonOrbitFormula,
+  flowerWebFormula,
+  petalChainFormula,
+  roseCurveFormula,
+  butterflyFormula,
+  tanCotBurstFormula,
+  archimedeanSpiralFormula,
+  fermatR2SpiralFormula,
+  logarithmicSpiralFormula,
+  fermatSpiralWeaveFormula,
+]

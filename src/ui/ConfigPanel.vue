@@ -62,6 +62,10 @@ const formulaCategoryMap: Record<string, FormulaCategory> = {
   lissajous: 'parametric',
   nephroid: 'trochoid',
   'archimedean-spiral': 'polar',
+  'fermat-r2-spiral': 'polar',
+  'sine-square-lattice': 'hybrid',
+  'resonant-implicit-wave': 'hybrid',
+  'tan-cot-implicit-maze': 'hybrid',
   'logarithmic-spiral': 'polar',
   'fermat-spiral-weave': 'polar',
   'cardioid-deluxe': 'parametric',
@@ -152,6 +156,16 @@ const isCardioidDeluxe = computed(() => {
 const isDoubleHeart = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
   return effect.id === 'double-heart'
+})
+
+const isFermatR2Spiral = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'fermat-r2-spiral'
+})
+
+const isImplicitEffect = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'sine-square-lattice' || effect.id === 'resonant-implicit-wave' || effect.id === 'tan-cot-implicit-maze'
 })
 
 const isAdvancedTrochoid = computed(() => {
@@ -415,10 +429,62 @@ defineExpose({
           </div>
         </template>
 
+        <template v-if="isFermatR2Spiral">
+          <div v-for="prop in [
+            { id: 'fermatR2Turns', min: 8, max: 52, step: 0.01, label: 'fermatR2Turns' },
+            { id: 'fermatR2Scale', min: 0.4, max: 2.4, step: 0.001, label: 'fermatR2Scale' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
         <template v-if="isFermatSpiralWeave">
           <div v-for="prop in [
             { id: 'fermatSpiralScale', min: 4, max: 18, step: 0.01, label: 'fermatSpiralScale' },
             { id: 'fermatSpiralTwist', min: 0.6, max: 4, step: 0.001, label: 'fermatSpiralTwist' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isImplicitEffect">
+          <div v-for="prop in [
+            { id: 'implicitRange', min: 4, max: 16, step: 0.01, label: 'implicitRange' },
+            { id: 'implicitStep', min: 0.08, max: 0.5, step: 0.001, label: 'implicitStep' },
+            { id: 'implicitWaveMix', min: 0.2, max: 2.4, step: 0.001, label: 'implicitWaveMix' },
+            { id: 'implicitSingularityGuard', min: 0.01, max: 0.2, step: 0.001, label: 'implicitSingularityGuard' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">

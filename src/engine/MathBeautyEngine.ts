@@ -292,6 +292,12 @@ export class MathBeautyEngine {
       || prev.mandelbrotBandWidth !== this.config.mandelbrotBandWidth
       || prev.barnsleyProbabilityJitter !== this.config.barnsleyProbabilityJitter
     const classicCurveChanged = prev.logSpiralGrowth !== this.config.logSpiralGrowth
+      || prev.fermatR2Turns !== this.config.fermatR2Turns
+      || prev.fermatR2Scale !== this.config.fermatR2Scale
+      || prev.implicitRange !== this.config.implicitRange
+      || prev.implicitStep !== this.config.implicitStep
+      || prev.implicitWaveMix !== this.config.implicitWaveMix
+      || prev.implicitSingularityGuard !== this.config.implicitSingularityGuard
       || prev.logSpiralFrequency !== this.config.logSpiralFrequency
       || prev.logSpiralScale !== this.config.logSpiralScale
       || prev.fermatSpiralScale !== this.config.fermatSpiralScale

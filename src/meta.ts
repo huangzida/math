@@ -27,6 +27,12 @@ export const meta: EffectMeta<MathBeautyProps> = {
     modularPointCount: 360,
     modularMultiplier: 71,
     modularRadius: 12,
+    fermatR2Turns: 26,
+    fermatR2Scale: 1.1,
+    implicitRange: 9.4,
+    implicitStep: 0.22,
+    implicitWaveMix: 1,
+    implicitSingularityGuard: 0.08,
     logSpiralGrowth: 0.12,
     logSpiralFrequency: 2.4,
     logSpiralScale: 0.45,
@@ -62,6 +68,12 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.modularPointCount = Math.floor(rand(180, 640))
       result.modularMultiplier = Math.floor(rand(11, 160))
       result.modularRadius = rand(8, 18)
+      result.fermatR2Turns = rand(12, 44)
+      result.fermatR2Scale = rand(0.6, 1.9)
+      result.implicitRange = rand(6, 13.5)
+      result.implicitStep = rand(0.12, 0.35)
+      result.implicitWaveMix = rand(0.5, 1.8)
+      result.implicitSingularityGuard = rand(0.03, 0.16)
       result.logSpiralGrowth = rand(0.05, 0.24)
       result.logSpiralFrequency = rand(1.2, 4.8)
       result.logSpiralScale = rand(0.2, 0.8)
