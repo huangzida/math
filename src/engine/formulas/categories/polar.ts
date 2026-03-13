@@ -1,32 +1,6 @@
 import type { FormulaDefinition } from '../../../types'
 import { clamp } from '../shared'
 
-export const cardioidFormula: FormulaDefinition = {
-  id: 'cardioid',
-  name: {
-    en: 'Cardioid',
-    'zh-CN': '心形线',
-  },
-  formulaText: {
-    en: 'r = 8s(1 - cos(t)) + d·sin(3t),  x = rcos(t),  y = rsin(t)',
-    'zh-CN': 'r = 8s(1 - cos(t)) + d·sin(3t),  x = rcos(t),  y = rsin(t)',
-  },
-  tMin: 0,
-  tMax: Math.PI * 2,
-  step: 0.1,
-  scale: 1.05,
-  stroke: '#fb7185',
-  sampler: (t, config) => {
-    const scale = clamp(config?.cardioidScale ?? 1, 0.55, 1.9)
-    const distortion = clamp(config?.cardioidDistortion ?? 0, 0, 3.2)
-    const r = 8 * scale * (1 - Math.cos(t)) + distortion * Math.sin(3 * t)
-    return {
-      x: r * Math.cos(t),
-      y: r * Math.sin(t),
-    }
-  },
-}
-
 export const limaconFormula: FormulaDefinition = {
   id: 'limacon',
   name: {
@@ -361,7 +335,6 @@ export const fermatSpiralWeaveFormula: FormulaDefinition = {
 }
 
 export const polarFormulas: FormulaDefinition[] = [
-  cardioidFormula,
   limaconFormula,
   dualFrequencyBloomFormula,
   starRoseFormula,

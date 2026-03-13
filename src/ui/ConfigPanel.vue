@@ -37,7 +37,6 @@ type FormulaCategory = 'polar' | 'parametric' | 'trochoid' | 'numberTheory' | 'f
 const categoryOrder: FormulaCategory[] = ['polar', 'parametric', 'trochoid', 'numberTheory', 'fractal', 'physics', 'chaos', 'hybrid']
 
 const formulaCategoryMap: Record<string, FormulaCategory> = {
-  cardioid: 'polar',
   limacon: 'polar',
   'modular-times-table': 'numberTheory',
   'dual-frequency-bloom': 'polar',
@@ -74,7 +73,6 @@ const formulaCategoryMap: Record<string, FormulaCategory> = {
   'logarithmic-spiral': 'polar',
   'fermat-spiral-weave': 'polar',
   'cardioid-deluxe': 'parametric',
-  'double-heart': 'parametric',
   'epitrochoid-bloom': 'trochoid',
   'hypotrochoid-weave': 'trochoid',
   astroid: 'parametric',
@@ -153,11 +151,6 @@ const isFermatSpiralWeave = computed(() => {
   return effect.id === 'fermat-spiral-weave'
 })
 
-const isCardioid = computed(() => {
-  const effect = getFormulaByIndex(props.config.effectIndex || 0)
-  return effect.id === 'cardioid'
-})
-
 const isLimacon = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
   return effect.id === 'limacon'
@@ -203,9 +196,34 @@ const isCardioidDeluxe = computed(() => {
   return effect.id === 'cardioid-deluxe'
 })
 
-const isDoubleHeart = computed(() => {
+const isSuperellipse = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
-  return effect.id === 'double-heart'
+  return effect.id === 'superellipse'
+})
+
+const isPentagramWave = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'pentagram-wave'
+})
+
+const isPetalOrbit = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'petal-orbit'
+})
+
+const isLemniscate = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'lemniscate'
+})
+
+const isAstroid = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'astroid'
+})
+
+const isLissajous = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'lissajous'
 })
 
 const isFermatR2Spiral = computed(() => {
@@ -562,31 +580,6 @@ defineExpose({
           </div>
         </template>
 
-        <template v-if="isCardioid">
-          <div v-for="prop in [
-            { id: 'cardioidScale', min: 0.5, max: 2.0, step: 0.1, label: 'cardioidScale' },
-            { id: 'cardioidDistortion', min: 0, max: 2.0, step: 0.1, label: 'cardioidDistortion' }
-          ]" :key="prop.id" class="flex flex-col gap-2">
-            <div class="flex justify-between items-center">
-              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
-                {{ t(`labels.${prop.label}`) }}
-              </label>
-              <span class="text-[11px] font-mono text-white/55">
-                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(2) }}
-              </span>
-            </div>
-            <input
-              :value="config[prop.id as keyof MathBeautyProps]"
-              type="range"
-              :min="prop.min"
-              :max="prop.max"
-              :step="prop.step"
-              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
-              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
-            >
-          </div>
-        </template>
-
         <template v-if="isLimacon">
           <div v-for="prop in [
             { id: 'limaconLoopScale', min: 0.2, max: 2.0, step: 0.1, label: 'limaconLoopScale' },
@@ -916,10 +909,11 @@ defineExpose({
           </div>
         </template>
 
-        <template v-if="isCardioidDeluxe">
+        <template v-if="isSuperellipse">
           <div v-for="prop in [
-            { id: 'heartDepth', min: 0.5, max: 1.9, step: 0.01, label: 'heartDepth' },
-            { id: 'heartWidth', min: 0.55, max: 1.8, step: 0.01, label: 'heartWidth' }
+            { id: 'superellipseA', min: 4, max: 14, step: 0.1, label: 'superellipseA' },
+            { id: 'superellipseB', min: 3, max: 12, step: 0.1, label: 'superellipseB' },
+            { id: 'superellipseN', min: 1.2, max: 8, step: 0.05, label: 'superellipseN' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
@@ -941,10 +935,137 @@ defineExpose({
           </div>
         </template>
 
-        <template v-if="isDoubleHeart">
+        <template v-if="isPentagramWave">
           <div v-for="prop in [
-            { id: 'doubleHeartOffset', min: 0.2, max: 8, step: 0.05, label: 'doubleHeartOffset' },
-            { id: 'doubleHeartBlend', min: 0, max: 1, step: 0.02, label: 'doubleHeartBlend' },
+            { id: 'pentagramBaseAmplitude', min: 0.5, max: 12, step: 0.1, label: 'pentagramBaseAmplitude' },
+            { id: 'pentagramWaveAmplitude', min: 0, max: 12, step: 0.1, label: 'pentagramWaveAmplitude' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isPetalOrbit">
+          <div v-for="prop in [
+            { id: 'petalOrbitAmplitude', min: 2, max: 12, step: 0.1, label: 'petalOrbitAmplitude' },
+            { id: 'petalOrbitFreqX', min: 1, max: 9, step: 0.05, label: 'petalOrbitFreqX' },
+            { id: 'petalOrbitFreqY', min: 1, max: 9, step: 0.05, label: 'petalOrbitFreqY' },
+            { id: 'petalOrbitPhase', min: -3.142, max: 3.142, step: 0.01, label: 'petalOrbitPhase' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isLemniscate">
+          <div v-for="prop in [
+            { id: 'lemniscateScale', min: 4, max: 16, step: 0.1, label: 'lemniscateScale' },
+            { id: 'lemniscateWarp', min: 0.2, max: 2.4, step: 0.05, label: 'lemniscateWarp' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isAstroid">
+          <div v-for="prop in [
+            { id: 'astroidScale', min: 3, max: 14, step: 0.1, label: 'astroidScale' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isLissajous">
+          <div v-for="prop in [
+            { id: 'lissajousAmpX', min: 3, max: 14, step: 0.1, label: 'lissajousAmpX' },
+            { id: 'lissajousAmpY', min: 3, max: 14, step: 0.1, label: 'lissajousAmpY' },
+            { id: 'lissajousFreqX', min: 1, max: 8, step: 0.05, label: 'lissajousFreqX' },
+            { id: 'lissajousFreqY', min: 1, max: 8, step: 0.05, label: 'lissajousFreqY' },
+            { id: 'lissajousPhase', min: -3.142, max: 3.142, step: 0.01, label: 'lissajousPhase' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isCardioidDeluxe">
+          <div v-for="prop in [
             { id: 'heartDepth', min: 0.5, max: 1.9, step: 0.01, label: 'heartDepth' },
             { id: 'heartWidth', min: 0.55, max: 1.8, step: 0.01, label: 'heartWidth' }
           ]" :key="prop.id" class="flex flex-col gap-2">

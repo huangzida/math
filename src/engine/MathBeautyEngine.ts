@@ -341,10 +341,25 @@ export class MathBeautyEngine {
       || prev.tanCotBurstHole !== this.config.tanCotBurstHole
       || prev.tanCotBurstCross !== this.config.tanCotBurstCross
       || prev.tanCotBurstClamp !== this.config.tanCotBurstClamp
+      || prev.superellipseA !== this.config.superellipseA
+      || prev.superellipseB !== this.config.superellipseB
+      || prev.superellipseN !== this.config.superellipseN
+      || prev.pentagramBaseAmplitude !== this.config.pentagramBaseAmplitude
+      || prev.pentagramWaveAmplitude !== this.config.pentagramWaveAmplitude
+      || prev.petalOrbitAmplitude !== this.config.petalOrbitAmplitude
+      || prev.petalOrbitFreqX !== this.config.petalOrbitFreqX
+      || prev.petalOrbitFreqY !== this.config.petalOrbitFreqY
+      || prev.petalOrbitPhase !== this.config.petalOrbitPhase
+      || prev.lemniscateScale !== this.config.lemniscateScale
+      || prev.lemniscateWarp !== this.config.lemniscateWarp
+      || prev.astroidScale !== this.config.astroidScale
+      || prev.lissajousAmpX !== this.config.lissajousAmpX
+      || prev.lissajousAmpY !== this.config.lissajousAmpY
+      || prev.lissajousFreqX !== this.config.lissajousFreqX
+      || prev.lissajousFreqY !== this.config.lissajousFreqY
+      || prev.lissajousPhase !== this.config.lissajousPhase
       || prev.heartDepth !== this.config.heartDepth
       || prev.heartWidth !== this.config.heartWidth
-      || prev.doubleHeartOffset !== this.config.doubleHeartOffset
-      || prev.doubleHeartBlend !== this.config.doubleHeartBlend
       || prev.trochoidRatio !== this.config.trochoidRatio
       || prev.trochoidOffset !== this.config.trochoidOffset
       || prev.trochoidPhase !== this.config.trochoidPhase

@@ -1,6 +1,6 @@
 import type { FormulaDefinition } from '../types'
-import { cardioidFormula, limaconFormula, dualFrequencyBloomFormula, starRoseFormula, butterflyVariationFormula, ribbonOrbitFormula, flowerWebFormula, petalChainFormula, tanCotBurstFormula, archimedeanSpiralFormula, fermatR2SpiralFormula, logarithmicSpiralFormula, fermatSpiralWeaveFormula } from './formulas/categories/polar'
-import { superellipseFormula, pentagramWaveFormula, petalOrbitFormula, lemniscateFormula, cardioidDeluxeFormula, doubleHeartFormula, astroidFormula, lissajousFormula } from './formulas/categories/parametric'
+import { limaconFormula, dualFrequencyBloomFormula, starRoseFormula, butterflyVariationFormula, ribbonOrbitFormula, flowerWebFormula, petalChainFormula, tanCotBurstFormula, archimedeanSpiralFormula, fermatR2SpiralFormula, logarithmicSpiralFormula, fermatSpiralWeaveFormula } from './formulas/categories/polar'
+import { superellipseFormula, pentagramWaveFormula, petalOrbitFormula, lemniscateFormula, cardioidDeluxeFormula, astroidFormula, lissajousFormula } from './formulas/categories/parametric'
 import { spiralSpirographFormula, hypotrochoidFormula, epicycloidFormula, nephroidFormula, epitrochoidBloomFormula, hypotrochoidWeaveFormula } from './formulas/categories/trochoid'
 import { modularTimesTableFormula, gcdLayerFormula, quadraticResidueGridFormula, gcdLatticeFormula } from './formulas/categories/number-theory'
 import { sineSquareLatticeFormula, resonantImplicitWaveFormula, tanCotImplicitMazeFormula, symmetricSineCrossFormula, expTrigBalanceFormula, sinTanNexusFormula, nestedSineShearFormula, gcdCosInterferenceFormula, sineSquareBiasBandsFormula, parabolaSineBalanceFormula } from './formulas/categories/hybrid'
@@ -9,7 +9,6 @@ import { vectorFieldStreamlinesFormula, gravityWellFormula, vortexFieldFormula }
 import { lorenzAttractorFormula, rosslerAttractorFormula, aizawaAttractorFormula } from './formulas/categories/chaos'
 
 export const formulaLibrary: FormulaDefinition[] = [
-  cardioidFormula,
   limaconFormula,
   modularTimesTableFormula,
   dualFrequencyBloomFormula,
@@ -45,7 +44,6 @@ export const formulaLibrary: FormulaDefinition[] = [
   logarithmicSpiralFormula,
   fermatSpiralWeaveFormula,
   cardioidDeluxeFormula,
-  doubleHeartFormula,
   epitrochoidBloomFormula,
   hypotrochoidWeaveFormula,
   astroidFormula,

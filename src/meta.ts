@@ -19,7 +19,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
   defaultConfig: {
     debug: false,
     lang: 'zh-CN',
-    effectIndex: resolveEffectIndex('cardioid'),
+    effectIndex: resolveEffectIndex('cardioid-deluxe'),
     animationSpeed: 0.2,
     lineWidth: 2.0,
     lineColor: '#c8287d',
@@ -77,10 +77,27 @@ export const meta: EffectMeta<MathBeautyProps> = {
     tanCotBurstHole: 0,
     tanCotBurstCross: 0,
     tanCotBurstClamp: 0,
+    superellipseA: 10,
+    superellipseB: 8,
+    superellipseN: 3,
+    pentagramBaseAmplitude: 2,
+    pentagramWaveAmplitude: 5,
+    pentagramWaveFreqX: 2 / 3,
+    pentagramWaveFreqY: 2 / 3,
+    petalOrbitAmplitude: 6,
+    petalOrbitFreqX: 4,
+    petalOrbitFreqY: 3,
+    petalOrbitPhase: Math.PI / 2,
+    lemniscateScale: 10,
+    lemniscateWarp: 1,
+    astroidScale: 8,
+    lissajousAmpX: 9,
+    lissajousAmpY: 9,
+    lissajousFreqX: 3,
+    lissajousFreqY: 4,
+    lissajousPhase: Math.PI / 2,
     heartDepth: 1,
     heartWidth: 1,
-    doubleHeartOffset: 3.2,
-    doubleHeartBlend: 0.5,
     trochoidRatio: 3.2,
     trochoidOffset: 5.2,
     trochoidPhase: 0,
@@ -150,10 +167,27 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.tanCotBurstHole = rand(0, 3.5)
       result.tanCotBurstCross = rand(0, 48)
       result.tanCotBurstClamp = rand(0, 180)
+      result.superellipseA = rand(6, 13)
+      result.superellipseB = rand(4, 11)
+      result.superellipseN = rand(1.4, 7.5)
+      result.pentagramBaseAmplitude = rand(0.8, 6)
+      result.pentagramWaveAmplitude = rand(1.8, 9.2)
+      result.pentagramWaveFreqX = 2 / 3
+      result.pentagramWaveFreqY = 2 / 3
+      result.petalOrbitAmplitude = rand(3, 11)
+      result.petalOrbitFreqX = rand(1.2, 8)
+      result.petalOrbitFreqY = rand(1.2, 8)
+      result.petalOrbitPhase = rand(-Math.PI, Math.PI)
+      result.lemniscateScale = rand(5, 14)
+      result.lemniscateWarp = rand(0.35, 2.2)
+      result.astroidScale = rand(4, 13)
+      result.lissajousAmpX = rand(4, 13)
+      result.lissajousAmpY = rand(4, 13)
+      result.lissajousFreqX = rand(1.2, 7.5)
+      result.lissajousFreqY = rand(1.2, 7.5)
+      result.lissajousPhase = rand(-Math.PI, Math.PI)
       result.heartDepth = rand(0.7, 1.45)
       result.heartWidth = rand(0.75, 1.45)
-      result.doubleHeartOffset = rand(1.4, 5.8)
-      result.doubleHeartBlend = rand(0.18, 0.82)
       result.trochoidRatio = rand(1.8, 6.5)
       result.trochoidOffset = rand(1.2, 7.2)
       result.trochoidPhase = rand(0, Math.PI * 2)
@@ -200,7 +234,7 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '经典白板',
       },
       config: {
-        effectIndex: resolveEffectIndex('cardioid'),
+        effectIndex: resolveEffectIndex('cardioid-deluxe'),
         animationSpeed: 0.2,
         lineWidth: 2.8,
         lineColor: '#f9fafb',
@@ -256,9 +290,9 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '心形花绽',
       },
       config: {
-        effectIndex: resolveEffectIndex('cardioid'),
-        cardioidScale: 1.4,
-        cardioidDistortion: 1.2,
+        effectIndex: resolveEffectIndex('cardioid-deluxe'),
+        heartDepth: 1.45,
+        heartWidth: 1.28,
         animationSpeed: 0.2,
         lineWidth: 2.4,
         lineColor: '#fb7185',
@@ -277,9 +311,9 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '心形柔光',
       },
       config: {
-        effectIndex: resolveEffectIndex('cardioid'),
-        cardioidScale: 1.1,
-        cardioidDistortion: 0.3,
+        effectIndex: resolveEffectIndex('cardioid-deluxe'),
+        heartDepth: 0.78,
+        heartWidth: 1.52,
         animationSpeed: 0.2,
         lineWidth: 2.2,
         lineColor: '#fda4af',
@@ -298,9 +332,9 @@ export const meta: EffectMeta<MathBeautyProps> = {
         'zh-CN': '心形张力',
       },
       config: {
-        effectIndex: resolveEffectIndex('cardioid'),
-        cardioidScale: 1.8,
-        cardioidDistortion: 1.9,
+        effectIndex: resolveEffectIndex('cardioid-deluxe'),
+        heartDepth: 1.6,
+        heartWidth: 1.2,
         animationSpeed: 0.22,
         lineWidth: 2.8,
         lineColor: '#f43f5e',
@@ -628,6 +662,268 @@ export const meta: EffectMeta<MathBeautyProps> = {
         showAxis: true,
         showTrail: true,
         trailAlpha: 0.08,
+      },
+    },
+    {
+      id: 'math_beauty_superellipse_classic',
+      name: {
+        en: 'Superellipse Classic',
+        'zh-CN': '超椭圆·经典',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('superellipse'),
+        superellipseA: 10,
+        superellipseB: 8,
+        superellipseN: 3,
+        animationSpeed: 0.2,
+        lineWidth: 2.4,
+        lineColor: '#f59e0b',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.12,
+      },
+    },
+    {
+      id: 'math_beauty_superellipse_shield',
+      name: {
+        en: 'Superellipse Shield',
+        'zh-CN': '超椭圆·盾纹',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('superellipse'),
+        superellipseA: 12.4,
+        superellipseB: 6.2,
+        superellipseN: 2.2,
+        animationSpeed: 0.22,
+        lineWidth: 2.8,
+        lineColor: '#f97316',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_pentagram_wave_core',
+      name: {
+        en: 'Pentagram Orbital Core',
+        'zh-CN': '五角星轨道·核心',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('pentagram-wave'),
+        pentagramBaseAmplitude: 2,
+        pentagramWaveAmplitude: 5,
+        animationSpeed: 0.18,
+        lineWidth: 2.6,
+        lineColor: '#a855f7',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.12,
+      },
+    },
+    {
+      id: 'math_beauty_pentagram_wave_nova',
+      name: {
+        en: 'Pentagram Orbital Nova',
+        'zh-CN': '五角星轨道·星涌',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('pentagram-wave'),
+        pentagramBaseAmplitude: 2.8,
+        pentagramWaveAmplitude: 6.4,
+        animationSpeed: 0.2,
+        lineWidth: 2.8,
+        lineColor: '#9333ea',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_petal_orbit_classic',
+      name: {
+        en: 'Petal Orbit Classic',
+        'zh-CN': '花瓣轨道·经典',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('petal-orbit'),
+        petalOrbitAmplitude: 6,
+        petalOrbitFreqX: 4,
+        petalOrbitFreqY: 3,
+        petalOrbitPhase: 1.571,
+        animationSpeed: 0.2,
+        lineWidth: 2.4,
+        lineColor: '#4ade80',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.12,
+      },
+    },
+    {
+      id: 'math_beauty_petal_orbit_twist',
+      name: {
+        en: 'Petal Orbit Twist',
+        'zh-CN': '花瓣轨道·扭结',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('petal-orbit'),
+        petalOrbitAmplitude: 8.5,
+        petalOrbitFreqX: 5.2,
+        petalOrbitFreqY: 2.4,
+        petalOrbitPhase: 0.8,
+        animationSpeed: 0.22,
+        lineWidth: 2.8,
+        lineColor: '#22c55e',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_lemniscate_classic',
+      name: {
+        en: 'Lemniscate Classic',
+        'zh-CN': '双纽线·经典',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('lemniscate'),
+        lemniscateScale: 10,
+        lemniscateWarp: 1,
+        animationSpeed: 0.2,
+        lineWidth: 2.4,
+        lineColor: '#22d3ee',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.12,
+      },
+    },
+    {
+      id: 'math_beauty_lemniscate_stream',
+      name: {
+        en: 'Lemniscate Stream',
+        'zh-CN': '双纽线·流域',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('lemniscate'),
+        lemniscateScale: 12.8,
+        lemniscateWarp: 1.9,
+        animationSpeed: 0.23,
+        lineWidth: 2.8,
+        lineColor: '#06b6d4',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.09,
+      },
+    },
+    {
+      id: 'math_beauty_astroid_classic',
+      name: {
+        en: 'Astroid Classic',
+        'zh-CN': '内摆线星形·经典',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('astroid'),
+        astroidScale: 8,
+        animationSpeed: 0.2,
+        lineWidth: 2.4,
+        lineColor: '#fde68a',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.12,
+      },
+    },
+    {
+      id: 'math_beauty_astroid_sharp',
+      name: {
+        en: 'Astroid Sharp',
+        'zh-CN': '内摆线星形·棱锋',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('astroid'),
+        astroidScale: 10.8,
+        animationSpeed: 0.22,
+        lineWidth: 2.8,
+        lineColor: '#facc15',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_lissajous_classic',
+      name: {
+        en: 'Lissajous Classic',
+        'zh-CN': '李萨如图形·经典',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('lissajous'),
+        lissajousAmpX: 9,
+        lissajousAmpY: 9,
+        lissajousFreqX: 3,
+        lissajousFreqY: 4,
+        lissajousPhase: 1.571,
+        animationSpeed: 0.2,
+        lineWidth: 2.4,
+        lineColor: '#f97316',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.12,
+      },
+    },
+    {
+      id: 'math_beauty_lissajous_orbit',
+      name: {
+        en: 'Lissajous Orbit',
+        'zh-CN': '李萨如图形·轨迹',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('lissajous'),
+        lissajousAmpX: 12,
+        lissajousAmpY: 6.8,
+        lissajousFreqX: 5.2,
+        lissajousFreqY: 3.1,
+        lissajousPhase: 0.62,
+        animationSpeed: 0.23,
+        lineWidth: 2.8,
+        lineColor: '#ea580c',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
       },
     },
     {

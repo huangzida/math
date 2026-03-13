@@ -78,10 +78,27 @@ export interface MathBeautyProps {
   tanCotBurstHole?: number
   tanCotBurstCross?: number
   tanCotBurstClamp?: number
+  superellipseA?: number
+  superellipseB?: number
+  superellipseN?: number
+  pentagramBaseAmplitude?: number
+  pentagramWaveAmplitude?: number
+  pentagramWaveFreqX?: number
+  pentagramWaveFreqY?: number
+  petalOrbitAmplitude?: number
+  petalOrbitFreqX?: number
+  petalOrbitFreqY?: number
+  petalOrbitPhase?: number
+  lemniscateScale?: number
+  lemniscateWarp?: number
+  astroidScale?: number
+  lissajousAmpX?: number
+  lissajousAmpY?: number
+  lissajousFreqX?: number
+  lissajousFreqY?: number
+  lissajousPhase?: number
   heartDepth?: number
   heartWidth?: number
-  doubleHeartOffset?: number
-  doubleHeartBlend?: number
   trochoidRatio?: number
   trochoidOffset?: number
   trochoidPhase?: number
