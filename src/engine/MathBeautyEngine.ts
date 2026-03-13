@@ -301,6 +301,9 @@ export class MathBeautyEngine {
       || prev.implicitCrossMix !== this.config.implicitCrossMix
       || prev.implicitExpMix !== this.config.implicitExpMix
       || prev.implicitNestedMix !== this.config.implicitNestedMix
+      || prev.implicitGcdScale !== this.config.implicitGcdScale
+      || prev.implicitBias !== this.config.implicitBias
+      || prev.implicitParabolaTarget !== this.config.implicitParabolaTarget
       || prev.logSpiralFrequency !== this.config.logSpiralFrequency
       || prev.logSpiralScale !== this.config.logSpiralScale
       || prev.fermatSpiralScale !== this.config.fermatSpiralScale

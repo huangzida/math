@@ -70,6 +70,9 @@ const formulaCategoryMap: Record<string, FormulaCategory> = {
   'exp-trig-balance': 'hybrid',
   'sin-tan-nexus': 'hybrid',
   'nested-sine-shear': 'hybrid',
+  'gcd-cos-interference': 'hybrid',
+  'sine-square-bias-bands': 'hybrid',
+  'parabola-sine-balance': 'hybrid',
   'logarithmic-spiral': 'polar',
   'fermat-spiral-weave': 'polar',
   'cardioid-deluxe': 'parametric',
@@ -176,6 +179,71 @@ const isImplicitEffect = computed(() => {
     || effect.id === 'exp-trig-balance'
     || effect.id === 'sin-tan-nexus'
     || effect.id === 'nested-sine-shear'
+    || effect.id === 'gcd-cos-interference'
+    || effect.id === 'sine-square-bias-bands'
+    || effect.id === 'parabola-sine-balance'
+})
+
+const currentEffectId = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id
+})
+
+type ImplicitControl = {
+  id: keyof MathBeautyProps
+  min: number
+  max: number
+  step: number
+  label: string
+}
+
+const implicitControlDefs: Record<string, ImplicitControl[]> = {
+  'sine-square-lattice': [],
+  'resonant-implicit-wave': [
+    { id: 'implicitWaveMix', min: 0.2, max: 2.4, step: 0.1, label: 'implicitWaveMix' },
+  ],
+  'tan-cot-implicit-maze': [
+    { id: 'implicitSingularityGuard', min: 0.1, max: 0.2, step: 0.01, label: 'implicitSingularityGuard' },
+  ],
+  'symmetric-sine-cross': [
+    { id: 'implicitCrossMix', min: 0.2, max: 2.4, step: 0.1, label: 'implicitCrossMix' },
+  ],
+  'exp-trig-balance': [
+    { id: 'implicitWaveMix', min: 0.2, max: 2.4, step: 0.1, label: 'implicitWaveMix' },
+    { id: 'implicitExpMix', min: 0.4, max: 2.2, step: 0.1, label: 'implicitExpMix' },
+  ],
+  'sin-tan-nexus': [
+    { id: 'implicitWaveMix', min: 0.2, max: 2.4, step: 0.1, label: 'implicitWaveMix' },
+    { id: 'implicitCrossMix', min: 0.2, max: 2.4, step: 0.1, label: 'implicitCrossMix' },
+  ],
+  'nested-sine-shear': [
+    { id: 'implicitWaveMix', min: 0.2, max: 2.4, step: 0.1, label: 'implicitWaveMix' },
+    { id: 'implicitNestedMix', min: 0.25, max: 3, step: 0.1, label: 'implicitNestedMix' },
+    { id: 'implicitSingularityGuard', min: 0.01, max: 0.2, step: 0.1, label: 'implicitSingularityGuard' },
+  ],
+  'gcd-cos-interference': [
+    { id: 'implicitWaveMix', min: 0.2, max: 2.4, step: 0.1, label: 'implicitWaveMix' }, 
+    { id: 'implicitCrossMix', min: 0.2, max: 2.4, step: 0.1, label: 'implicitCrossMix' },
+    { id: 'implicitGcdScale', min: 1, max: 24, step: 0.1, label: 'implicitGcdScale' },
+  ],
+  'sine-square-bias-bands': [
+    { id: 'implicitWaveMix', min: 0.2, max: 2.4, step: 0.1, label: 'implicitWaveMix' },
+    { id: 'implicitCrossMix', min: 0.2, max: 2.4, step: 0.1, label: 'implicitCrossMix' },
+    { id: 'implicitBias', min: -1.8, max: 1.8, step: 0.1, label: 'implicitBias' },
+  ],
+  'parabola-sine-balance': [
+    { id: 'implicitRange', min: 4, max: 16, step: 0.5, label: 'implicitRange' },
+    { id: 'implicitParabolaTarget', min: 0.2, max: 2.4, step: 0.1, label: 'implicitParabolaTarget' },
+  ],
+}
+
+const implicitControls = computed<ImplicitControl[]>(() => {
+  if (!isImplicitEffect.value) return []
+  const commonControls: ImplicitControl[] = [
+    { id: 'implicitRange', min: 4, max: 16, step: 0.01, label: 'implicitRange' },
+    { id: 'implicitStep', min: 0.08, max: 0.5, step: 0.01, label: 'implicitStep' },
+  ]
+  return [...commonControls, ...(implicitControlDefs[currentEffectId.value] || [])]
 })
 
 const isAdvancedTrochoid = computed(() => {
@@ -490,15 +558,7 @@ defineExpose({
         </template>
 
         <template v-if="isImplicitEffect">
-          <div v-for="prop in [
-            { id: 'implicitRange', min: 4, max: 16, step: 0.01, label: 'implicitRange' },
-            { id: 'implicitStep', min: 0.08, max: 0.5, step: 0.001, label: 'implicitStep' },
-            { id: 'implicitWaveMix', min: 0.2, max: 2.4, step: 0.001, label: 'implicitWaveMix' },
-            { id: 'implicitSingularityGuard', min: 0.01, max: 0.2, step: 0.001, label: 'implicitSingularityGuard' },
-            { id: 'implicitCrossMix', min: 0.2, max: 2.4, step: 0.001, label: 'implicitCrossMix' },
-            { id: 'implicitExpMix', min: 0.4, max: 2.2, step: 0.001, label: 'implicitExpMix' },
-            { id: 'implicitNestedMix', min: 0.25, max: 3, step: 0.001, label: 'implicitNestedMix' }
-          ]" :key="prop.id" class="flex flex-col gap-2">
+          <div v-for="prop in implicitControls" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
                 {{ t(`labels.${prop.label}`) }}

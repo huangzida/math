@@ -543,7 +543,10 @@ export const getImplicitPath = (effectId: string, config?: MathBeautyProps) => {
   const crossMix = clamp(config?.implicitCrossMix ?? 1, 0.2, 2.4)
   const expMix = clamp(config?.implicitExpMix ?? 1, 0.4, 2.2)
   const nestedMix = clamp(config?.implicitNestedMix ?? 1, 0.25, 3)
-  const key = `${effectId}_${range.toFixed(3)}_${step.toFixed(3)}_${waveMix.toFixed(3)}_${guard.toFixed(3)}_${crossMix.toFixed(3)}_${expMix.toFixed(3)}_${nestedMix.toFixed(3)}`
+  const gcdScale = clamp(config?.implicitGcdScale ?? 6, 1, 24)
+  const bias = clamp(config?.implicitBias ?? 0.8, -1.8, 1.8)
+  const parabolaTarget = clamp(config?.implicitParabolaTarget ?? 1, 0.2, 2.4)
+  const key = `${effectId}_${range.toFixed(3)}_${step.toFixed(3)}_${waveMix.toFixed(3)}_${guard.toFixed(3)}_${crossMix.toFixed(3)}_${expMix.toFixed(3)}_${nestedMix.toFixed(3)}_${gcdScale.toFixed(3)}_${bias.toFixed(3)}_${parabolaTarget.toFixed(3)}`
   const cached = implicitPathCache.get(key)
   if (cached) return cached
   const path = effectId === 'sine-square-lattice'
@@ -579,16 +582,39 @@ export const getImplicitPath = (effectId: string, config?: MathBeautyProps) => {
                   range,
                   step,
                 )
-              : createImplicitContourPath(
-                  (x, y) => {
-                    const denominator = Math.sin(y * nestedMix)
-                    if (Math.abs(denominator) < guard) return Number.NaN
-                    const inner = Math.sin(x * nestedMix) / denominator
-                    return y - x * Math.sin(inner * waveMix)
-                  },
-                  range,
-                  step,
-                )
+              : effectId === 'nested-sine-shear'
+                ? createImplicitContourPath(
+                    (x, y) => {
+                      const denominator = Math.sin(y * nestedMix)
+                      if (Math.abs(denominator) < guard) return Number.NaN
+                      const inner = Math.sin(x * nestedMix) / denominator
+                      return y - x * Math.sin(inner * waveMix)
+                    },
+                    range,
+                    step,
+                  )
+                : effectId === 'gcd-cos-interference'
+                  ? createImplicitContourPath(
+                      (x, y) => {
+                        const ix = Math.max(1, Math.round(Math.abs(x) * gcdScale))
+                        const iy = Math.max(1, Math.round(Math.abs(y) * gcdScale))
+                        const g = gcd(ix, iy) / gcdScale
+                        return Math.sin(g * waveMix) - Math.cos(x * y * crossMix)
+                      },
+                      range,
+                      step,
+                    )
+                  : effectId === 'sine-square-bias-bands'
+                    ? createImplicitContourPath(
+                        (x, y) => Math.sin(x * x * waveMix) + Math.sin(y * y * crossMix) - bias,
+                        range,
+                        step,
+                      )
+                    : createImplicitContourPath(
+                        (x, y) => (y * y * nestedMix) / 2 + Math.sin(x * waveMix) - parabolaTarget,
+                        range,
+                        step,
+                      )
   const sampledPath = resamplePath(path, IMPLICIT_DRAW_POINTS)
   implicitPathCache.set(key, sampledPath)
   return sampledPath

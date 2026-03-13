@@ -133,6 +133,60 @@ export const nestedSineShearFormula: FormulaDefinition = {
   sampler: (t, config) => sampleImplicitPath('nested-sine-shear', t, config),
 }
 
+export const gcdCosInterferenceFormula: FormulaDefinition = {
+  id: 'gcd-cos-interference',
+  name: {
+    en: 'GCD Cos Interference',
+    'zh-CN': 'gcd 余弦干涉',
+  },
+  formulaText: {
+    en: 'sin(gcd(x,y)) = cos(xy)',
+    'zh-CN': 'sin(gcd(x,y)) = cos(xy)',
+  },
+  tMin: 0,
+  tMax: IMPLICIT_DRAW_POINTS - 1,
+  step: 1,
+  scale: 1,
+  stroke: '#8b5cf6',
+  sampler: (t, config) => sampleImplicitPath('gcd-cos-interference', t, config),
+}
+
+export const sineSquareBiasBandsFormula: FormulaDefinition = {
+  id: 'sine-square-bias-bands',
+  name: {
+    en: 'Sine Square Bias Bands',
+    'zh-CN': '正弦平方偏置带',
+  },
+  formulaText: {
+    en: 'sin(x²)+sin(y²)=0.8',
+    'zh-CN': 'sin(x²)+sin(y²)=0.8',
+  },
+  tMin: 0,
+  tMax: IMPLICIT_DRAW_POINTS - 1,
+  step: 1,
+  scale: 1,
+  stroke: '#10b981',
+  sampler: (t, config) => sampleImplicitPath('sine-square-bias-bands', t, config),
+}
+
+export const parabolaSineBalanceFormula: FormulaDefinition = {
+  id: 'parabola-sine-balance',
+  name: {
+    en: 'Parabola Sine Balance',
+    'zh-CN': '抛物正弦平衡',
+  },
+  formulaText: {
+    en: 'y²/2 + sin(x) = 1',
+    'zh-CN': 'y²/2 + sin(x) = 1',
+  },
+  tMin: 0,
+  tMax: IMPLICIT_DRAW_POINTS - 1,
+  step: 1,
+  scale: 1,
+  stroke: '#fb923c',
+  sampler: (t, config) => sampleImplicitPath('parabola-sine-balance', t, config),
+}
+
 export const hybridFormulas: FormulaDefinition[] = [
   sineSquareLatticeFormula,
   resonantImplicitWaveFormula,
@@ -141,4 +195,7 @@ export const hybridFormulas: FormulaDefinition[] = [
   expTrigBalanceFormula,
   sinTanNexusFormula,
   nestedSineShearFormula,
+  gcdCosInterferenceFormula,
+  sineSquareBiasBandsFormula,
+  parabolaSineBalanceFormula,
 ]

@@ -42,6 +42,9 @@ export interface MathBeautyProps {
   implicitCrossMix?: number
   implicitExpMix?: number
   implicitNestedMix?: number
+  implicitGcdScale?: number
+  implicitBias?: number
+  implicitParabolaTarget?: number
   logSpiralGrowth?: number
   logSpiralFrequency?: number
   logSpiralScale?: number
