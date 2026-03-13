@@ -3,7 +3,7 @@ import { cardioidFormula, limaconFormula, dualFrequencyBloomFormula, starRoseFor
 import { superellipseFormula, pentagramWaveFormula, petalOrbitFormula, lemniscateFormula, cardioidDeluxeFormula, doubleHeartFormula, astroidFormula, lissajousFormula } from './formulas/categories/parametric'
 import { spiralSpirographFormula, hypotrochoidFormula, epicycloidFormula, nephroidFormula, epitrochoidBloomFormula, hypotrochoidWeaveFormula } from './formulas/categories/trochoid'
 import { modularTimesTableFormula, gcdLayerFormula, quadraticResidueGridFormula, gcdLatticeFormula } from './formulas/categories/number-theory'
-import { sineSquareLatticeFormula, resonantImplicitWaveFormula, tanCotImplicitMazeFormula } from './formulas/categories/hybrid'
+import { sineSquareLatticeFormula, resonantImplicitWaveFormula, tanCotImplicitMazeFormula, symmetricSineCrossFormula, expTrigBalanceFormula, sinTanNexusFormula, nestedSineShearFormula } from './formulas/categories/hybrid'
 import { juliaFractalFormula, mandelbrotOrbitFormula, barnsleyFernFormula } from './formulas/categories/fractal'
 import { vectorFieldStreamlinesFormula, gravityWellFormula, vortexFieldFormula } from './formulas/categories/physics'
 import { lorenzAttractorFormula, rosslerAttractorFormula, aizawaAttractorFormula } from './formulas/categories/chaos'
@@ -37,6 +37,10 @@ export const formulaLibrary: FormulaDefinition[] = [
   sineSquareLatticeFormula,
   resonantImplicitWaveFormula,
   tanCotImplicitMazeFormula,
+  symmetricSineCrossFormula,
+  expTrigBalanceFormula,
+  sinTanNexusFormula,
+  nestedSineShearFormula,
   logarithmicSpiralFormula,
   fermatSpiralWeaveFormula,
   cardioidDeluxeFormula,

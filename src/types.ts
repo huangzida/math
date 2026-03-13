@@ -39,6 +39,9 @@ export interface MathBeautyProps {
   implicitStep?: number
   implicitWaveMix?: number
   implicitSingularityGuard?: number
+  implicitCrossMix?: number
+  implicitExpMix?: number
+  implicitNestedMix?: number
   logSpiralGrowth?: number
   logSpiralFrequency?: number
   logSpiralScale?: number

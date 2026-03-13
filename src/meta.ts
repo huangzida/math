@@ -33,6 +33,9 @@ export const meta: EffectMeta<MathBeautyProps> = {
     implicitStep: 0.22,
     implicitWaveMix: 1,
     implicitSingularityGuard: 0.08,
+    implicitCrossMix: 1,
+    implicitExpMix: 1,
+    implicitNestedMix: 1,
     logSpiralGrowth: 0.12,
     logSpiralFrequency: 2.4,
     logSpiralScale: 0.45,
@@ -74,6 +77,9 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.implicitStep = rand(0.12, 0.35)
       result.implicitWaveMix = rand(0.5, 1.8)
       result.implicitSingularityGuard = rand(0.03, 0.16)
+      result.implicitCrossMix = rand(0.45, 1.95)
+      result.implicitExpMix = rand(0.6, 1.8)
+      result.implicitNestedMix = rand(0.5, 2.4)
       result.logSpiralGrowth = rand(0.05, 0.24)
       result.logSpiralFrequency = rand(1.2, 4.8)
       result.logSpiralScale = rand(0.2, 0.8)

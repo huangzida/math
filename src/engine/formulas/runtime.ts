@@ -540,31 +540,55 @@ export const getImplicitPath = (effectId: string, config?: MathBeautyProps) => {
   const step = clamp(config?.implicitStep ?? 0.22, 0.08, 0.5)
   const waveMix = clamp(config?.implicitWaveMix ?? 1, 0.2, 2.4)
   const guard = clamp(config?.implicitSingularityGuard ?? 0.08, 0.01, 0.2)
-  const key = `${effectId}_${range.toFixed(3)}_${step.toFixed(3)}_${waveMix.toFixed(3)}_${guard.toFixed(3)}`
+  const crossMix = clamp(config?.implicitCrossMix ?? 1, 0.2, 2.4)
+  const expMix = clamp(config?.implicitExpMix ?? 1, 0.4, 2.2)
+  const nestedMix = clamp(config?.implicitNestedMix ?? 1, 0.25, 3)
+  const key = `${effectId}_${range.toFixed(3)}_${step.toFixed(3)}_${waveMix.toFixed(3)}_${guard.toFixed(3)}_${crossMix.toFixed(3)}_${expMix.toFixed(3)}_${nestedMix.toFixed(3)}`
   const cached = implicitPathCache.get(key)
   if (cached) return cached
   const path = effectId === 'sine-square-lattice'
-    ? createImplicitContourPath(
-        (x, y) => Math.sin(x * x) - Math.sin(y ** 4),
-        range,
-        step,
-      )
+    ? createImplicitContourPath((x, y) => Math.sin(x * x) - Math.sin(y ** 4), range, step)
     : effectId === 'resonant-implicit-wave'
-      ? createImplicitContourPath(
-          (x, y) => y - x * Math.sin((x * x + y * y) * waveMix),
-          range,
-          step,
-        )
-      : createImplicitContourPath(
-          (x, y) => {
-            const left = safeTan(x * x, guard) * safeTan(y * y, guard)
-            const right = safeCot(x * y, guard)
-            if (!Number.isFinite(left) || !Number.isFinite(right)) return Number.NaN
-            return left - right
-          },
-          range,
-          step,
-        )
+      ? createImplicitContourPath((x, y) => y - x * Math.sin((x * x + y * y) * waveMix), range, step)
+      : effectId === 'tan-cot-implicit-maze'
+        ? createImplicitContourPath(
+            (x, y) => {
+              const left = safeTan(x * x, guard) * safeTan(y * y, guard)
+              const right = safeCot(x * y, guard)
+              if (!Number.isFinite(left) || !Number.isFinite(right)) return Number.NaN
+              return left - right
+            },
+            range,
+            step,
+          )
+        : effectId === 'symmetric-sine-cross'
+          ? createImplicitContourPath(
+              (x, y) => y * Math.sin(x * x * crossMix) - x * Math.sin(y * y * crossMix),
+              range,
+              step,
+            )
+          : effectId === 'exp-trig-balance'
+            ? createImplicitContourPath(
+                (x, y) => 2 * Math.sin(x * waveMix) + Math.cos(y * waveMix) - Math.exp(Math.sin(x * y * expMix)),
+                range,
+                step,
+              )
+            : effectId === 'sin-tan-nexus'
+              ? createImplicitContourPath(
+                  (x, y) => Math.sin((x * x + y * y) * waveMix) - Math.tan(Math.sin((x + y) * crossMix)),
+                  range,
+                  step,
+                )
+              : createImplicitContourPath(
+                  (x, y) => {
+                    const denominator = Math.sin(y * nestedMix)
+                    if (Math.abs(denominator) < guard) return Number.NaN
+                    const inner = Math.sin(x * nestedMix) / denominator
+                    return y - x * Math.sin(inner * waveMix)
+                  },
+                  range,
+                  step,
+                )
   const sampledPath = resamplePath(path, IMPLICIT_DRAW_POINTS)
   implicitPathCache.set(key, sampledPath)
   return sampledPath

@@ -66,6 +66,10 @@ const formulaCategoryMap: Record<string, FormulaCategory> = {
   'sine-square-lattice': 'hybrid',
   'resonant-implicit-wave': 'hybrid',
   'tan-cot-implicit-maze': 'hybrid',
+  'symmetric-sine-cross': 'hybrid',
+  'exp-trig-balance': 'hybrid',
+  'sin-tan-nexus': 'hybrid',
+  'nested-sine-shear': 'hybrid',
   'logarithmic-spiral': 'polar',
   'fermat-spiral-weave': 'polar',
   'cardioid-deluxe': 'parametric',
@@ -165,7 +169,13 @@ const isFermatR2Spiral = computed(() => {
 
 const isImplicitEffect = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
-  return effect.id === 'sine-square-lattice' || effect.id === 'resonant-implicit-wave' || effect.id === 'tan-cot-implicit-maze'
+  return effect.id === 'sine-square-lattice'
+    || effect.id === 'resonant-implicit-wave'
+    || effect.id === 'tan-cot-implicit-maze'
+    || effect.id === 'symmetric-sine-cross'
+    || effect.id === 'exp-trig-balance'
+    || effect.id === 'sin-tan-nexus'
+    || effect.id === 'nested-sine-shear'
 })
 
 const isAdvancedTrochoid = computed(() => {
@@ -484,7 +494,10 @@ defineExpose({
             { id: 'implicitRange', min: 4, max: 16, step: 0.01, label: 'implicitRange' },
             { id: 'implicitStep', min: 0.08, max: 0.5, step: 0.001, label: 'implicitStep' },
             { id: 'implicitWaveMix', min: 0.2, max: 2.4, step: 0.001, label: 'implicitWaveMix' },
-            { id: 'implicitSingularityGuard', min: 0.01, max: 0.2, step: 0.001, label: 'implicitSingularityGuard' }
+            { id: 'implicitSingularityGuard', min: 0.01, max: 0.2, step: 0.001, label: 'implicitSingularityGuard' },
+            { id: 'implicitCrossMix', min: 0.2, max: 2.4, step: 0.001, label: 'implicitCrossMix' },
+            { id: 'implicitExpMix', min: 0.4, max: 2.2, step: 0.001, label: 'implicitExpMix' },
+            { id: 'implicitNestedMix', min: 0.25, max: 3, step: 0.001, label: 'implicitNestedMix' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
