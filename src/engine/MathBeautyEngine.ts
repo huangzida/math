@@ -326,6 +326,18 @@ export class MathBeautyEngine {
       || prev.fusionFourierMix !== this.config.fusionFourierMix
       || prev.fusionFourierHarmonics !== this.config.fusionFourierHarmonics
       || prev.fusionFourierDecay !== this.config.fusionFourierDecay
+      || prev.oscBaseFreq !== this.config.oscBaseFreq
+      || prev.oscAmplitude !== this.config.oscAmplitude
+      || prev.oscHarmonics !== this.config.oscHarmonics
+      || prev.oscDecay !== this.config.oscDecay
+      || prev.oscPhaseDrift !== this.config.oscPhaseDrift
+      || prev.oscScanSpan !== this.config.oscScanSpan
+      || prev.oscSinAmp !== this.config.oscSinAmp
+      || prev.oscCosAmp !== this.config.oscCosAmp
+      || prev.oscFreq !== this.config.oscFreq
+      || prev.oscPhase !== this.config.oscPhase
+      || prev.oscPhaseShift !== this.config.oscPhaseShift
+      || prev.oscOffset !== this.config.oscOffset
       || prev.implicitGcdScale !== this.config.implicitGcdScale
       || prev.implicitBias !== this.config.implicitBias
       || prev.implicitParabolaTarget !== this.config.implicitParabolaTarget

@@ -55,6 +55,8 @@ const formulaCategoryMap: Record<string, FormulaCategory> = {
   hypotrochoid: 'trochoid',
   epicycloid: 'trochoid',
   lemniscate: 'parametric',
+  'oscilloscope-harmonic': 'parametric',
+  'oscilloscope-sincos': 'parametric',
   'tan-cot-burst': 'polar',
   lissajous: 'parametric',
   nephroid: 'trochoid',
@@ -248,6 +250,16 @@ const isPetalOrbit = computed(() => {
 const isLemniscate = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
   return effect.id === 'lemniscate'
+})
+
+const isOscilloscopeHarmonic = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'oscilloscope-harmonic'
+})
+
+const isOscilloscopeSincos = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'oscilloscope-sincos'
 })
 
 const isAstroid = computed(() => {
@@ -1241,6 +1253,64 @@ defineExpose({
           <div v-for="prop in [
             { id: 'lemniscateScale', min: 4, max: 16, step: 0.1, label: 'lemniscateScale' },
             { id: 'lemniscateWarp', min: 0.2, max: 2.4, step: 0.05, label: 'lemniscateWarp' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isOscilloscopeHarmonic">
+          <div v-for="prop in [
+            { id: 'oscAmplitude', min: 0.2, max: 10, step: 0.1, label: 'oscAmplitude' },
+            { id: 'oscBaseFreq', min: 0.3, max: 8, step: 0.05, label: 'oscBaseFreq' },
+            { id: 'oscHarmonics', min: 1, max: 14, step: 1, label: 'oscHarmonics' },
+            { id: 'oscDecay', min: 0.4, max: 3, step: 0.05, label: 'oscDecay' },
+            { id: 'oscPhaseDrift', min: -3.142, max: 3.142, step: 0.01, label: 'oscPhaseDrift' },
+            { id: 'oscScanSpan', min: 6.283, max: 50.265, step: 0.1, label: 'oscScanSpan' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isOscilloscopeSincos">
+          <div v-for="prop in [
+            { id: 'oscSinAmp', min: 0, max: 14, step: 0.1, label: 'oscSinAmp' },
+            { id: 'oscCosAmp', min: 0, max: 14, step: 0.1, label: 'oscCosAmp' },
+            { id: 'oscFreq', min: 0.2, max: 8, step: 0.05, label: 'oscFreq' },
+            { id: 'oscPhase', min: -3.142, max: 3.142, step: 0.01, label: 'oscPhase' },
+            { id: 'oscPhaseShift', min: -3.142, max: 3.142, step: 0.01, label: 'oscPhaseShift' },
+            { id: 'oscOffset', min: -8, max: 8, step: 0.1, label: 'oscOffset' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">

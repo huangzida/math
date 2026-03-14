@@ -1,6 +1,6 @@
 import type { FormulaDefinition } from '../types'
 import { limaconFormula, dualFrequencyBloomFormula, starRoseFormula, butterflyVariationFormula, ribbonOrbitFormula, flowerWebFormula, petalChainFormula, tanCotBurstFormula, archimedeanSpiralFormula, fermatR2SpiralFormula, logarithmicSpiralFormula, fermatSpiralWeaveFormula, moireRippleFormula, innerCircleSpiralFormula, mandalaCurveFormula } from './formulas/categories/polar'
-import { superellipseFormula, pentagramWaveFormula, petalOrbitFormula, lemniscateFormula, cardioidDeluxeFormula, astroidFormula, lissajousFormula } from './formulas/categories/parametric'
+import { superellipseFormula, pentagramWaveFormula, petalOrbitFormula, lemniscateFormula, oscilloscopeHarmonicFormula, oscilloscopeSincosFormula, cardioidDeluxeFormula, astroidFormula, lissajousFormula } from './formulas/categories/parametric'
 import { spiralSpirographFormula, hypotrochoidFormula, epicycloidFormula, nephroidFormula, epitrochoidBloomFormula, hypotrochoidWeaveFormula } from './formulas/categories/trochoid'
 import { modularTimesTableFormula, gcdLayerFormula, quadraticResidueGridFormula, gcdLatticeFormula } from './formulas/categories/number-theory'
 import { sineSquareLatticeFormula, resonantImplicitWaveFormula, tanCotImplicitMazeFormula, symmetricSineCrossFormula, expTrigBalanceFormula, sinTanNexusFormula, nestedSineShearFormula, gcdCosInterferenceFormula, sineSquareBiasBandsFormula, parabolaSineBalanceFormula, trigFourierFusionFormula } from './formulas/categories/hybrid'
@@ -27,6 +27,8 @@ export const formulaLibrary: FormulaDefinition[] = [
   hypotrochoidFormula,
   epicycloidFormula,
   lemniscateFormula,
+  oscilloscopeHarmonicFormula,
+  oscilloscopeSincosFormula,
   tanCotBurstFormula,
   nephroidFormula,
   archimedeanSpiralFormula,

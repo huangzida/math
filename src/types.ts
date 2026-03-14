@@ -62,6 +62,18 @@ export interface MathBeautyProps {
   fusionFourierMix?: number
   fusionFourierHarmonics?: number
   fusionFourierDecay?: number
+  oscBaseFreq?: number
+  oscAmplitude?: number
+  oscHarmonics?: number
+  oscDecay?: number
+  oscPhaseDrift?: number
+  oscScanSpan?: number
+  oscSinAmp?: number
+  oscCosAmp?: number
+  oscFreq?: number
+  oscPhase?: number
+  oscPhaseShift?: number
+  oscOffset?: number
   implicitGcdScale?: number
   implicitBias?: number
   implicitParabolaTarget?: number

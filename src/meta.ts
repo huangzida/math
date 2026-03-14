@@ -61,6 +61,18 @@ export const meta: EffectMeta<MathBeautyProps> = {
     fusionFourierMix: 1,
     fusionFourierHarmonics: 4,
     fusionFourierDecay: 1.2,
+    oscBaseFreq: 1.4,
+    oscAmplitude: 3.8,
+    oscHarmonics: 6,
+    oscDecay: 1.2,
+    oscPhaseDrift: 0.35,
+    oscScanSpan: Math.PI * 8,
+    oscSinAmp: 6,
+    oscCosAmp: 4,
+    oscFreq: 1.8,
+    oscPhase: 0,
+    oscPhaseShift: Math.PI / 2,
+    oscOffset: 0,
     archimedeanPitch: 0.26,
     archimedeanTwist: 1,
     fermatR2AngularScale: 1,
@@ -193,6 +205,18 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.fusionFourierMix = rand(0.2, 2.2)
       result.fusionFourierHarmonics = Math.floor(rand(1, 9.99))
       result.fusionFourierDecay = rand(0.7, 2.2)
+      result.oscBaseFreq = rand(0.5, 4.8)
+      result.oscAmplitude = rand(0.6, 8.2)
+      result.oscHarmonics = Math.floor(rand(2, 12.99))
+      result.oscDecay = rand(0.6, 2.4)
+      result.oscPhaseDrift = rand(-Math.PI, Math.PI)
+      result.oscScanSpan = rand(Math.PI * 4, Math.PI * 14)
+      result.oscSinAmp = rand(1, 12)
+      result.oscCosAmp = rand(1, 12)
+      result.oscFreq = rand(0.5, 5.4)
+      result.oscPhase = rand(-Math.PI, Math.PI)
+      result.oscPhaseShift = rand(-Math.PI, Math.PI)
+      result.oscOffset = rand(-4.5, 4.5)
       result.logSpiralGrowth = rand(0.05, 0.24)
       result.logSpiralFrequency = rand(1.2, 4.8)
       result.logSpiralScale = rand(0.2, 0.8)
@@ -946,6 +970,106 @@ export const meta: EffectMeta<MathBeautyProps> = {
         showAxis: true,
         showTrail: true,
         trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_osc_harmonic_clean',
+      name: {
+        en: 'Osc Harmonic Clean',
+        'zh-CN': '示波器谐波·净波',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('oscilloscope-harmonic'),
+        oscBaseFreq: 1.4,
+        oscAmplitude: 3.2,
+        oscHarmonics: 5,
+        oscDecay: 1.4,
+        oscPhaseDrift: 0.2,
+        oscScanSpan: 25.13,
+        animationSpeed: 0.2,
+        lineWidth: 2.3,
+        lineColor: '#38bdf8',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.12,
+      },
+    },
+    {
+      id: 'math_beauty_osc_harmonic_analog',
+      name: {
+        en: 'Osc Harmonic Analog',
+        'zh-CN': '示波器谐波·模拟',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('oscilloscope-harmonic'),
+        oscBaseFreq: 2.2,
+        oscAmplitude: 4.6,
+        oscHarmonics: 10,
+        oscDecay: 0.9,
+        oscPhaseDrift: 1.2,
+        oscScanSpan: 43.98,
+        animationSpeed: 0.23,
+        lineWidth: 2.7,
+        lineColor: '#0ea5e9',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_osc_sincos_balanced',
+      name: {
+        en: 'Osc SinCos Balanced',
+        'zh-CN': '示波器正余弦·平衡',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('oscilloscope-sincos'),
+        oscSinAmp: 6,
+        oscCosAmp: 4,
+        oscFreq: 1.8,
+        oscPhase: 0,
+        oscPhaseShift: 1.571,
+        oscOffset: 0,
+        animationSpeed: 0.2,
+        lineWidth: 2.4,
+        lineColor: '#22d3ee',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.12,
+      },
+    },
+    {
+      id: 'math_beauty_osc_sincos_phase',
+      name: {
+        en: 'Osc SinCos Phase Drift',
+        'zh-CN': '示波器正余弦·相位漂移',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('oscilloscope-sincos'),
+        oscSinAmp: 9.4,
+        oscCosAmp: 6.2,
+        oscFreq: 3.1,
+        oscPhase: 0.85,
+        oscPhaseShift: -1.1,
+        oscOffset: -0.8,
+        animationSpeed: 0.24,
+        lineWidth: 2.8,
+        lineColor: '#06b6d4',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.09,
       },
     },
     {

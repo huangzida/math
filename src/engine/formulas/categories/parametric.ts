@@ -111,6 +111,74 @@ export const lemniscateFormula: FormulaDefinition = {
   },
 }
 
+export const oscilloscopeHarmonicFormula: FormulaDefinition = {
+  id: 'oscilloscope-harmonic',
+  name: {
+    en: 'Oscilloscope Harmonic Stack',
+    'zh-CN': '示波器谐波叠加',
+  },
+  formulaText: {
+    en: 'x = t,  y = A·Σ[(sin(kωt+φk)+0.5cos((k+1)ωt-φk))/kᵈ]',
+    'zh-CN': 'x = t,  y = A·Σ[(sin(kωt+φk)+0.5cos((k+1)ωt-φk))/kᵈ]',
+  },
+  tMin: -Math.PI * 8,
+  tMax: Math.PI * 8,
+  step: 0.01,
+  scale: 1,
+  stroke: '#38bdf8',
+  sampler: (t, config) => {
+    const baseFreq = clamp(config?.oscBaseFreq ?? 1.4, 0.3, 8)
+    const amplitude = clamp(config?.oscAmplitude ?? 3.8, 0.2, 10)
+    const harmonics = Math.floor(clamp(config?.oscHarmonics ?? 6, 1, 14))
+    const decay = clamp(config?.oscDecay ?? 1.2, 0.4, 3)
+    const phaseDrift = clamp(config?.oscPhaseDrift ?? 0.35, -Math.PI, Math.PI)
+    const scanSpan = clamp(config?.oscScanSpan ?? Math.PI * 8, Math.PI * 2, Math.PI * 16)
+    const mappedT = t * (scanSpan / (Math.PI * 8))
+    let normalizedSum = 0
+    let normalizer = 0
+    for (let k = 1; k <= harmonics; k++) {
+      const weight = 1 / (k ** decay)
+      const phase = phaseDrift * (k - 1)
+      const harmonic = Math.sin(k * baseFreq * mappedT + phase) + 0.5 * Math.cos((k + 1) * baseFreq * mappedT - phase)
+      normalizedSum += weight * harmonic
+      normalizer += weight
+    }
+    return {
+      x: t,
+      y: amplitude * (normalizedSum / Math.max(normalizer, 1e-6)),
+    }
+  },
+}
+
+export const oscilloscopeSincosFormula: FormulaDefinition = {
+  id: 'oscilloscope-sincos',
+  name: {
+    en: 'Oscilloscope Sin-Cos',
+    'zh-CN': '示波器正余弦',
+  },
+  formulaText: {
+    en: 'x = t,  y = Asin·sin(ωt+φ) + Acos·cos(ωt+Δφ) + b',
+    'zh-CN': 'x = t,  y = Asin·sin(ωt+φ) + Acos·cos(ωt+Δφ) + b',
+  },
+  tMin: -Math.PI * 8,
+  tMax: Math.PI * 8,
+  step: 0.01,
+  scale: 1,
+  stroke: '#22d3ee',
+  sampler: (t, config) => {
+    const sinAmp = clamp(config?.oscSinAmp ?? 6, 0, 14)
+    const cosAmp = clamp(config?.oscCosAmp ?? 4, 0, 14)
+    const freq = clamp(config?.oscFreq ?? 1.8, 0.2, 8)
+    const phase = clamp(config?.oscPhase ?? 0, -Math.PI, Math.PI)
+    const phaseShift = clamp(config?.oscPhaseShift ?? Math.PI / 2, -Math.PI, Math.PI)
+    const offset = clamp(config?.oscOffset ?? 0, -8, 8)
+    return {
+      x: t,
+      y: sinAmp * Math.sin(freq * t + phase) + cosAmp * Math.cos(freq * t + phaseShift) + offset,
+    }
+  },
+}
+
 export const cardioidDeluxeFormula: FormulaDefinition = {
   id: 'cardioid-deluxe',
   name: {
@@ -193,6 +261,8 @@ export const parametricFormulas: FormulaDefinition[] = [
   pentagramWaveFormula,
   petalOrbitFormula,
   lemniscateFormula,
+  oscilloscopeHarmonicFormula,
+  oscilloscopeSincosFormula,
   cardioidDeluxeFormula,
   astroidFormula,
   lissajousFormula,
