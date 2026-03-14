@@ -290,6 +290,12 @@ export class MathBeautyEngine {
     const modularChanged = prev.modularPointCount !== this.config.modularPointCount
       || prev.modularMultiplier !== this.config.modularMultiplier
       || prev.modularRadius !== this.config.modularRadius
+      || prev.gcdLayerScale !== this.config.gcdLayerScale
+      || prev.gcdLayerRotation !== this.config.gcdLayerRotation
+      || prev.quadraticResidueScale !== this.config.quadraticResidueScale
+      || prev.quadraticResidueShear !== this.config.quadraticResidueShear
+      || prev.gcdLatticeScale !== this.config.gcdLatticeScale
+      || prev.gcdLatticeJitter !== this.config.gcdLatticeJitter
     const chaosChanged = prev.chaosSystem !== this.config.chaosSystem
       || prev.chaosSteps !== this.config.chaosSteps
       || prev.chaosDt !== this.config.chaosDt

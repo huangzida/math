@@ -1,9 +1,19 @@
 import type { FormulaDefinition } from '../../../types'
 import { getCoprimePath, getGcdLayerPath, getQuadraticResiduePath, getTimesTablePath } from '../runtime'
 
+const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 const gcdLayerPath = getGcdLayerPath()
 const quadraticResiduePath = getQuadraticResiduePath()
 const coprimePath = getCoprimePath()
+
+const transformPoint = (x: number, y: number, scale: number, rotation: number) => {
+  const cosAngle = Math.cos(rotation)
+  const sinAngle = Math.sin(rotation)
+  return {
+    x: scale * (x * cosAngle - y * sinAngle),
+    y: scale * (x * sinAngle + y * cosAngle),
+  }
+}
 
 export const modularTimesTableFormula: FormulaDefinition = {
   id: 'modular-times-table',
@@ -48,9 +58,12 @@ export const gcdLayerFormula: FormulaDefinition = {
   step: 1,
   scale: 1,
   stroke: '#f97316',
-  sampler: t => {
+  sampler: (t, config) => {
     const idx = Math.max(0, Math.min(gcdLayerPath.length - 1, Math.floor(t)))
-    return gcdLayerPath[idx]
+    const point = gcdLayerPath[idx]
+    const scale = clamp(config?.gcdLayerScale ?? 1, 0.5, 2.4)
+    const rotation = clamp(config?.gcdLayerRotation ?? 0, -Math.PI, Math.PI)
+    return transformPoint(point.x, point.y, scale, rotation)
   },
 }
 
@@ -69,9 +82,15 @@ export const quadraticResidueGridFormula: FormulaDefinition = {
   step: 1,
   scale: 1,
   stroke: '#2dd4bf',
-  sampler: t => {
+  sampler: (t, config) => {
     const idx = Math.max(0, Math.min(quadraticResiduePath.length - 1, Math.floor(t)))
-    return quadraticResiduePath[idx]
+    const point = quadraticResiduePath[idx]
+    const scale = clamp(config?.quadraticResidueScale ?? 1, 0.5, 2.4)
+    const shear = clamp(config?.quadraticResidueShear ?? 0, -1.2, 1.2)
+    return {
+      x: scale * (point.x + point.y * shear),
+      y: scale * (point.y - point.x * shear),
+    }
   },
 }
 
@@ -90,9 +109,15 @@ export const gcdLatticeFormula: FormulaDefinition = {
   step: 1,
   scale: 1,
   stroke: '#ef4444',
-  sampler: t => {
+  sampler: (t, config) => {
     const idx = Math.max(0, Math.min(coprimePath.length - 1, Math.floor(t)))
-    return coprimePath[idx]
+    const point = coprimePath[idx]
+    const scale = clamp(config?.gcdLatticeScale ?? 1, 0.5, 2.4)
+    const jitter = clamp(config?.gcdLatticeJitter ?? 0, 0, 0.45)
+    return {
+      x: point.x * scale + jitter * Math.sin(idx * 0.31),
+      y: point.y * scale + jitter * Math.cos(idx * 0.27),
+    }
   },
 }
 

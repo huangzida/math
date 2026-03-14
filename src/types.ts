@@ -35,6 +35,12 @@ export interface MathBeautyProps {
   modularPointCount?: number
   modularMultiplier?: number
   modularRadius?: number
+  gcdLayerScale?: number
+  gcdLayerRotation?: number
+  quadraticResidueScale?: number
+  quadraticResidueShear?: number
+  gcdLatticeScale?: number
+  gcdLatticeJitter?: number
   archimedeanPitch?: number
   archimedeanTwist?: number
   fermatR2Turns?: number

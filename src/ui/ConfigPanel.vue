@@ -121,6 +121,21 @@ const isModularTimesTable = computed(() => {
   return effect.id === 'modular-times-table'
 })
 
+const isGcdLayer = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'gcd-layer'
+})
+
+const isQuadraticResidueGrid = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'quadratic-residue-grid'
+})
+
+const isGcdLattice = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'gcd-lattice'
+})
+
 const isChaosEffect = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
   return effect.id === 'lorenz-attractor' || effect.id === 'rossler-attractor' || effect.id === 'aizawa-attractor'
@@ -586,6 +601,81 @@ defineExpose({
               </label>
               <span class="text-[11px] font-mono text-white/55">
                 {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(prop.step < 1 ? 1 : 0) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isGcdLayer">
+          <div v-for="prop in [
+            { id: 'gcdLayerScale', min: 0.5, max: 2.4, step: 0.01, label: 'gcdLayerScale' },
+            { id: 'gcdLayerRotation', min: -3.142, max: 3.142, step: 0.01, label: 'gcdLayerRotation' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isQuadraticResidueGrid">
+          <div v-for="prop in [
+            { id: 'quadraticResidueScale', min: 0.5, max: 2.4, step: 0.01, label: 'quadraticResidueScale' },
+            { id: 'quadraticResidueShear', min: -1.2, max: 1.2, step: 0.01, label: 'quadraticResidueShear' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isGcdLattice">
+          <div v-for="prop in [
+            { id: 'gcdLatticeScale', min: 0.5, max: 2.4, step: 0.01, label: 'gcdLatticeScale' },
+            { id: 'gcdLatticeJitter', min: 0, max: 0.45, step: 0.01, label: 'gcdLatticeJitter' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
               </span>
             </div>
             <input

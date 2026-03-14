@@ -34,6 +34,12 @@ export const meta: EffectMeta<MathBeautyProps> = {
     modularPointCount: 360,
     modularMultiplier: 71,
     modularRadius: 12,
+    gcdLayerScale: 1,
+    gcdLayerRotation: 0,
+    quadraticResidueScale: 1,
+    quadraticResidueShear: 0,
+    gcdLatticeScale: 1,
+    gcdLatticeJitter: 0,
     fermatR2Turns: 26,
     fermatR2Scale: 1.1,
     implicitRange: 9.4,
@@ -133,6 +139,12 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.modularPointCount = Math.floor(rand(180, 640))
       result.modularMultiplier = Math.floor(rand(11, 160))
       result.modularRadius = rand(8, 18)
+      result.gcdLayerScale = rand(0.7, 2.1)
+      result.gcdLayerRotation = rand(-Math.PI, Math.PI)
+      result.quadraticResidueScale = rand(0.7, 2.2)
+      result.quadraticResidueShear = rand(-0.9, 0.9)
+      result.gcdLatticeScale = rand(0.7, 2.1)
+      result.gcdLatticeJitter = rand(0, 0.35)
       result.archimedeanPitch = rand(0.12, 0.5)
       result.archimedeanTwist = rand(0.55, 2.4)
       result.fermatR2Turns = rand(12, 44)
@@ -886,6 +898,176 @@ export const meta: EffectMeta<MathBeautyProps> = {
         showAxis: true,
         showTrail: true,
         trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_modular_times_core',
+      name: {
+        en: 'Modular Core',
+        'zh-CN': '模乘圆连线·核心',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('modular-times-table'),
+        modularPointCount: 360,
+        modularMultiplier: 71,
+        modularRadius: 12,
+        animationSpeed: 0.2,
+        lineWidth: 2.5,
+        lineColor: '#22d3ee',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.12,
+      },
+    },
+    {
+      id: 'math_beauty_modular_times_wave',
+      name: {
+        en: 'Modular Wave',
+        'zh-CN': '模乘圆连线·潮汐',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('modular-times-table'),
+        modularPointCount: 540,
+        modularMultiplier: 137,
+        modularRadius: 14.4,
+        animationSpeed: 0.24,
+        lineWidth: 2.9,
+        lineColor: '#06b6d4',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_gcd_layer_orbit',
+      name: {
+        en: 'GCD Layer Orbit',
+        'zh-CN': 'gcd 等值层·旋轨',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('gcd-layer'),
+        gcdLayerScale: 1.75,
+        gcdLayerRotation: 0.86,
+        animationSpeed: 0.22,
+        lineWidth: 2.8,
+        lineColor: '#fb923c',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_gcd_layer_mini',
+      name: {
+        en: 'GCD Layer Mini',
+        'zh-CN': 'gcd 等值层·微核',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('gcd-layer'),
+        gcdLayerScale: 0.72,
+        gcdLayerRotation: -1.18,
+        animationSpeed: 0.18,
+        lineWidth: 2.3,
+        lineColor: '#fdba74',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.13,
+      },
+    },
+    {
+      id: 'math_beauty_qr_grid_flux',
+      name: {
+        en: 'Residue Grid Flux',
+        'zh-CN': '二次剩余格·流形',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('quadratic-residue-grid'),
+        quadraticResidueScale: 1.8,
+        quadraticResidueShear: 0.56,
+        animationSpeed: 0.23,
+        lineWidth: 2.9,
+        lineColor: '#14b8a6',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_qr_grid_fold',
+      name: {
+        en: 'Residue Grid Fold',
+        'zh-CN': '二次剩余格·折映',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('quadratic-residue-grid'),
+        quadraticResidueScale: 0.78,
+        quadraticResidueShear: -0.62,
+        animationSpeed: 0.18,
+        lineWidth: 2.2,
+        lineColor: '#5eead4',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.13,
+      },
+    },
+    {
+      id: 'math_beauty_gcd_lattice_glow',
+      name: {
+        en: 'Coprime Lattice Glow',
+        'zh-CN': '互质晶格·辉光',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('gcd-lattice'),
+        gcdLatticeScale: 1.65,
+        gcdLatticeJitter: 0.24,
+        animationSpeed: 0.22,
+        lineWidth: 2.8,
+        lineColor: '#f97316',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_gcd_lattice_spark',
+      name: {
+        en: 'Coprime Lattice Spark',
+        'zh-CN': '互质晶格·火花',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('gcd-lattice'),
+        gcdLatticeScale: 0.74,
+        gcdLatticeJitter: 0.36,
+        animationSpeed: 0.18,
+        lineWidth: 2.3,
+        lineColor: '#fb7185',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.13,
       },
     },
     {
