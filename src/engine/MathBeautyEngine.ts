@@ -360,6 +360,15 @@ export class MathBeautyEngine {
       || prev.lissajousPhase !== this.config.lissajousPhase
       || prev.heartDepth !== this.config.heartDepth
       || prev.heartWidth !== this.config.heartWidth
+      || prev.spirographR !== this.config.spirographR
+      || prev.spirographr !== this.config.spirographr
+      || prev.spirographd !== this.config.spirographd
+      || prev.hypotrochoidR !== this.config.hypotrochoidR
+      || prev.hypotrochoidr !== this.config.hypotrochoidr
+      || prev.hypotrochoidd !== this.config.hypotrochoidd
+      || prev.epicycloidR !== this.config.epicycloidR
+      || prev.epicycloidr !== this.config.epicycloidr
+      || prev.nephroidScale !== this.config.nephroidScale
       || prev.trochoidRatio !== this.config.trochoidRatio
       || prev.trochoidOffset !== this.config.trochoidOffset
       || prev.trochoidPhase !== this.config.trochoidPhase

@@ -98,6 +98,15 @@ export const meta: EffectMeta<MathBeautyProps> = {
     lissajousPhase: Math.PI / 2,
     heartDepth: 1,
     heartWidth: 1,
+    spirographR: 10,
+    spirographr: 4,
+    spirographd: 5,
+    hypotrochoidR: 9,
+    hypotrochoidr: 4,
+    hypotrochoidd: 5,
+    epicycloidR: 5,
+    epicycloidr: 2,
+    nephroidScale: 6,
     trochoidRatio: 3.2,
     trochoidOffset: 5.2,
     trochoidPhase: 0,
@@ -188,6 +197,15 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.lissajousPhase = rand(-Math.PI, Math.PI)
       result.heartDepth = rand(0.7, 1.45)
       result.heartWidth = rand(0.75, 1.45)
+      result.spirographR = rand(6, 14)
+      result.spirographr = rand(1.2, 8)
+      result.spirographd = rand(0.6, 10)
+      result.hypotrochoidR = rand(5, 14)
+      result.hypotrochoidr = rand(1.2, 9)
+      result.hypotrochoidd = rand(0.6, 10)
+      result.epicycloidR = rand(2, 10)
+      result.epicycloidr = rand(0.6, 4)
+      result.nephroidScale = rand(2.5, 11)
       result.trochoidRatio = rand(1.8, 6.5)
       result.trochoidOffset = rand(1.2, 7.2)
       result.trochoidPhase = rand(0, Math.PI * 2)
@@ -227,62 +245,6 @@ export const meta: EffectMeta<MathBeautyProps> = {
     return result
   },
   presets: [
-    {
-      id: 'math_beauty_classic',
-      name: {
-        en: 'Classic Whiteboard',
-        'zh-CN': '经典白板',
-      },
-      config: {
-        effectIndex: resolveEffectIndex('cardioid-deluxe'),
-        animationSpeed: 0.2,
-        lineWidth: 2.8,
-        lineColor: '#f9fafb',
-        axisRange: 18,
-        gridDensity: 18,
-        showGrid: true,
-        showAxis: true,
-        showTrail: false,
-      },
-    },
-    {
-      id: 'math_beauty_neon',
-      name: {
-        en: 'Neon Geometry',
-        'zh-CN': '霓虹几何',
-      },
-      config: {
-        effectIndex: resolveEffectIndex('modular-times-table'),
-        animationSpeed: 0.32,
-        lineWidth: 3.2,
-        lineColor: '#22d3ee',
-        axisRange: 20,
-        gridDensity: 20,
-        showGrid: true,
-        showAxis: true,
-        showTrail: true,
-        trailAlpha: 0.1,
-      },
-    },
-    {
-      id: 'math_beauty_soft',
-      name: {
-        en: 'Soft Trails',
-        'zh-CN': '柔和轨迹',
-      },
-      config: {
-        effectIndex: resolveEffectIndex('star-rose'),
-        animationSpeed: 0.16,
-        lineWidth: 2.2,
-        lineColor: '#f472b6',
-        axisRange: 22,
-        gridDensity: 16,
-        showGrid: true,
-        showAxis: true,
-        showTrail: true,
-        trailAlpha: 0.18,
-      },
-    },
     {
       id: 'math_beauty_cardioid_blossom',
       name: {

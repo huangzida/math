@@ -99,6 +99,15 @@ export interface MathBeautyProps {
   lissajousPhase?: number
   heartDepth?: number
   heartWidth?: number
+  spirographR?: number
+  spirographr?: number
+  spirographd?: number
+  hypotrochoidR?: number
+  hypotrochoidr?: number
+  hypotrochoidd?: number
+  epicycloidR?: number
+  epicycloidr?: number
+  nephroidScale?: number
   trochoidRatio?: number
   trochoidOffset?: number
   trochoidPhase?: number

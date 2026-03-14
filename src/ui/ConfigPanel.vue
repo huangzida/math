@@ -42,7 +42,7 @@ const formulaCategoryMap: Record<string, FormulaCategory> = {
   'dual-frequency-bloom': 'polar',
   superellipse: 'parametric',
   'star-rose': 'polar',
-  'spiral-spirograph': 'hybrid',
+  'spiral-spirograph': 'trochoid',
   'butterfly-variation': 'polar',
   'gcd-layer': 'numberTheory',
   'quadratic-residue-grid': 'numberTheory',
@@ -318,6 +318,26 @@ const implicitControls = computed<ImplicitControl[]>(() => {
 const isAdvancedTrochoid = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
   return effect.id === 'epitrochoid-bloom' || effect.id === 'hypotrochoid-weave'
+})
+
+const isSpiralSpirograph = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'spiral-spirograph'
+})
+
+const isHypotrochoid = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'hypotrochoid'
+})
+
+const isEpicycloid = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'epicycloid'
+})
+
+const isNephroid = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'nephroid'
 })
 
 const chaosSystemToEffectId: Record<'lorenz' | 'rossler' | 'aizawa', string> = {
@@ -1068,6 +1088,107 @@ defineExpose({
           <div v-for="prop in [
             { id: 'heartDepth', min: 0.5, max: 1.9, step: 0.01, label: 'heartDepth' },
             { id: 'heartWidth', min: 0.55, max: 1.8, step: 0.01, label: 'heartWidth' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isSpiralSpirograph">
+          <div v-for="prop in [
+            { id: 'spirographR', min: 6, max: 14, step: 0.1, label: 'spirographR' },
+            { id: 'spirographr', min: 1.2, max: 8, step: 0.05, label: 'spirographr' },
+            { id: 'spirographd', min: 0.6, max: 10, step: 0.05, label: 'spirographd' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isHypotrochoid">
+          <div v-for="prop in [
+            { id: 'hypotrochoidR', min: 5, max: 14, step: 0.1, label: 'hypotrochoidR' },
+            { id: 'hypotrochoidr', min: 1.2, max: 9, step: 0.05, label: 'hypotrochoidr' },
+            { id: 'hypotrochoidd', min: 0.6, max: 10, step: 0.05, label: 'hypotrochoidd' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isEpicycloid">
+          <div v-for="prop in [
+            { id: 'epicycloidR', min: 2, max: 10, step: 0.1, label: 'epicycloidR' },
+            { id: 'epicycloidr', min: 0.6, max: 4, step: 0.05, label: 'epicycloidr' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isNephroid">
+          <div v-for="prop in [
+            { id: 'nephroidScale', min: 2.5, max: 11, step: 0.05, label: 'nephroidScale' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">

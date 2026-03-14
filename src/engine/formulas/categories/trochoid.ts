@@ -16,10 +16,10 @@ export const spiralSpirographFormula: FormulaDefinition = {
   step: 0.004,
   scale: 0.85,
   stroke: '#06b6d4',
-  sampler: t => {
-    const R = 10
-    const r = 4
-    const d = 5
+  sampler: (t, config) => {
+    const R = clamp(config?.spirographR ?? 10, 6, 14)
+    const r = clamp(config?.spirographr ?? 4, 1.2, 8)
+    const d = clamp(config?.spirographd ?? 5, 0.6, 10)
     const k = (R - r) / r
     return {
       x: (R - r) * Math.cos(t) + d * Math.cos(k * t),
@@ -43,10 +43,10 @@ export const hypotrochoidFormula: FormulaDefinition = {
   step: 0.003,
   scale: 0.95,
   stroke: '#22d3ee',
-  sampler: t => {
-    const R = 9
-    const r = 4
-    const d = 5
+  sampler: (t, config) => {
+    const R = clamp(config?.hypotrochoidR ?? 9, 5, 14)
+    const r = clamp(config?.hypotrochoidr ?? 4, 1.2, 9)
+    const d = clamp(config?.hypotrochoidd ?? 5, 0.6, 10)
     const k = (R - r) / r
     return {
       x: (R - r) * Math.cos(t) + d * Math.cos(k * t),
@@ -70,9 +70,9 @@ export const epicycloidFormula: FormulaDefinition = {
   step: 0.0035,
   scale: 0.9,
   stroke: '#f97316',
-  sampler: t => {
-    const R = 5
-    const r = 2
+  sampler: (t, config) => {
+    const R = clamp(config?.epicycloidR ?? 5, 2, 10)
+    const r = clamp(config?.epicycloidr ?? 2, 0.6, 4)
     const k = (R + r) / r
     return {
       x: (R + r) * Math.cos(t) - r * Math.cos(k * t),
@@ -96,10 +96,13 @@ export const nephroidFormula: FormulaDefinition = {
   step: 0.002,
   scale: 0.3,
   stroke: '#38bdf8',
-  sampler: t => ({
-    x: 6 * (3 * Math.cos(t) - Math.cos(3 * t)),
-    y: 6 * (3 * Math.sin(t) - Math.sin(3 * t)),
-  }),
+  sampler: (t, config) => {
+    const scale = clamp(config?.nephroidScale ?? 6, 2.5, 11)
+    return {
+      x: scale * (3 * Math.cos(t) - Math.cos(3 * t)),
+      y: scale * (3 * Math.sin(t) - Math.sin(3 * t)),
+    }
+  },
 }
 
 export const epitrochoidBloomFormula: FormulaDefinition = {
