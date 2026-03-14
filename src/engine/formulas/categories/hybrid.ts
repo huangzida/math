@@ -1,6 +1,8 @@
 import type { FormulaDefinition } from '../../../types'
 import { IMPLICIT_DRAW_POINTS, getImplicitPath } from '../runtime'
 
+const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
+
 const sampleImplicitPath = (effectId: string, t: number, config?: Parameters<typeof getImplicitPath>[1]) => {
   const path = getImplicitPath(effectId, config)
   const idx = Math.max(0, Math.min(path.length - 1, Math.floor(t)))
@@ -187,6 +189,54 @@ export const parabolaSineBalanceFormula: FormulaDefinition = {
   sampler: (t, config) => sampleImplicitPath('parabola-sine-balance', t, config),
 }
 
+export const trigFourierFusionFormula: FormulaDefinition = {
+  id: 'trig-fourier-fusion',
+  name: {
+    en: 'Trig Fourier Fusion',
+    'zh-CN': '三角傅立叶融合',
+  },
+  formulaText: {
+    en: 'sin/cos base + tan/cot spike + finite Fourier harmonics',
+    'zh-CN': '正弦余弦基底 + 正切余切尖峰 + 有限项傅立叶谐波',
+  },
+  tMin: 0,
+  tMax: Math.PI * 12,
+  step: 0.003,
+  scale: 1.1,
+  stroke: '#a78bfa',
+  sampler: (t, config) => {
+    const sinAmp = clamp(config?.fusionSinAmp ?? 8, 3, 14)
+    const sinFreqX = clamp(config?.fusionSinFreqX ?? 3, 1, 9)
+    const sinFreqY = clamp(config?.fusionSinFreqY ?? 4, 1, 9)
+    const tanMix = clamp(config?.fusionTanMix ?? 0.45, 0, 1.4)
+    const tanFreq = clamp(config?.fusionTanFreq ?? 2.8, 0.8, 8)
+    const tanClamp = clamp(config?.fusionTanClamp ?? 1.8, 0.4, 4)
+    const fourierMix = clamp(config?.fusionFourierMix ?? 1, 0, 2.5)
+    const harmonics = Math.round(clamp(config?.fusionFourierHarmonics ?? 4, 1, 9))
+    const decay = clamp(config?.fusionFourierDecay ?? 1.2, 0.4, 2.6)
+
+    const baseX = sinAmp * Math.cos(sinFreqX * t)
+    const baseY = sinAmp * Math.sin(sinFreqY * t)
+    const safeSin = Math.sin(tanFreq * t)
+    const safeCos = Math.cos(tanFreq * t)
+    const cot = safeSin === 0 ? 0 : safeCos / safeSin
+    const tanCotTerm = Math.tanh((Math.tan(tanFreq * t) + cot) / tanClamp)
+
+    let fourierX = 0
+    let fourierY = 0
+    for (let n = 1; n <= harmonics; n += 1) {
+      const weight = 1 / (n ** decay)
+      fourierX += weight * Math.sin((n + 1) * t)
+      fourierY += weight * Math.cos((n + 2) * t)
+    }
+
+    return {
+      x: baseX + tanMix * sinAmp * tanCotTerm + fourierMix * fourierX,
+      y: baseY - tanMix * sinAmp * tanCotTerm + fourierMix * fourierY,
+    }
+  },
+}
+
 export const hybridFormulas: FormulaDefinition[] = [
   sineSquareLatticeFormula,
   resonantImplicitWaveFormula,
@@ -198,4 +248,5 @@ export const hybridFormulas: FormulaDefinition[] = [
   gcdCosInterferenceFormula,
   sineSquareBiasBandsFormula,
   parabolaSineBalanceFormula,
+  trigFourierFusionFormula,
 ]

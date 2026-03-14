@@ -53,6 +53,15 @@ export interface MathBeautyProps {
   implicitCrossMix?: number
   implicitExpMix?: number
   implicitNestedMix?: number
+  fusionSinAmp?: number
+  fusionSinFreqX?: number
+  fusionSinFreqY?: number
+  fusionTanMix?: number
+  fusionTanFreq?: number
+  fusionTanClamp?: number
+  fusionFourierMix?: number
+  fusionFourierHarmonics?: number
+  fusionFourierDecay?: number
   implicitGcdScale?: number
   implicitBias?: number
   implicitParabolaTarget?: number
@@ -60,6 +69,21 @@ export interface MathBeautyProps {
   logSpiralFrequency?: number
   logSpiralScale?: number
   logSpiralRadialWarp?: number
+  moireBaseRadius?: number
+  moireRippleAmp?: number
+  moireFreqA?: number
+  moireFreqB?: number
+  moirePhaseDrift?: number
+  innerSpiralRadius?: number
+  innerSpiralTurns?: number
+  innerSpiralGrowth?: number
+  innerSpiralWave?: number
+  innerSpiralWaveFreq?: number
+  mandalaPetalCount?: number
+  mandalaInnerMix?: number
+  mandalaOuterMix?: number
+  mandalaPhase?: number
+  mandalaSharpness?: number
   fermatSpiralScale?: number
   fermatSpiralTwist?: number
   fermatSpiralMirror?: number

@@ -334,6 +334,96 @@ export const fermatSpiralWeaveFormula: FormulaDefinition = {
   },
 }
 
+export const moireRippleFormula: FormulaDefinition = {
+  id: 'moire-ripple',
+  name: {
+    en: 'Moiré Ripple',
+    'zh-CN': '莫列波纹',
+  },
+  formulaText: {
+    en: 'r = R + A·sin(fₐt) + A·sin(fᵦt+φ)',
+    'zh-CN': 'r = R + A·sin(fₐt) + A·sin(fᵦt+φ)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 24,
+  step: 0.008,
+  scale: 1,
+  stroke: '#38bdf8',
+  sampler: (t, config) => {
+    const baseRadius = clamp(config?.moireBaseRadius ?? 9, 4, 16)
+    const rippleAmp = clamp(config?.moireRippleAmp ?? 2.4, 0.4, 6)
+    const freqA = clamp(config?.moireFreqA ?? 9, 2, 20)
+    const freqB = clamp(config?.moireFreqB ?? 10, 2, 22)
+    const phaseDrift = clamp(config?.moirePhaseDrift ?? 0.6, -Math.PI, Math.PI)
+    const r = baseRadius + rippleAmp * Math.sin(freqA * t) + rippleAmp * Math.sin(freqB * t + phaseDrift)
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
+export const innerCircleSpiralFormula: FormulaDefinition = {
+  id: 'inner-circle-spiral',
+  name: {
+    en: 'Inner Circle Spiral',
+    'zh-CN': '圆内螺线',
+  },
+  formulaText: {
+    en: 'r = R·(1-e^{-gt}) + w·sin(ft),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = R·(1-e^{-gt}) + w·sin(ft),  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 22,
+  step: 0.008,
+  scale: 1,
+  stroke: '#22d3ee',
+  sampler: (t, config) => {
+    const radius = clamp(config?.innerSpiralRadius ?? 11, 5, 18)
+    const turns = clamp(config?.innerSpiralTurns ?? 7, 2, 14)
+    const growth = clamp(config?.innerSpiralGrowth ?? 1.6, 0.4, 3.5)
+    const wave = clamp(config?.innerSpiralWave ?? 0.7, 0, 3)
+    const waveFreq = clamp(config?.innerSpiralWaveFreq ?? 5, 1, 14)
+    const mappedT = t * (turns / 7)
+    const base = radius * (1 - Math.exp(-growth * mappedT / (Math.PI * 12)))
+    const r = clamp(base + wave * Math.sin(waveFreq * mappedT), 0, radius)
+    return {
+      x: r * Math.cos(mappedT),
+      y: r * Math.sin(mappedT),
+    }
+  },
+}
+
+export const mandalaCurveFormula: FormulaDefinition = {
+  id: 'mandala-curve',
+  name: {
+    en: 'Mandala Curve',
+    'zh-CN': '曼陀罗曲线',
+  },
+  formulaText: {
+    en: 'r = a·cos(kt+φ)+b·cos(2kt)-c·sin(3kt)',
+    'zh-CN': 'r = a·cos(kt+φ)+b·cos(2kt)-c·sin(3kt)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 8,
+  step: 0.004,
+  scale: 1.1,
+  stroke: '#f472b6',
+  sampler: (t, config) => {
+    const petalCount = clamp(config?.mandalaPetalCount ?? 8, 4, 20)
+    const innerMix = clamp(config?.mandalaInnerMix ?? 3.4, 0.6, 8)
+    const outerMix = clamp(config?.mandalaOuterMix ?? 2.2, 0.4, 6)
+    const phase = clamp(config?.mandalaPhase ?? 0.5, -Math.PI, Math.PI)
+    const sharpness = clamp(config?.mandalaSharpness ?? 1.2, 0.4, 2.6)
+    const k = petalCount * t
+    const r = innerMix * Math.cos(k + phase) + outerMix * Math.cos(2 * k) - sharpness * Math.sin(3 * k)
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
 export const polarFormulas: FormulaDefinition[] = [
   limaconFormula,
   dualFrequencyBloomFormula,
@@ -347,4 +437,7 @@ export const polarFormulas: FormulaDefinition[] = [
   fermatR2SpiralFormula,
   logarithmicSpiralFormula,
   fermatSpiralWeaveFormula,
+  moireRippleFormula,
+  innerCircleSpiralFormula,
+  mandalaCurveFormula,
 ]

@@ -70,8 +70,12 @@ const formulaCategoryMap: Record<string, FormulaCategory> = {
   'gcd-cos-interference': 'hybrid',
   'sine-square-bias-bands': 'hybrid',
   'parabola-sine-balance': 'hybrid',
+  'trig-fourier-fusion': 'hybrid',
   'logarithmic-spiral': 'polar',
   'fermat-spiral-weave': 'polar',
+  'moire-ripple': 'polar',
+  'inner-circle-spiral': 'polar',
+  'mandala-curve': 'polar',
   'cardioid-deluxe': 'parametric',
   'epitrochoid-bloom': 'trochoid',
   'hypotrochoid-weave': 'trochoid',
@@ -206,6 +210,21 @@ const isTanCotBurst = computed(() => {
   return effect.id === 'tan-cot-burst'
 })
 
+const isMoireRipple = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'moire-ripple'
+})
+
+const isInnerCircleSpiral = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'inner-circle-spiral'
+})
+
+const isMandalaCurve = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'mandala-curve'
+})
+
 const isCardioidDeluxe = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
   return effect.id === 'cardioid-deluxe'
@@ -263,6 +282,11 @@ const isImplicitEffect = computed(() => {
     || effect.id === 'gcd-cos-interference'
     || effect.id === 'sine-square-bias-bands'
     || effect.id === 'parabola-sine-balance'
+})
+
+const isTrigFourierFusion = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'trig-fourier-fusion'
 })
 
 const currentEffectId = computed(() => {
@@ -893,6 +917,90 @@ defineExpose({
           </div>
         </template>
 
+        <template v-if="isMoireRipple">
+          <div v-for="prop in [
+            { id: 'moireBaseRadius', min: 4, max: 16, step: 1, label: 'moireBaseRadius' },
+            { id: 'moireRippleAmp', min: 0.4, max: 6, step: 0.2, label: 'moireRippleAmp' },
+            { id: 'moireFreqA', min: 2, max: 20, step: 1, label: 'moireFreqA' },
+            { id: 'moireFreqB', min: 2, max: 22, step: 1, label: 'moireFreqB' },
+            { id: 'moirePhaseDrift', min: -3.142, max: 3.142, step: 0.05, label: 'moirePhaseDrift' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(2) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isInnerCircleSpiral">
+          <div v-for="prop in [
+            { id: 'innerSpiralRadius', min: 5, max: 18, step: 1, label: 'innerSpiralRadius' },
+            { id: 'innerSpiralTurns', min: 2, max: 14, step: 1, label: 'innerSpiralTurns' },
+            { id: 'innerSpiralGrowth', min: 0.4, max: 3.5, step: 0.1, label: 'innerSpiralGrowth' },
+            { id: 'innerSpiralWave', min: 0, max: 3, step: 0.1, label: 'innerSpiralWave' },
+            { id: 'innerSpiralWaveFreq', min: 1, max: 14, step: 1, label: 'innerSpiralWaveFreq' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(2) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isMandalaCurve">
+          <div v-for="prop in [
+            { id: 'mandalaPetalCount', min: 4, max: 20, step: 1, label: 'mandalaPetalCount' },
+            { id: 'mandalaInnerMix', min: 0.6, max: 8, step: 0.1, label: 'mandalaInnerMix' },
+            { id: 'mandalaOuterMix', min: 0.4, max: 6, step: 0.1, label: 'mandalaOuterMix' },
+            { id: 'mandalaPhase', min: -3.142, max: 3.142, step: 0.05, label: 'mandalaPhase' },
+            { id: 'mandalaSharpness', min: 0.4, max: 2.6, step: 0.1, label: 'mandalaSharpness' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(2) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
         <template v-if="isArchimedeanSpiral">
           <div v-for="prop in [
             { id: 'archimedeanPitch', min: 0.08, max: 0.6, step: 0.01, label: 'archimedeanPitch' },
@@ -1005,6 +1113,38 @@ defineExpose({
               </label>
               <span class="text-[11px] font-mono text-white/55">
                 {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isTrigFourierFusion">
+          <div v-for="prop in [
+            { id: 'fusionSinAmp', min: 3, max: 14, step: 0.5, label: 'fusionSinAmp' },
+            { id: 'fusionSinFreqX', min: 1, max: 9, step: 1, label: 'fusionSinFreqX' },
+            { id: 'fusionSinFreqY', min: 1, max: 9, step: 1, label: 'fusionSinFreqY' },
+            { id: 'fusionTanMix', min: 0, max: 1.4, step: 0.05, label: 'fusionTanMix' },
+            { id: 'fusionTanFreq', min: 0.8, max: 8, step: 0.1, label: 'fusionTanFreq' },
+            { id: 'fusionTanClamp', min: 0.4, max: 4, step: 0.1, label: 'fusionTanClamp' },
+            { id: 'fusionFourierMix', min: 0, max: 2.5, step: 0.1, label: 'fusionFourierMix' },
+            { id: 'fusionFourierHarmonics', min: 1, max: 9, step: 1, label: 'fusionFourierHarmonics' },
+            { id: 'fusionFourierDecay', min: 0.4, max: 2.6, step: 0.1, label: 'fusionFourierDecay' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(2) }}
               </span>
             </div>
             <input

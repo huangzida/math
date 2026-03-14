@@ -317,12 +317,36 @@ export class MathBeautyEngine {
       || prev.implicitCrossMix !== this.config.implicitCrossMix
       || prev.implicitExpMix !== this.config.implicitExpMix
       || prev.implicitNestedMix !== this.config.implicitNestedMix
+      || prev.fusionSinAmp !== this.config.fusionSinAmp
+      || prev.fusionSinFreqX !== this.config.fusionSinFreqX
+      || prev.fusionSinFreqY !== this.config.fusionSinFreqY
+      || prev.fusionTanMix !== this.config.fusionTanMix
+      || prev.fusionTanFreq !== this.config.fusionTanFreq
+      || prev.fusionTanClamp !== this.config.fusionTanClamp
+      || prev.fusionFourierMix !== this.config.fusionFourierMix
+      || prev.fusionFourierHarmonics !== this.config.fusionFourierHarmonics
+      || prev.fusionFourierDecay !== this.config.fusionFourierDecay
       || prev.implicitGcdScale !== this.config.implicitGcdScale
       || prev.implicitBias !== this.config.implicitBias
       || prev.implicitParabolaTarget !== this.config.implicitParabolaTarget
       || prev.logSpiralFrequency !== this.config.logSpiralFrequency
       || prev.logSpiralScale !== this.config.logSpiralScale
       || prev.logSpiralRadialWarp !== this.config.logSpiralRadialWarp
+      || prev.moireBaseRadius !== this.config.moireBaseRadius
+      || prev.moireRippleAmp !== this.config.moireRippleAmp
+      || prev.moireFreqA !== this.config.moireFreqA
+      || prev.moireFreqB !== this.config.moireFreqB
+      || prev.moirePhaseDrift !== this.config.moirePhaseDrift
+      || prev.innerSpiralRadius !== this.config.innerSpiralRadius
+      || prev.innerSpiralTurns !== this.config.innerSpiralTurns
+      || prev.innerSpiralGrowth !== this.config.innerSpiralGrowth
+      || prev.innerSpiralWave !== this.config.innerSpiralWave
+      || prev.innerSpiralWaveFreq !== this.config.innerSpiralWaveFreq
+      || prev.mandalaPetalCount !== this.config.mandalaPetalCount
+      || prev.mandalaInnerMix !== this.config.mandalaInnerMix
+      || prev.mandalaOuterMix !== this.config.mandalaOuterMix
+      || prev.mandalaPhase !== this.config.mandalaPhase
+      || prev.mandalaSharpness !== this.config.mandalaSharpness
       || prev.fermatSpiralScale !== this.config.fermatSpiralScale
       || prev.fermatSpiralTwist !== this.config.fermatSpiralTwist
       || prev.fermatSpiralMirror !== this.config.fermatSpiralMirror

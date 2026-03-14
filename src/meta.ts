@@ -52,6 +52,15 @@ export const meta: EffectMeta<MathBeautyProps> = {
     implicitGcdScale: 6,
     implicitBias: 0.8,
     implicitParabolaTarget: 1,
+    fusionSinAmp: 8,
+    fusionSinFreqX: 3,
+    fusionSinFreqY: 4,
+    fusionTanMix: 0.45,
+    fusionTanFreq: 2.8,
+    fusionTanClamp: 1.8,
+    fusionFourierMix: 1,
+    fusionFourierHarmonics: 4,
+    fusionFourierDecay: 1.2,
     archimedeanPitch: 0.26,
     archimedeanTwist: 1,
     fermatR2AngularScale: 1,
@@ -59,6 +68,21 @@ export const meta: EffectMeta<MathBeautyProps> = {
     logSpiralFrequency: 2.4,
     logSpiralScale: 0.45,
     logSpiralRadialWarp: 0.8,
+    moireBaseRadius: 9,
+    moireRippleAmp: 2.4,
+    moireFreqA: 9,
+    moireFreqB: 10,
+    moirePhaseDrift: 0.6,
+    innerSpiralRadius: 11,
+    innerSpiralTurns: 7,
+    innerSpiralGrowth: 1.6,
+    innerSpiralWave: 0.7,
+    innerSpiralWaveFreq: 5,
+    mandalaPetalCount: 8,
+    mandalaInnerMix: 3.4,
+    mandalaOuterMix: 2.2,
+    mandalaPhase: 0.5,
+    mandalaSharpness: 1.2,
     fermatSpiralScale: 11,
     fermatSpiralTwist: 1.6,
     fermatSpiralMirror: 1,
@@ -160,10 +184,34 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.implicitGcdScale = rand(2, 16)
       result.implicitBias = rand(0.3, 1.35)
       result.implicitParabolaTarget = rand(0.6, 1.6)
+      result.fusionSinAmp = rand(4, 12)
+      result.fusionSinFreqX = Math.floor(rand(1, 9.99))
+      result.fusionSinFreqY = Math.floor(rand(1, 9.99))
+      result.fusionTanMix = rand(0.1, 1.1)
+      result.fusionTanFreq = rand(1, 6.8)
+      result.fusionTanClamp = rand(0.7, 3.2)
+      result.fusionFourierMix = rand(0.2, 2.2)
+      result.fusionFourierHarmonics = Math.floor(rand(1, 9.99))
+      result.fusionFourierDecay = rand(0.7, 2.2)
       result.logSpiralGrowth = rand(0.05, 0.24)
       result.logSpiralFrequency = rand(1.2, 4.8)
       result.logSpiralScale = rand(0.2, 0.8)
       result.logSpiralRadialWarp = rand(0.45, 1.4)
+      result.moireBaseRadius = rand(6, 14)
+      result.moireRippleAmp = rand(0.8, 4.8)
+      result.moireFreqA = Math.floor(rand(3, 18.99))
+      result.moireFreqB = Math.floor(rand(3, 20.99))
+      result.moirePhaseDrift = rand(-Math.PI, Math.PI)
+      result.innerSpiralRadius = rand(7, 16)
+      result.innerSpiralTurns = Math.floor(rand(3, 13.99))
+      result.innerSpiralGrowth = rand(0.7, 3)
+      result.innerSpiralWave = rand(0, 2.4)
+      result.innerSpiralWaveFreq = Math.floor(rand(2, 12.99))
+      result.mandalaPetalCount = Math.floor(rand(5, 18.99))
+      result.mandalaInnerMix = rand(1.2, 7.2)
+      result.mandalaOuterMix = rand(0.8, 5.4)
+      result.mandalaPhase = rand(-Math.PI, Math.PI)
+      result.mandalaSharpness = rand(0.6, 2.2)
       result.fermatSpiralScale = rand(7, 16)
       result.fermatSpiralTwist = rand(0.9, 3.2)
       result.fermatSpiralMirror = rand(0.35, 1.5)
@@ -1150,6 +1198,206 @@ export const meta: EffectMeta<MathBeautyProps> = {
         animationSpeed: 0.22,
         lineWidth: 2.8,
         lineColor: '#22d3ee',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.09,
+      },
+    },
+    {
+      id: 'math_beauty_trig_fusion_prism',
+      name: {
+        en: 'Trig Fusion Prism',
+        'zh-CN': '三角傅立叶融合·棱镜',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('trig-fourier-fusion'),
+        fusionSinAmp: 8,
+        fusionSinFreqX: 3,
+        fusionSinFreqY: 4,
+        fusionTanMix: 0.45,
+        fusionTanFreq: 2.8,
+        fusionTanClamp: 1.8,
+        fusionFourierMix: 1,
+        fusionFourierHarmonics: 4,
+        fusionFourierDecay: 1.2,
+        animationSpeed: 0.2,
+        lineWidth: 2.5,
+        lineColor: '#a78bfa',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.11,
+      },
+    },
+    {
+      id: 'math_beauty_trig_fusion_arc',
+      name: {
+        en: 'Trig Fusion Arc',
+        'zh-CN': '三角傅立叶融合·弧潮',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('trig-fourier-fusion'),
+        fusionSinAmp: 10.5,
+        fusionSinFreqX: 2,
+        fusionSinFreqY: 6,
+        fusionTanMix: 0.32,
+        fusionTanFreq: 4.1,
+        fusionTanClamp: 1.3,
+        fusionFourierMix: 1.6,
+        fusionFourierHarmonics: 6,
+        fusionFourierDecay: 1.45,
+        animationSpeed: 0.22,
+        lineWidth: 2.8,
+        lineColor: '#8b5cf6',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.09,
+      },
+    },
+    {
+      id: 'math_beauty_moire_ripple_neon',
+      name: {
+        en: 'Moiré Ripple Neon',
+        'zh-CN': '莫列波纹·霓虹',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('moire-ripple'),
+        moireBaseRadius: 9,
+        moireRippleAmp: 2.8,
+        moireFreqA: 9,
+        moireFreqB: 10,
+        moirePhaseDrift: 0.6,
+        animationSpeed: 0.2,
+        lineWidth: 2.5,
+        lineColor: '#38bdf8',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.11,
+      },
+    },
+    {
+      id: 'math_beauty_moire_ripple_tide',
+      name: {
+        en: 'Moiré Ripple Tide',
+        'zh-CN': '莫列波纹·潮汐',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('moire-ripple'),
+        moireBaseRadius: 11,
+        moireRippleAmp: 1.6,
+        moireFreqA: 6,
+        moireFreqB: 15,
+        moirePhaseDrift: -1.1,
+        animationSpeed: 0.19,
+        lineWidth: 2.7,
+        lineColor: '#0ea5e9',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.1,
+      },
+    },
+    {
+      id: 'math_beauty_inner_spiral_core',
+      name: {
+        en: 'Inner Spiral Core',
+        'zh-CN': '圆内螺线·核心',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('inner-circle-spiral'),
+        innerSpiralRadius: 11,
+        innerSpiralTurns: 7,
+        innerSpiralGrowth: 1.6,
+        innerSpiralWave: 0.7,
+        innerSpiralWaveFreq: 5,
+        animationSpeed: 0.2,
+        lineWidth: 2.5,
+        lineColor: '#22d3ee',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.11,
+      },
+    },
+    {
+      id: 'math_beauty_inner_spiral_shell',
+      name: {
+        en: 'Inner Spiral Shell',
+        'zh-CN': '圆内螺线·贝壳',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('inner-circle-spiral'),
+        innerSpiralRadius: 14,
+        innerSpiralTurns: 10,
+        innerSpiralGrowth: 1.1,
+        innerSpiralWave: 1.4,
+        innerSpiralWaveFreq: 8,
+        animationSpeed: 0.22,
+        lineWidth: 2.8,
+        lineColor: '#06b6d4',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.09,
+      },
+    },
+    {
+      id: 'math_beauty_mandala_blossom',
+      name: {
+        en: 'Mandala Blossom',
+        'zh-CN': '曼陀罗曲线·花绽',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('mandala-curve'),
+        mandalaPetalCount: 8,
+        mandalaInnerMix: 3.4,
+        mandalaOuterMix: 2.2,
+        mandalaPhase: 0.5,
+        mandalaSharpness: 1.2,
+        animationSpeed: 0.2,
+        lineWidth: 2.5,
+        lineColor: '#f472b6',
+        axisRange: 18,
+        gridDensity: 18,
+        showGrid: true,
+        showAxis: true,
+        showTrail: true,
+        trailAlpha: 0.11,
+      },
+    },
+    {
+      id: 'math_beauty_mandala_glyph',
+      name: {
+        en: 'Mandala Glyph',
+        'zh-CN': '曼陀罗曲线·符纹',
+      },
+      config: {
+        effectIndex: resolveEffectIndex('mandala-curve'),
+        mandalaPetalCount: 13,
+        mandalaInnerMix: 4.8,
+        mandalaOuterMix: 1.3,
+        mandalaPhase: -0.9,
+        mandalaSharpness: 1.9,
+        animationSpeed: 0.22,
+        lineWidth: 2.8,
+        lineColor: '#ec4899',
         axisRange: 18,
         gridDensity: 18,
         showGrid: true,
