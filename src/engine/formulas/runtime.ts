@@ -492,15 +492,28 @@ const createVortexSpiralPath = (config?: MathBeautyProps) => {
   const wave = clamp(config?.vortexSpiralWave ?? 1.2, 0, 4)
   const scale = clamp(config?.vortexSpiralScale ?? 6.6, 2.4, 12)
   const points: Point[] = []
-  const samples = 4200
-  const maxT = Math.PI * 2 * turns
-  for (let i = 0; i <= samples; i += 1) {
-    const t = (maxT * i) / samples
-    const radial = scale * (1 + drift * t)
-    const theta = t + curl * Math.log1p(t)
-    const x = radial * Math.cos(theta) + wave * Math.sin(3 * theta)
-    const y = radial * Math.sin(theta) + wave * Math.cos(2 * theta)
-    points.push({ x, y })
+  const armCount = Math.floor(clamp(2 + curl * 2.4, 2, 12))
+  const samplesPerArm = 1600
+  const radialPitch = 1.25 + drift * 3.2
+  const waveAmp = wave * 0.16 * scale
+  const layerCount = 3
+  for (let layer = 0; layer < layerCount; layer += 1) {
+    const layerPhaseOffset = (layer - 1) * 0.095 * (1 + 0.35 * curl)
+    const layerScaleOffset = 1 + (layer - 1) * 0.035
+    for (let arm = 0; arm < armCount; arm += 1) {
+      const armPhase = (Math.PI * 2 * arm) / armCount
+      for (let i = 0; i <= samplesPerArm; i += 1) {
+        const u = i / samplesPerArm
+        const theta = u * Math.PI * 2 * turns + armPhase + layerPhaseOffset
+        const radius = (0.75 + u * scale * radialPitch) * layerScaleOffset
+        const ripple = waveAmp * Math.sin((8 + curl * 2.2) * u * Math.PI + armPhase * 1.8 + layerPhaseOffset * 3)
+        points.push({
+          x: (radius + ripple) * Math.cos(theta),
+          y: (radius + ripple) * Math.sin(theta),
+        })
+      }
+      points.push({ x: Number.NaN, y: Number.NaN })
+    }
   }
   return points
 }
@@ -514,22 +527,45 @@ const createParticleFlowWeavePath = (config?: MathBeautyProps) => {
   const seed = Math.floor((density * 97 + twist * 131 + bias * 163 + scale * 191) * 1000)
   const random = createSeededRandom(seed)
   const points: Point[] = []
-  const iterations = 190
-  for (let i = 0; i < density; i += 1) {
+  const seedCount = Math.floor(density * 1.8)
+  const iterations = 240
+  const dashPeriod = Math.floor(clamp(8 + twist * 2.2, 8, 18))
+  const drawSpan = Math.floor(clamp(dashPeriod * 0.38, 2, 7))
+  for (let i = 0; i < seedCount; i += 1) {
     const angle = (Math.PI * 2 * i) / density
-    let x = 11 * Math.cos(angle) + (random() - 0.5) * 0.8
-    let y = 8 * Math.sin(angle) + (random() - 0.5) * 0.8
+    const startRadius = 7.2 + random() * 7.8
+    let x = startRadius * Math.cos(angle) + (random() - 0.5) * 1.4
+    let y = startRadius * Math.sin(angle) + (random() - 0.5) * 1.4
+    const dashPhase = Math.floor(random() * dashPeriod)
+    let isGap = false
     for (let n = 0; n < iterations; n += 1) {
-      const vx = Math.sin((y + bias) * twist) + 0.55 * Math.cos((x - bias) * 0.63)
-      const vy = Math.cos((x - bias) * twist) - 0.55 * Math.sin((y + bias) * 0.63)
+      const r = Math.hypot(x, y) + 1e-6
+      const centerPull = 0.28 + 0.2 * twist
+      const swirl = 2.1 + twist * 1.9
+      const attractX = -centerPull * x / (1 + 0.03 * r * r)
+      const attractY = -centerPull * y / (1 + 0.03 * r * r)
+      const swirlX = (-y / r) * swirl
+      const swirlY = (x / r) * swirl
+      const harmonicX = 0.65 * Math.sin((y + bias * 2.2) * (0.7 + 0.3 * twist)) + 0.35 * Math.cos(x * 0.42)
+      const harmonicY = 0.65 * Math.cos((x - bias * 2.2) * (0.7 + 0.3 * twist)) + 0.35 * Math.sin(y * 0.42)
+      const vx = attractX + swirlX + harmonicX
+      const vy = attractY + swirlY + harmonicY
       const speed = Math.hypot(vx, vy) + 1e-6
-      x += ((vx / speed) * step * 9) / scale
-      y += ((vy / speed) * step * 9) / scale
-      if (Math.abs(x) > 17 || Math.abs(y) > 17) break
-      points.push({
-        x: x * scale,
-        y: y * scale,
-      })
+      x += (vx / speed) * step * 4.8
+      y += (vy / speed) * step * 4.8
+      if (Math.abs(x) > 16.8 || Math.abs(y) > 16.8) break
+      const draw = ((n + dashPhase) % dashPeriod) < drawSpan
+      if (draw) {
+        isGap = false
+        points.push({
+          x: x * scale,
+          y: y * scale,
+        })
+      }
+      else if (!isGap) {
+        isGap = true
+        points.push({ x: Number.NaN, y: Number.NaN })
+      }
     }
     points.push({ x: Number.NaN, y: Number.NaN })
   }

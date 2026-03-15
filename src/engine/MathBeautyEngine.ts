@@ -7,6 +7,7 @@ type Point = { x: number, y: number } | null
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 const chaosEffectIds = new Set(['lorenz-attractor', 'rossler-attractor', 'aizawa-attractor'])
+const hypnoticEffectIds = new Set(['particle-flow-weave', 'vortex-spiral'])
 const physicsConfigKeys = new Set<keyof MathBeautyProps>([
   'lissajousRibbonAmp',
   'lissajousRibbonFreqX',
@@ -128,10 +129,36 @@ export class MathBeautyEngine {
     const { ctx } = this
     const width = this.getWidth()
     const height = this.getHeight()
+    const hypnotic = hypnoticEffectIds.has(this.formula.id)
     const gradient = ctx.createLinearGradient(0, 0, 0, height)
-    gradient.addColorStop(0, '#0b1027')
-    gradient.addColorStop(1, '#070b1f')
+    gradient.addColorStop(0, hypnotic ? '#050613' : '#0b1027')
+    gradient.addColorStop(1, hypnotic ? '#02030b' : '#070b1f')
     ctx.fillStyle = gradient
+    ctx.fillRect(0, 0, width, height)
+    const centerGlow = ctx.createRadialGradient(
+      width * 0.5,
+      height * 0.5,
+      0,
+      width * 0.5,
+      height * 0.5,
+      Math.max(width, height) * 0.66,
+    )
+    centerGlow.addColorStop(0, hypnotic ? 'rgba(69, 98, 255, 0.24)' : 'rgba(59, 130, 246, 0.1)')
+    centerGlow.addColorStop(0.45, hypnotic ? 'rgba(128, 58, 202, 0.08)' : 'rgba(59, 130, 246, 0.03)')
+    centerGlow.addColorStop(1, 'rgba(0, 0, 0, 0)')
+    ctx.fillStyle = centerGlow
+    ctx.fillRect(0, 0, width, height)
+    const vignette = ctx.createRadialGradient(
+      width * 0.5,
+      height * 0.5,
+      Math.min(width, height) * 0.2,
+      width * 0.5,
+      height * 0.5,
+      Math.max(width, height) * 0.75,
+    )
+    vignette.addColorStop(0, 'rgba(0, 0, 0, 0)')
+    vignette.addColorStop(1, hypnotic ? 'rgba(0, 0, 0, 0.72)' : 'rgba(0, 0, 0, 0.38)')
+    ctx.fillStyle = vignette
     ctx.fillRect(0, 0, width, height)
   }
 
@@ -142,8 +169,10 @@ export class MathBeautyEngine {
     const { ctx } = this
     const width = this.getWidth()
     const height = this.getHeight()
+    const hypnotic = hypnoticEffectIds.has(this.formula.id)
     const alpha = clamp(this.config.trailAlpha || 0.12, 0.01, 0.4)
-    ctx.fillStyle = `rgba(7, 11, 31, ${alpha})`
+    const fadeAlpha = hypnotic ? clamp(alpha * 0.56, 0.02, 0.22) : alpha
+    ctx.fillStyle = hypnotic ? `rgba(2, 4, 12, ${fadeAlpha})` : `rgba(7, 11, 31, ${fadeAlpha})`
     ctx.fillRect(0, 0, width, height)
   }
 
@@ -227,23 +256,66 @@ export class MathBeautyEngine {
       return
     }
     const drawCount = Math.max(2, Math.floor(total * this.progress))
-    ctx.beginPath()
-    let drawing = false
-    for (let i = 0; i < drawCount; i += 1) {
-      const point = this.sampledPoints[i]
-      if (!point) {
-        drawing = false
-        continue
-      }
-      const { sx, sy } = this.worldToScreen(point.x, point.y)
-      if (!drawing) {
-        ctx.moveTo(sx, sy)
-        drawing = true
-      }
-      else {
-        ctx.lineTo(sx, sy)
+    const tracePath = () => {
+      ctx.beginPath()
+      let drawing = false
+      for (let i = 0; i < drawCount; i += 1) {
+        const point = this.sampledPoints[i]
+        if (!point) {
+          drawing = false
+          continue
+        }
+        const { sx, sy } = this.worldToScreen(point.x, point.y)
+        if (!drawing) {
+          ctx.moveTo(sx, sy)
+          drawing = true
+        }
+        else {
+          ctx.lineTo(sx, sy)
+        }
       }
     }
+    if (hypnoticEffectIds.has(this.formula.id)) {
+      const primary = this.config.lineColor || this.formula.stroke || '#60a5fa'
+      const secondary = this.formula.id === 'vortex-spiral' ? '#f472b6' : '#22d3ee'
+      const lineWidth = clamp(this.config.lineWidth || 2.6, 0.8, 12)
+      const baseDash = this.formula.id === 'particle-flow-weave' ? [2, 9] : [4, 7]
+      const previousComposite = ctx.globalCompositeOperation
+      ctx.globalCompositeOperation = 'screen'
+      ctx.setLineDash([])
+      tracePath()
+      ctx.strokeStyle = primary
+      ctx.globalAlpha = 0.2
+      ctx.lineWidth = lineWidth * 2.3
+      ctx.shadowBlur = 22
+      ctx.shadowColor = primary
+      ctx.stroke()
+      tracePath()
+      ctx.setLineDash(baseDash)
+      ctx.lineDashOffset = -drawCount * 0.18
+      ctx.strokeStyle = secondary
+      ctx.globalAlpha = 0.84
+      ctx.lineWidth = lineWidth * 1.05
+      ctx.shadowBlur = 14
+      ctx.shadowColor = secondary
+      ctx.stroke()
+      tracePath()
+      ctx.setLineDash([1.2, 10])
+      ctx.lineDashOffset = drawCount * 0.1
+      ctx.strokeStyle = '#ffffff'
+      ctx.globalAlpha = 0.24
+      ctx.lineWidth = lineWidth * 0.52
+      ctx.shadowBlur = 8
+      ctx.shadowColor = '#ffffff'
+      ctx.stroke()
+      ctx.globalCompositeOperation = previousComposite
+      ctx.globalAlpha = 1
+      ctx.setLineDash([])
+      ctx.lineDashOffset = 0
+      ctx.shadowBlur = 0
+      return
+    }
+    tracePath()
     const color = this.config.lineColor || this.formula.stroke || '#f9fafb'
     ctx.strokeStyle = color
     ctx.lineWidth = clamp(this.config.lineWidth || 2.6, 0.8, 12)

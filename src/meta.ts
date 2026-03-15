@@ -162,15 +162,15 @@ export const meta: EffectMeta<MathBeautyProps> = {
     strangeInkC: 1.55,
     strangeInkD: 0.82,
     strangeInkScale: 1.05,
-    vortexSpiralTurns: 8.2,
-    vortexSpiralCurl: 1.3,
-    vortexSpiralDrift: 0.09,
-    vortexSpiralWave: 1.2,
-    vortexSpiralScale: 6.6,
-    particleFlowDensity: 36,
-    particleFlowStep: 0.16,
-    particleFlowTwist: 1.1,
-    particleFlowBias: 0.62,
+    vortexSpiralTurns: 12.4,
+    vortexSpiralCurl: 1.1,
+    vortexSpiralDrift: 0.06,
+    vortexSpiralWave: 0.85,
+    vortexSpiralScale: 6.2,
+    particleFlowDensity: 48,
+    particleFlowStep: 0.14,
+    particleFlowTwist: 1.45,
+    particleFlowBias: 0.2,
     particleFlowScale: 1,
     flourishPetals: 6,
     flourishBloom: 0.75,
@@ -338,16 +338,16 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.strangeInkC = rand(-2.8, 2.8)
       result.strangeInkD = rand(-2.8, 2.8)
       result.strangeInkScale = rand(0.45, 2.2)
-      result.vortexSpiralTurns = rand(2, 18)
-      result.vortexSpiralCurl = rand(0.2, 4.5)
-      result.vortexSpiralDrift = rand(0.01, 0.25)
-      result.vortexSpiralWave = rand(0, 4)
-      result.vortexSpiralScale = rand(2.4, 12)
-      result.particleFlowDensity = Math.floor(rand(12, 72.99))
-      result.particleFlowStep = rand(0.06, 0.38)
-      result.particleFlowTwist = rand(0.2, 3.2)
-      result.particleFlowBias = rand(-1.2, 1.2)
-      result.particleFlowScale = rand(0.45, 2.2)
+      result.vortexSpiralTurns = rand(6, 16)
+      result.vortexSpiralCurl = rand(0.4, 2.4)
+      result.vortexSpiralDrift = rand(0.02, 0.16)
+      result.vortexSpiralWave = rand(0.2, 2.1)
+      result.vortexSpiralScale = rand(4.2, 9.5)
+      result.particleFlowDensity = Math.floor(rand(24, 68.99))
+      result.particleFlowStep = rand(0.08, 0.24)
+      result.particleFlowTwist = rand(0.5, 2.4)
+      result.particleFlowBias = rand(-0.8, 0.8)
+      result.particleFlowScale = rand(0.65, 1.65)
       result.flourishPetals = Math.floor(rand(3, 16.99))
       result.flourishBloom = rand(0.1, 2)
       result.flourishTwist = rand(0.2, 5)
@@ -378,8 +378,9 @@ export const meta: EffectMeta<MathBeautyProps> = {
     const randomDisplay = () => {
       result.axisRange = rand(14, 26)
       result.gridDensity = Math.floor(rand(10, 26))
+      result.lineColor = colors[Math.floor(rand(0, colors.length - 0.01))]
       result.showGrid = Math.random() > 0.1
-      result.showAxis = true
+      result.showAxis = Math.random() > 0.5
       result.showTrail = Math.random() > 0.4
       result.trailAlpha = rand(0.06, 0.22)
     }
