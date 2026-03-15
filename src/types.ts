@@ -153,6 +153,41 @@ export interface MathBeautyProps {
   trochoidRatio?: number
   trochoidOffset?: number
   trochoidPhase?: number
+  lissajousRibbonAmp?: number
+  lissajousRibbonFreqX?: number
+  lissajousRibbonFreqY?: number
+  lissajousRibbonPhase?: number
+  lissajousRibbonTwist?: number
+  strangeInkA?: number
+  strangeInkB?: number
+  strangeInkC?: number
+  strangeInkD?: number
+  strangeInkScale?: number
+  vortexSpiralTurns?: number
+  vortexSpiralCurl?: number
+  vortexSpiralDrift?: number
+  vortexSpiralWave?: number
+  vortexSpiralScale?: number
+  particleFlowDensity?: number
+  particleFlowStep?: number
+  particleFlowTwist?: number
+  particleFlowBias?: number
+  particleFlowScale?: number
+  flourishPetals?: number
+  flourishBloom?: number
+  flourishTwist?: number
+  flourishPhase?: number
+  flourishScale?: number
+  interferenceFreqX?: number
+  interferenceFreqY?: number
+  interferencePhase?: number
+  interferenceDrift?: number
+  interferenceScale?: number
+  wavefrontK1?: number
+  wavefrontK2?: number
+  wavefrontDistance?: number
+  wavefrontPhase?: number
+  wavefrontScale?: number
   juliaCRe?: number
   juliaCIm?: number
   mandelbrotBandWidth?: number

@@ -5,7 +5,7 @@ import { spiralSpirographFormula, hypotrochoidFormula, epicycloidFormula, nephro
 import { modularTimesTableFormula, gcdLayerFormula, quadraticResidueGridFormula, gcdLatticeFormula } from './formulas/categories/number-theory'
 import { sineSquareLatticeFormula, resonantImplicitWaveFormula, tanCotImplicitMazeFormula, symmetricSineCrossFormula, expTrigBalanceFormula, sinTanNexusFormula, nestedSineShearFormula, gcdCosInterferenceFormula, sineSquareBiasBandsFormula, parabolaSineBalanceFormula, trigFourierFusionFormula } from './formulas/categories/hybrid'
 import { juliaFractalFormula, mandelbrotOrbitFormula, barnsleyFernFormula } from './formulas/categories/fractal'
-import { vectorFieldStreamlinesFormula, gravityWellFormula, vortexFieldFormula } from './formulas/categories/physics'
+import { vectorFieldStreamlinesFormula, gravityWellFormula, vortexFieldFormula, lissajousRibbonFormula, strangeAttractorInkFormula, vortexSpiralFormula, particleFlowWeaveFormula, flourishCurveBloomFormula, interferenceFieldFormula, wavefrontInterferenceFormula } from './formulas/categories/physics'
 import { lorenzAttractorFormula, rosslerAttractorFormula, aizawaAttractorFormula } from './formulas/categories/chaos'
 
 export const formulaLibrary: FormulaDefinition[] = [
@@ -59,6 +59,13 @@ export const formulaLibrary: FormulaDefinition[] = [
   vectorFieldStreamlinesFormula,
   gravityWellFormula,
   vortexFieldFormula,
+  lissajousRibbonFormula,
+  strangeAttractorInkFormula,
+  vortexSpiralFormula,
+  particleFlowWeaveFormula,
+  flourishCurveBloomFormula,
+  interferenceFieldFormula,
+  wavefrontInterferenceFormula,
   lorenzAttractorFormula,
   rosslerAttractorFormula,
   aizawaAttractorFormula,

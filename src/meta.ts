@@ -152,6 +152,41 @@ export const meta: EffectMeta<MathBeautyProps> = {
     trochoidRatio: 3.2,
     trochoidOffset: 5.2,
     trochoidPhase: 0,
+    lissajousRibbonAmp: 9.5,
+    lissajousRibbonFreqX: 3.2,
+    lissajousRibbonFreqY: 4.1,
+    lissajousRibbonPhase: Math.PI / 3,
+    lissajousRibbonTwist: 1.1,
+    strangeInkA: 1.65,
+    strangeInkB: -2.05,
+    strangeInkC: 1.55,
+    strangeInkD: 0.82,
+    strangeInkScale: 1.05,
+    vortexSpiralTurns: 8.2,
+    vortexSpiralCurl: 1.3,
+    vortexSpiralDrift: 0.09,
+    vortexSpiralWave: 1.2,
+    vortexSpiralScale: 6.6,
+    particleFlowDensity: 36,
+    particleFlowStep: 0.16,
+    particleFlowTwist: 1.1,
+    particleFlowBias: 0.62,
+    particleFlowScale: 1,
+    flourishPetals: 6,
+    flourishBloom: 0.75,
+    flourishTwist: 1.6,
+    flourishPhase: 0.5,
+    flourishScale: 8.5,
+    interferenceFreqX: 3.4,
+    interferenceFreqY: 4.7,
+    interferencePhase: 0.7,
+    interferenceDrift: 1,
+    interferenceScale: 8.5,
+    wavefrontK1: 2.6,
+    wavefrontK2: 3.8,
+    wavefrontDistance: 3.6,
+    wavefrontPhase: 0.55,
+    wavefrontScale: 4.2,
     juliaCRe: -0.745,
     juliaCIm: 0.186,
     mandelbrotBandWidth: 0.16,
@@ -293,6 +328,41 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.trochoidRatio = rand(1.8, 6.5)
       result.trochoidOffset = rand(1.2, 7.2)
       result.trochoidPhase = rand(0, Math.PI * 2)
+      result.lissajousRibbonAmp = rand(4, 14)
+      result.lissajousRibbonFreqX = rand(1, 8)
+      result.lissajousRibbonFreqY = rand(1, 8)
+      result.lissajousRibbonPhase = rand(-Math.PI, Math.PI)
+      result.lissajousRibbonTwist = rand(0, 2.4)
+      result.strangeInkA = rand(-2.8, 2.8)
+      result.strangeInkB = rand(-2.8, 2.8)
+      result.strangeInkC = rand(-2.8, 2.8)
+      result.strangeInkD = rand(-2.8, 2.8)
+      result.strangeInkScale = rand(0.45, 2.2)
+      result.vortexSpiralTurns = rand(2, 18)
+      result.vortexSpiralCurl = rand(0.2, 4.5)
+      result.vortexSpiralDrift = rand(0.01, 0.25)
+      result.vortexSpiralWave = rand(0, 4)
+      result.vortexSpiralScale = rand(2.4, 12)
+      result.particleFlowDensity = Math.floor(rand(12, 72.99))
+      result.particleFlowStep = rand(0.06, 0.38)
+      result.particleFlowTwist = rand(0.2, 3.2)
+      result.particleFlowBias = rand(-1.2, 1.2)
+      result.particleFlowScale = rand(0.45, 2.2)
+      result.flourishPetals = Math.floor(rand(3, 16.99))
+      result.flourishBloom = rand(0.1, 2)
+      result.flourishTwist = rand(0.2, 5)
+      result.flourishPhase = rand(-Math.PI, Math.PI)
+      result.flourishScale = rand(3.5, 14)
+      result.interferenceFreqX = rand(0.8, 9)
+      result.interferenceFreqY = rand(0.8, 9)
+      result.interferencePhase = rand(-Math.PI, Math.PI)
+      result.interferenceDrift = rand(0, 3)
+      result.interferenceScale = rand(3.5, 14)
+      result.wavefrontK1 = rand(0.8, 8)
+      result.wavefrontK2 = rand(0.8, 8)
+      result.wavefrontDistance = rand(0.6, 8)
+      result.wavefrontPhase = rand(-Math.PI, Math.PI)
+      result.wavefrontScale = rand(1.2, 10)
       result.juliaCRe = rand(-0.95, -0.35)
       result.juliaCIm = rand(-0.3, 0.3)
       result.mandelbrotBandWidth = rand(0.08, 0.28)

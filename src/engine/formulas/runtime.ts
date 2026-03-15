@@ -417,18 +417,257 @@ const createVortexFieldPath = () => {
   return points
 }
 
+const createLissajousRibbonPath = (config?: MathBeautyProps) => {
+  const amp = clamp(config?.lissajousRibbonAmp ?? 9.5, 4, 14)
+  const freqX = clamp(config?.lissajousRibbonFreqX ?? 3.2, 1, 8)
+  const freqY = clamp(config?.lissajousRibbonFreqY ?? 4.1, 1, 8)
+  const phase = clamp(config?.lissajousRibbonPhase ?? Math.PI / 3, -Math.PI, Math.PI)
+  const twist = clamp(config?.lissajousRibbonTwist ?? 1.1, 0, 2.4)
+  const stripCount = Math.floor(clamp(4 + twist * 2.6, 4, 10))
+  const points: Point[] = []
+  const samplesPerStrip = 1200
+  for (let strip = 0; strip < stripCount; strip += 1) {
+    const ratio = stripCount <= 1 ? 0 : strip / (stripCount - 1)
+    const offset = (ratio - 0.5) * twist
+    for (let i = 0; i <= samplesPerStrip; i += 1) {
+      const t = (Math.PI * 2 * i) / samplesPerStrip
+      const x = amp * Math.sin(freqX * t + phase + offset)
+      const y = amp * Math.sin(freqY * t - offset)
+      const warp = amp * 0.14 * Math.sin((freqX + freqY) * t + offset * 3)
+      points.push({
+        x: x + warp * Math.cos(t),
+        y: y + warp * Math.sin(t),
+      })
+    }
+    points.push({ x: Number.NaN, y: Number.NaN })
+  }
+  return points
+}
+
+const createStrangeAttractorInkPath = (config?: MathBeautyProps) => {
+  const a = clamp(config?.strangeInkA ?? 1.65, -3.2, 3.2)
+  const b = clamp(config?.strangeInkB ?? -2.05, -3.2, 3.2)
+  const c = clamp(config?.strangeInkC ?? 1.55, -3.2, 3.2)
+  const d = clamp(config?.strangeInkD ?? 0.82, -3.2, 3.2)
+  const scale = clamp(config?.strangeInkScale ?? 1.05, 0.45, 2.2)
+  const source: Point[] = []
+  let x = 0.1
+  let y = 0
+  const total = 28000
+  const burnIn = 900
+  for (let i = 0; i < total; i += 1) {
+    const nextX = Math.sin(a * y) - Math.cos(b * x)
+    const nextY = Math.sin(c * x) - Math.cos(d * y)
+    x = nextX
+    y = nextY
+    if (i >= burnIn && Number.isFinite(x) && Number.isFinite(y)) {
+      source.push({ x, y })
+    }
+  }
+  let minX = Number.POSITIVE_INFINITY
+  let maxX = Number.NEGATIVE_INFINITY
+  let minY = Number.POSITIVE_INFINITY
+  let maxY = Number.NEGATIVE_INFINITY
+  for (let i = 0; i < source.length; i += 1) {
+    const point = source[i]
+    if (point.x < minX) minX = point.x
+    if (point.x > maxX) maxX = point.x
+    if (point.y < minY) minY = point.y
+    if (point.y > maxY) maxY = point.y
+  }
+  const centerX = (minX + maxX) * 0.5
+  const centerY = (minY + maxY) * 0.5
+  const extent = Math.max(maxX - minX, maxY - minY, 1e-6)
+  const radius = 13 * scale
+  return source.map(point => ({
+    x: ((point.x - centerX) / extent) * radius,
+    y: ((point.y - centerY) / extent) * radius,
+  }))
+}
+
+const createVortexSpiralPath = (config?: MathBeautyProps) => {
+  const turns = clamp(config?.vortexSpiralTurns ?? 8.2, 2, 18)
+  const curl = clamp(config?.vortexSpiralCurl ?? 1.3, 0.2, 4.5)
+  const drift = clamp(config?.vortexSpiralDrift ?? 0.09, 0.01, 0.25)
+  const wave = clamp(config?.vortexSpiralWave ?? 1.2, 0, 4)
+  const scale = clamp(config?.vortexSpiralScale ?? 6.6, 2.4, 12)
+  const points: Point[] = []
+  const samples = 4200
+  const maxT = Math.PI * 2 * turns
+  for (let i = 0; i <= samples; i += 1) {
+    const t = (maxT * i) / samples
+    const radial = scale * (1 + drift * t)
+    const theta = t + curl * Math.log1p(t)
+    const x = radial * Math.cos(theta) + wave * Math.sin(3 * theta)
+    const y = radial * Math.sin(theta) + wave * Math.cos(2 * theta)
+    points.push({ x, y })
+  }
+  return points
+}
+
+const createParticleFlowWeavePath = (config?: MathBeautyProps) => {
+  const density = Math.floor(clamp(config?.particleFlowDensity ?? 36, 12, 72))
+  const step = clamp(config?.particleFlowStep ?? 0.16, 0.06, 0.38)
+  const twist = clamp(config?.particleFlowTwist ?? 1.1, 0.2, 3.2)
+  const bias = clamp(config?.particleFlowBias ?? 0.62, -1.2, 1.2)
+  const scale = clamp(config?.particleFlowScale ?? 1, 0.45, 2.2)
+  const seed = Math.floor((density * 97 + twist * 131 + bias * 163 + scale * 191) * 1000)
+  const random = createSeededRandom(seed)
+  const points: Point[] = []
+  const iterations = 190
+  for (let i = 0; i < density; i += 1) {
+    const angle = (Math.PI * 2 * i) / density
+    let x = 11 * Math.cos(angle) + (random() - 0.5) * 0.8
+    let y = 8 * Math.sin(angle) + (random() - 0.5) * 0.8
+    for (let n = 0; n < iterations; n += 1) {
+      const vx = Math.sin((y + bias) * twist) + 0.55 * Math.cos((x - bias) * 0.63)
+      const vy = Math.cos((x - bias) * twist) - 0.55 * Math.sin((y + bias) * 0.63)
+      const speed = Math.hypot(vx, vy) + 1e-6
+      x += ((vx / speed) * step * 9) / scale
+      y += ((vy / speed) * step * 9) / scale
+      if (Math.abs(x) > 17 || Math.abs(y) > 17) break
+      points.push({
+        x: x * scale,
+        y: y * scale,
+      })
+    }
+    points.push({ x: Number.NaN, y: Number.NaN })
+  }
+  return points
+}
+
+const createFlourishCurveBloomPath = (config?: MathBeautyProps) => {
+  const petals = Math.floor(clamp(config?.flourishPetals ?? 6, 3, 16))
+  const bloom = clamp(config?.flourishBloom ?? 0.75, 0.1, 2)
+  const twist = clamp(config?.flourishTwist ?? 1.6, 0.2, 5)
+  const phase = clamp(config?.flourishPhase ?? 0.5, -Math.PI, Math.PI)
+  const scale = clamp(config?.flourishScale ?? 8.5, 3.5, 14)
+  const points: Point[] = []
+  const loops = 3
+  const samples = 4200
+  const maxT = Math.PI * 2 * loops
+  for (let i = 0; i <= samples; i += 1) {
+    const t = (maxT * i) / samples
+    points.push({
+      x: scale * (Math.sin(petals * t) + bloom * Math.sin((petals + twist) * t + phase)),
+      y: scale * (Math.cos(petals * t) - bloom * Math.cos((petals - twist) * t - phase)),
+    })
+  }
+  return points
+}
+
+const createInterferenceFieldPath = (config?: MathBeautyProps) => {
+  const freqX = clamp(config?.interferenceFreqX ?? 3.4, 0.8, 9)
+  const freqY = clamp(config?.interferenceFreqY ?? 4.7, 0.8, 9)
+  const phase = clamp(config?.interferencePhase ?? 0.7, -Math.PI, Math.PI)
+  const drift = clamp(config?.interferenceDrift ?? 1, 0, 3)
+  const scale = clamp(config?.interferenceScale ?? 8.5, 3.5, 14)
+  const points: Point[] = []
+  const lines = 10
+  const samples = 780
+  for (let line = 0; line < lines; line += 1) {
+    const linePhase = (line / lines) * Math.PI * 2
+    for (let i = 0; i <= samples; i += 1) {
+      const t = (Math.PI * 2 * i) / samples
+      points.push({
+        x: scale * Math.sin(freqX * t + drift * Math.sin(0.5 * t + linePhase)),
+        y: scale * Math.sin(freqY * t + phase + linePhase) + scale * 0.35 * Math.sin((freqX - freqY) * t - linePhase),
+      })
+    }
+    points.push({ x: Number.NaN, y: Number.NaN })
+  }
+  return points
+}
+
+const createWavefrontInterferencePath = (config?: MathBeautyProps) => {
+  const k1 = clamp(config?.wavefrontK1 ?? 2.6, 0.8, 8)
+  const k2 = clamp(config?.wavefrontK2 ?? 3.8, 0.8, 8)
+  const distance = clamp(config?.wavefrontDistance ?? 3.6, 0.6, 8)
+  const phase = clamp(config?.wavefrontPhase ?? 0.55, -Math.PI, Math.PI)
+  const scale = clamp(config?.wavefrontScale ?? 4.2, 1.2, 10)
+  const points: Point[] = []
+  const rows = 22
+  const samples = 520
+  const span = 14
+  for (let row = 0; row < rows; row += 1) {
+    const yOffset = -7 + (14 * row) / Math.max(1, rows - 1)
+    for (let i = 0; i <= samples; i += 1) {
+      const x = -span + (span * 2 * i) / samples
+      const r1 = Math.hypot(x + distance, yOffset + 1.2)
+      const r2 = Math.hypot(x - distance, yOffset - 1.2)
+      const wave = Math.sin(k1 * r1 + phase) + Math.sin(k2 * r2 - phase)
+      points.push({
+        x,
+        y: yOffset + wave * scale * 0.26,
+      })
+    }
+    points.push({ x: Number.NaN, y: Number.NaN })
+  }
+  return points
+}
+
 const physicsPathCache = new Map<string, Point[]>()
 
-export const getPhysicsPath = (effectId: string) => {
-  const cached = physicsPathCache.get(effectId)
+export const getPhysicsPath = (effectId: string, config?: MathBeautyProps) => {
+  const lissajousRibbonAmp = clamp(config?.lissajousRibbonAmp ?? 9.5, 4, 14)
+  const lissajousRibbonFreqX = clamp(config?.lissajousRibbonFreqX ?? 3.2, 1, 8)
+  const lissajousRibbonFreqY = clamp(config?.lissajousRibbonFreqY ?? 4.1, 1, 8)
+  const lissajousRibbonPhase = clamp(config?.lissajousRibbonPhase ?? Math.PI / 3, -Math.PI, Math.PI)
+  const lissajousRibbonTwist = clamp(config?.lissajousRibbonTwist ?? 1.1, 0, 2.4)
+  const strangeInkA = clamp(config?.strangeInkA ?? 1.65, -3.2, 3.2)
+  const strangeInkB = clamp(config?.strangeInkB ?? -2.05, -3.2, 3.2)
+  const strangeInkC = clamp(config?.strangeInkC ?? 1.55, -3.2, 3.2)
+  const strangeInkD = clamp(config?.strangeInkD ?? 0.82, -3.2, 3.2)
+  const strangeInkScale = clamp(config?.strangeInkScale ?? 1.05, 0.45, 2.2)
+  const vortexSpiralTurns = clamp(config?.vortexSpiralTurns ?? 8.2, 2, 18)
+  const vortexSpiralCurl = clamp(config?.vortexSpiralCurl ?? 1.3, 0.2, 4.5)
+  const vortexSpiralDrift = clamp(config?.vortexSpiralDrift ?? 0.09, 0.01, 0.25)
+  const vortexSpiralWave = clamp(config?.vortexSpiralWave ?? 1.2, 0, 4)
+  const vortexSpiralScale = clamp(config?.vortexSpiralScale ?? 6.6, 2.4, 12)
+  const particleFlowDensity = Math.floor(clamp(config?.particleFlowDensity ?? 36, 12, 72))
+  const particleFlowStep = clamp(config?.particleFlowStep ?? 0.16, 0.06, 0.38)
+  const particleFlowTwist = clamp(config?.particleFlowTwist ?? 1.1, 0.2, 3.2)
+  const particleFlowBias = clamp(config?.particleFlowBias ?? 0.62, -1.2, 1.2)
+  const particleFlowScale = clamp(config?.particleFlowScale ?? 1, 0.45, 2.2)
+  const flourishPetals = Math.floor(clamp(config?.flourishPetals ?? 6, 3, 16))
+  const flourishBloom = clamp(config?.flourishBloom ?? 0.75, 0.1, 2)
+  const flourishTwist = clamp(config?.flourishTwist ?? 1.6, 0.2, 5)
+  const flourishPhase = clamp(config?.flourishPhase ?? 0.5, -Math.PI, Math.PI)
+  const flourishScale = clamp(config?.flourishScale ?? 8.5, 3.5, 14)
+  const interferenceFreqX = clamp(config?.interferenceFreqX ?? 3.4, 0.8, 9)
+  const interferenceFreqY = clamp(config?.interferenceFreqY ?? 4.7, 0.8, 9)
+  const interferencePhase = clamp(config?.interferencePhase ?? 0.7, -Math.PI, Math.PI)
+  const interferenceDrift = clamp(config?.interferenceDrift ?? 1, 0, 3)
+  const interferenceScale = clamp(config?.interferenceScale ?? 8.5, 3.5, 14)
+  const wavefrontK1 = clamp(config?.wavefrontK1 ?? 2.6, 0.8, 8)
+  const wavefrontK2 = clamp(config?.wavefrontK2 ?? 3.8, 0.8, 8)
+  const wavefrontDistance = clamp(config?.wavefrontDistance ?? 3.6, 0.6, 8)
+  const wavefrontPhase = clamp(config?.wavefrontPhase ?? 0.55, -Math.PI, Math.PI)
+  const wavefrontScale = clamp(config?.wavefrontScale ?? 4.2, 1.2, 10)
+  const key = `${effectId}_${lissajousRibbonAmp.toFixed(3)}_${lissajousRibbonFreqX.toFixed(3)}_${lissajousRibbonFreqY.toFixed(3)}_${lissajousRibbonPhase.toFixed(3)}_${lissajousRibbonTwist.toFixed(3)}_${strangeInkA.toFixed(3)}_${strangeInkB.toFixed(3)}_${strangeInkC.toFixed(3)}_${strangeInkD.toFixed(3)}_${strangeInkScale.toFixed(3)}_${vortexSpiralTurns.toFixed(3)}_${vortexSpiralCurl.toFixed(3)}_${vortexSpiralDrift.toFixed(3)}_${vortexSpiralWave.toFixed(3)}_${vortexSpiralScale.toFixed(3)}_${particleFlowDensity}_${particleFlowStep.toFixed(3)}_${particleFlowTwist.toFixed(3)}_${particleFlowBias.toFixed(3)}_${particleFlowScale.toFixed(3)}_${flourishPetals}_${flourishBloom.toFixed(3)}_${flourishTwist.toFixed(3)}_${flourishPhase.toFixed(3)}_${flourishScale.toFixed(3)}_${interferenceFreqX.toFixed(3)}_${interferenceFreqY.toFixed(3)}_${interferencePhase.toFixed(3)}_${interferenceDrift.toFixed(3)}_${interferenceScale.toFixed(3)}_${wavefrontK1.toFixed(3)}_${wavefrontK2.toFixed(3)}_${wavefrontDistance.toFixed(3)}_${wavefrontPhase.toFixed(3)}_${wavefrontScale.toFixed(3)}`
+  const cached = physicsPathCache.get(key)
   if (cached) return cached
   const path = effectId === 'vector-field-streamlines'
     ? createVectorFieldStreamlinesPath()
     : effectId === 'gravity-well'
       ? createGravityWellPath()
-      : createVortexFieldPath()
+      : effectId === 'vortex-field'
+        ? createVortexFieldPath()
+        : effectId === 'lissajous-ribbon'
+          ? createLissajousRibbonPath(config)
+          : effectId === 'strange-attractor-ink'
+            ? createStrangeAttractorInkPath(config)
+            : effectId === 'vortex-spiral'
+              ? createVortexSpiralPath(config)
+              : effectId === 'particle-flow-weave'
+                ? createParticleFlowWeavePath(config)
+                : effectId === 'flourish-curve-bloom'
+                  ? createFlourishCurveBloomPath(config)
+                  : effectId === 'interference-field'
+                    ? createInterferenceFieldPath(config)
+                    : createWavefrontInterferencePath(config)
   const sampledPath = resamplePath(path, PHYSICS_DRAW_POINTS)
-  physicsPathCache.set(effectId, sampledPath)
+  physicsPathCache.set(key, sampledPath)
   return sampledPath
 }
 

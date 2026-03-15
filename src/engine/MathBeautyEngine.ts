@@ -7,6 +7,43 @@ type Point = { x: number, y: number } | null
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 const chaosEffectIds = new Set(['lorenz-attractor', 'rossler-attractor', 'aizawa-attractor'])
+const physicsConfigKeys = new Set<keyof MathBeautyProps>([
+  'lissajousRibbonAmp',
+  'lissajousRibbonFreqX',
+  'lissajousRibbonFreqY',
+  'lissajousRibbonPhase',
+  'lissajousRibbonTwist',
+  'strangeInkA',
+  'strangeInkB',
+  'strangeInkC',
+  'strangeInkD',
+  'strangeInkScale',
+  'vortexSpiralTurns',
+  'vortexSpiralCurl',
+  'vortexSpiralDrift',
+  'vortexSpiralWave',
+  'vortexSpiralScale',
+  'particleFlowDensity',
+  'particleFlowStep',
+  'particleFlowTwist',
+  'particleFlowBias',
+  'particleFlowScale',
+  'flourishPetals',
+  'flourishBloom',
+  'flourishTwist',
+  'flourishPhase',
+  'flourishScale',
+  'interferenceFreqX',
+  'interferenceFreqY',
+  'interferencePhase',
+  'interferenceDrift',
+  'interferenceScale',
+  'wavefrontK1',
+  'wavefrontK2',
+  'wavefrontDistance',
+  'wavefrontPhase',
+  'wavefrontScale',
+])
 
 export class MathBeautyEngine {
   private container: HTMLElement
@@ -414,7 +451,8 @@ export class MathBeautyEngine {
       || prev.trochoidRatio !== this.config.trochoidRatio
       || prev.trochoidOffset !== this.config.trochoidOffset
       || prev.trochoidPhase !== this.config.trochoidPhase
-    if (modularChanged || chaosChanged || fractalChanged || classicCurveChanged) {
+    const physicsChanged = Object.keys(newConfig).some(key => physicsConfigKeys.has(key as keyof MathBeautyProps))
+    if (modularChanged || chaosChanged || fractalChanged || classicCurveChanged || physicsChanged) {
       this.resetFormulaPath()
     }
     const axisChanged = prev.axisRange !== this.config.axisRange

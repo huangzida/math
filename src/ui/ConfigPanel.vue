@@ -88,6 +88,13 @@ const formulaCategoryMap: Record<string, FormulaCategory> = {
   'vector-field-streamlines': 'physics',
   'gravity-well': 'physics',
   'vortex-field': 'physics',
+  'lissajous-ribbon': 'physics',
+  'strange-attractor-ink': 'physics',
+  'vortex-spiral': 'physics',
+  'particle-flow-weave': 'physics',
+  'flourish-curve-bloom': 'physics',
+  'interference-field': 'physics',
+  'wavefront-interference': 'physics',
   'lorenz-attractor': 'chaos',
   'rossler-attractor': 'chaos',
   'aizawa-attractor': 'chaos',
@@ -365,6 +372,68 @@ const implicitControls = computed<ImplicitControl[]>(() => {
   ]
   return [...commonControls, ...(implicitControlDefs[currentEffectId.value] || [])]
 })
+
+type PhysicsControl = {
+  id: keyof MathBeautyProps
+  min: number
+  max: number
+  step: number
+  label: string
+}
+
+const physicsControlDefs: Record<string, PhysicsControl[]> = {
+  'lissajous-ribbon': [
+    { id: 'lissajousRibbonAmp', min: 4, max: 14, step: 0.1, label: 'lissajousRibbonAmp' },
+    { id: 'lissajousRibbonFreqX', min: 1, max: 8, step: 0.05, label: 'lissajousRibbonFreqX' },
+    { id: 'lissajousRibbonFreqY', min: 1, max: 8, step: 0.05, label: 'lissajousRibbonFreqY' },
+    { id: 'lissajousRibbonPhase', min: -3.142, max: 3.142, step: 0.01, label: 'lissajousRibbonPhase' },
+    { id: 'lissajousRibbonTwist', min: 0, max: 2.4, step: 0.01, label: 'lissajousRibbonTwist' },
+  ],
+  'strange-attractor-ink': [
+    { id: 'strangeInkA', min: -3.2, max: 3.2, step: 0.01, label: 'strangeInkA' },
+    { id: 'strangeInkB', min: -3.2, max: 3.2, step: 0.01, label: 'strangeInkB' },
+    { id: 'strangeInkC', min: -3.2, max: 3.2, step: 0.01, label: 'strangeInkC' },
+    { id: 'strangeInkD', min: -3.2, max: 3.2, step: 0.01, label: 'strangeInkD' },
+    { id: 'strangeInkScale', min: 0.45, max: 2.2, step: 0.01, label: 'strangeInkScale' },
+  ],
+  'vortex-spiral': [
+    { id: 'vortexSpiralTurns', min: 2, max: 18, step: 0.1, label: 'vortexSpiralTurns' },
+    { id: 'vortexSpiralCurl', min: 0.2, max: 4.5, step: 0.01, label: 'vortexSpiralCurl' },
+    { id: 'vortexSpiralDrift', min: 0.01, max: 0.25, step: 0.01, label: 'vortexSpiralDrift' },
+    { id: 'vortexSpiralWave', min: 0, max: 4, step: 0.01, label: 'vortexSpiralWave' },
+    { id: 'vortexSpiralScale', min: 2.4, max: 12, step: 0.1, label: 'vortexSpiralScale' },
+  ],
+  'particle-flow-weave': [
+    { id: 'particleFlowDensity', min: 12, max: 72, step: 1, label: 'particleFlowDensity' },
+    { id: 'particleFlowStep', min: 0.06, max: 0.38, step: 0.01, label: 'particleFlowStep' },
+    { id: 'particleFlowTwist', min: 0.2, max: 3.2, step: 0.01, label: 'particleFlowTwist' },
+    { id: 'particleFlowBias', min: -1.2, max: 1.2, step: 0.01, label: 'particleFlowBias' },
+    { id: 'particleFlowScale', min: 0.45, max: 2.2, step: 0.01, label: 'particleFlowScale' },
+  ],
+  'flourish-curve-bloom': [
+    { id: 'flourishPetals', min: 3, max: 16, step: 1, label: 'flourishPetals' },
+    { id: 'flourishBloom', min: 0.1, max: 2, step: 0.01, label: 'flourishBloom' },
+    { id: 'flourishTwist', min: 0.2, max: 5, step: 0.01, label: 'flourishTwist' },
+    { id: 'flourishPhase', min: -3.142, max: 3.142, step: 0.01, label: 'flourishPhase' },
+    { id: 'flourishScale', min: 3.5, max: 14, step: 0.1, label: 'flourishScale' },
+  ],
+  'interference-field': [
+    { id: 'interferenceFreqX', min: 0.8, max: 9, step: 0.01, label: 'interferenceFreqX' },
+    { id: 'interferenceFreqY', min: 0.8, max: 9, step: 0.01, label: 'interferenceFreqY' },
+    { id: 'interferencePhase', min: -3.142, max: 3.142, step: 0.01, label: 'interferencePhase' },
+    { id: 'interferenceDrift', min: 0, max: 3, step: 0.01, label: 'interferenceDrift' },
+    { id: 'interferenceScale', min: 3.5, max: 14, step: 0.1, label: 'interferenceScale' },
+  ],
+  'wavefront-interference': [
+    { id: 'wavefrontK1', min: 0.8, max: 8, step: 0.01, label: 'wavefrontK1' },
+    { id: 'wavefrontK2', min: 0.8, max: 8, step: 0.01, label: 'wavefrontK2' },
+    { id: 'wavefrontDistance', min: 0.6, max: 8, step: 0.01, label: 'wavefrontDistance' },
+    { id: 'wavefrontPhase', min: -3.142, max: 3.142, step: 0.01, label: 'wavefrontPhase' },
+    { id: 'wavefrontScale', min: 1.2, max: 10, step: 0.01, label: 'wavefrontScale' },
+  ],
+}
+
+const physicsControls = computed<PhysicsControl[]>(() => physicsControlDefs[currentEffectId.value] || [])
 
 const isAdvancedTrochoid = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
@@ -1601,6 +1670,28 @@ defineExpose({
               step="0.01"
               class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
               @input="(e: Event) => updateConfig('barnsleyProbabilityJitter', Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="physicsControls.length">
+          <div v-for="prop in physicsControls" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(prop.step < 1 ? 3 : 0) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
             >
           </div>
         </template>
