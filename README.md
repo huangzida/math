@@ -4,7 +4,7 @@
 
 A Vue + Canvas mathematical visual effect component with a large coordinate stage, animated formula rendering, categorized effect browsing, and live parameter tuning.
 
-[Live Demo](https://huangzida.github.io/math/)
+[Live Demo](https://huangzida.github.io/math-beauty/)
 
 ---
 

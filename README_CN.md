@@ -4,7 +4,7 @@
 
 一个基于 Vue + Canvas 的数学可视化特效组件，提供大坐标舞台、公式动态描边、分类效果浏览与实时调参能力。
 
-[在线演示](https://huangzida.github.io/math/)
+[在线演示](https://huangzida.github.io/math-beauty/)
 
 ---
 

@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
   const isPlayground = mode === 'playground'
 
   return {
-    base: isPlayground ? '/math/' : './',
+    base: isPlayground ? '/math-beauty/' : './',
     root: isPlayground ? 'playground' : '.',
     plugins: [
       vue(),

@@ -17,13 +17,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://github.com/huangzida/math#readme",
+  "homepage": "https://github.com/huangzida/math-beauty#readme",
   "bugs": {
-    "url": "https://github.com/huangzida/math/issues"
+    "url": "https://github.com/huangzida/math-beauty/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/huangzida/math.git"
+    "url": "git+https://github.com/huangzida/math-beauty.git"
   },
   "sideEffects": [
     "**/*.css"
