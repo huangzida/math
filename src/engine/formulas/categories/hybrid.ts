@@ -237,6 +237,60 @@ export const trigFourierFusionFormula: FormulaDefinition = {
   },
 }
 
+export const cubicXYBalanceFormula: FormulaDefinition = {
+  id: 'cubic-xy-balance',
+  name: {
+    en: 'Cubic XY Balance',
+    'zh-CN': '三次 xy 平衡',
+  },
+  formulaText: {
+    en: 'x³ + y³ = 5xy',
+    'zh-CN': 'x³ + y³ = 5xy',
+  },
+  tMin: 0,
+  tMax: IMPLICIT_DRAW_POINTS - 1,
+  step: 1,
+  scale: 1,
+  stroke: '#67e8f9',
+  sampler: (t, config) => sampleImplicitPath('cubic-xy-balance', t, config),
+}
+
+export const sineYCrossBandsFormula: FormulaDefinition = {
+  id: 'sine-y-cross-bands',
+  name: {
+    en: 'Sine Y Cross Bands',
+    'zh-CN': '正弦 y 交错带',
+  },
+  formulaText: {
+    en: 'sin(2y) - 2sin(x) - y = y * -1.0',
+    'zh-CN': 'sin(2y) - 2sin(x) - y = y * -1.0',
+  },
+  tMin: 0,
+  tMax: IMPLICIT_DRAW_POINTS - 1,
+  step: 1,
+  scale: 1,
+  stroke: '#7dd3fc',
+  sampler: (t, config) => sampleImplicitPath('sine-y-cross-bands', t, config),
+}
+
+export const tanSinMirrorFieldFormula: FormulaDefinition = {
+  id: 'tan-sin-mirror-field',
+  name: {
+    en: 'Tan Sin Mirror Field',
+    'zh-CN': '正切正弦镜像场',
+  },
+  formulaText: {
+    en: 'tan(x²·sin(y²)) = tan(y²·sin(x²))',
+    'zh-CN': 'tan(x²·sin(y²)) = tan(y²·sin(x²))',
+  },
+  tMin: 0,
+  tMax: IMPLICIT_DRAW_POINTS - 1,
+  step: 1,
+  scale: 1,
+  stroke: '#ec4899',
+  sampler: (t, config) => sampleImplicitPath('tan-sin-mirror-field', t, config),
+}
+
 export const hybridFormulas: FormulaDefinition[] = [
   sineSquareLatticeFormula,
   resonantImplicitWaveFormula,
@@ -249,4 +303,7 @@ export const hybridFormulas: FormulaDefinition[] = [
   sineSquareBiasBandsFormula,
   parabolaSineBalanceFormula,
   trigFourierFusionFormula,
+  cubicXYBalanceFormula,
+  sineYCrossBandsFormula,
+  tanSinMirrorFieldFormula,
 ]

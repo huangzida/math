@@ -57,7 +57,9 @@ const formulaCategoryMap: Record<string, FormulaCategory> = {
   lemniscate: 'parametric',
   'oscilloscope-harmonic': 'parametric',
   'oscilloscope-sincos': 'parametric',
+  'sin-cos-oval-weave': 'parametric',
   'tan-cot-burst': 'polar',
+  'tan-radial-web': 'polar',
   lissajous: 'parametric',
   nephroid: 'trochoid',
   'archimedean-spiral': 'polar',
@@ -73,6 +75,9 @@ const formulaCategoryMap: Record<string, FormulaCategory> = {
   'sine-square-bias-bands': 'hybrid',
   'parabola-sine-balance': 'hybrid',
   'trig-fourier-fusion': 'hybrid',
+  'cubic-xy-balance': 'hybrid',
+  'sine-y-cross-bands': 'hybrid',
+  'tan-sin-mirror-field': 'hybrid',
   'logarithmic-spiral': 'polar',
   'fermat-spiral-weave': 'polar',
   'moire-ripple': 'polar',
@@ -219,6 +224,11 @@ const isTanCotBurst = computed(() => {
   return effect.id === 'tan-cot-burst'
 })
 
+const isTanRadialWeb = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'tan-radial-web'
+})
+
 const isMoireRipple = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
   return effect.id === 'moire-ripple'
@@ -279,6 +289,11 @@ const isLissajous = computed(() => {
   return effect.id === 'lissajous'
 })
 
+const isSinCosOvalWeave = computed(() => {
+  const effect = getFormulaByIndex(props.config.effectIndex || 0)
+  return effect.id === 'sin-cos-oval-weave'
+})
+
 const isFermatR2Spiral = computed(() => {
   const effect = getFormulaByIndex(props.config.effectIndex || 0)
   return effect.id === 'fermat-r2-spiral'
@@ -301,6 +316,9 @@ const isImplicitEffect = computed(() => {
     || effect.id === 'gcd-cos-interference'
     || effect.id === 'sine-square-bias-bands'
     || effect.id === 'parabola-sine-balance'
+    || effect.id === 'cubic-xy-balance'
+    || effect.id === 'sine-y-cross-bands'
+    || effect.id === 'tan-sin-mirror-field'
 })
 
 const isTrigFourierFusion = computed(() => {
@@ -998,6 +1016,32 @@ defineExpose({
           </div>
         </template>
 
+        <template v-if="isTanRadialWeb">
+          <div v-for="prop in [
+            { id: 'tanRadialWebFrequency', min: 0.12, max: 1.6, step: 0.01, label: 'tanRadialWebFrequency' },
+            { id: 'tanRadialWebGuard', min: 0.001, max: 0.08, step: 0.001, label: 'tanRadialWebGuard' },
+            { id: 'tanRadialWebClamp', min: 2, max: 24, step: 0.1, label: 'tanRadialWebClamp' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
         <template v-if="isMoireRipple">
           <div v-for="prop in [
             { id: 'moireBaseRadius', min: 4, max: 16, step: 1, label: 'moireBaseRadius' },
@@ -1432,6 +1476,33 @@ defineExpose({
             { id: 'lissajousFreqX', min: 1, max: 8, step: 0.05, label: 'lissajousFreqX' },
             { id: 'lissajousFreqY', min: 1, max: 8, step: 0.05, label: 'lissajousFreqY' },
             { id: 'lissajousPhase', min: -3.142, max: 3.142, step: 0.01, label: 'lissajousPhase' }
+          ]" :key="prop.id" class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                {{ t(`labels.${prop.label}`) }}
+              </label>
+              <span class="text-[11px] font-mono text-white/55">
+                {{ (config[prop.id as keyof MathBeautyProps] as number).toFixed(3) }}
+              </span>
+            </div>
+            <input
+              :value="config[prop.id as keyof MathBeautyProps]"
+              type="range"
+              :min="prop.min"
+              :max="prop.max"
+              :step="prop.step"
+              class="w-full accent-blue-500 h-1.5 rounded-full appearance-none cursor-pointer"
+              @input="(e: Event) => updateConfig(prop.id as keyof MathBeautyProps, Number((e.target as HTMLInputElement).value))"
+            >
+          </div>
+        </template>
+
+        <template v-if="isSinCosOvalWeave">
+          <div v-for="prop in [
+            { id: 'ovalWeaveXSinAmp', min: 0.4, max: 6, step: 0.05, label: 'ovalWeaveXSinAmp' },
+            { id: 'ovalWeaveXCosAmp', min: 0, max: 4, step: 0.05, label: 'ovalWeaveXCosAmp' },
+            { id: 'ovalWeaveXCosFreq', min: 0.4, max: 9, step: 0.05, label: 'ovalWeaveXCosFreq' },
+            { id: 'ovalWeaveYCosAmp', min: 0.4, max: 6, step: 0.05, label: 'ovalWeaveYCosAmp' }
           ]" :key="prop.id" class="flex flex-col gap-2">
             <div class="flex justify-between items-center">
               <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">

@@ -492,6 +492,9 @@ export class MathBeautyEngine {
       || prev.tanCotBurstHole !== this.config.tanCotBurstHole
       || prev.tanCotBurstCross !== this.config.tanCotBurstCross
       || prev.tanCotBurstClamp !== this.config.tanCotBurstClamp
+      || prev.tanRadialWebFrequency !== this.config.tanRadialWebFrequency
+      || prev.tanRadialWebGuard !== this.config.tanRadialWebGuard
+      || prev.tanRadialWebClamp !== this.config.tanRadialWebClamp
       || prev.superellipseA !== this.config.superellipseA
       || prev.superellipseB !== this.config.superellipseB
       || prev.superellipseN !== this.config.superellipseN
@@ -509,6 +512,10 @@ export class MathBeautyEngine {
       || prev.lissajousFreqX !== this.config.lissajousFreqX
       || prev.lissajousFreqY !== this.config.lissajousFreqY
       || prev.lissajousPhase !== this.config.lissajousPhase
+      || prev.ovalWeaveXSinAmp !== this.config.ovalWeaveXSinAmp
+      || prev.ovalWeaveXCosAmp !== this.config.ovalWeaveXCosAmp
+      || prev.ovalWeaveXCosFreq !== this.config.ovalWeaveXCosFreq
+      || prev.ovalWeaveYCosAmp !== this.config.ovalWeaveYCosAmp
       || prev.heartDepth !== this.config.heartDepth
       || prev.heartWidth !== this.config.heartWidth
       || prev.spirographR !== this.config.spirographR

@@ -221,6 +221,39 @@ export const tanCotBurstFormula: FormulaDefinition = {
   },
 }
 
+export const tanRadialWebFormula: FormulaDefinition = {
+  id: 'tan-radial-web',
+  name: {
+    en: 'Tan Radial Web',
+    'zh-CN': '正切径向蛛网',
+  },
+  formulaText: {
+    en: 'r = tan(2t/5),  x = rcos(t),  y = rsin(t)',
+    'zh-CN': 'r = tan(2t/5),  x = rcos(t),  y = rsin(t)',
+  },
+  tMin: -Math.PI * 18,
+  tMax: Math.PI * 18,
+  step: 0.003,
+  scale: 1,
+  stroke: '#f43f5e',
+  sampler: (t, config) => {
+    const frequency = clamp(config?.tanRadialWebFrequency ?? 0.4, 0.12, 1.6)
+    const guard = clamp(config?.tanRadialWebGuard ?? 0.006, 0.001, 0.08)
+    const radiusClamp = clamp(config?.tanRadialWebClamp ?? 12, 2, 24)
+    const angle = frequency * t
+    const cosValue = Math.cos(angle)
+    if (Math.abs(cosValue) < guard) {
+      return { x: Number.NaN, y: Number.NaN }
+    }
+    const raw = Math.tan(angle)
+    const r = Math.sign(raw) * Math.min(Math.abs(raw), radiusClamp)
+    return {
+      x: r * Math.cos(t),
+      y: r * Math.sin(t),
+    }
+  },
+}
+
 export const archimedeanSpiralFormula: FormulaDefinition = {
   id: 'archimedean-spiral',
   name: {
@@ -433,6 +466,7 @@ export const polarFormulas: FormulaDefinition[] = [
   flowerWebFormula,
   petalChainFormula,
   tanCotBurstFormula,
+  tanRadialWebFormula,
   archimedeanSpiralFormula,
   fermatR2SpiralFormula,
   logarithmicSpiralFormula,

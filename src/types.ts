@@ -120,6 +120,9 @@ export interface MathBeautyProps {
   tanCotBurstHole?: number
   tanCotBurstCross?: number
   tanCotBurstClamp?: number
+  tanRadialWebFrequency?: number
+  tanRadialWebGuard?: number
+  tanRadialWebClamp?: number
   superellipseA?: number
   superellipseB?: number
   superellipseN?: number
@@ -139,6 +142,10 @@ export interface MathBeautyProps {
   lissajousFreqX?: number
   lissajousFreqY?: number
   lissajousPhase?: number
+  ovalWeaveXSinAmp?: number
+  ovalWeaveXCosAmp?: number
+  ovalWeaveXCosFreq?: number
+  ovalWeaveYCosAmp?: number
   heartDepth?: number
   heartWidth?: number
   spirographR?: number

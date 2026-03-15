@@ -179,6 +179,33 @@ export const oscilloscopeSincosFormula: FormulaDefinition = {
   },
 }
 
+export const sinCosOvalWeaveFormula: FormulaDefinition = {
+  id: 'sin-cos-oval-weave',
+  name: {
+    en: 'Sin Cos Oval Weave',
+    'zh-CN': '正余弦椭圆编织',
+  },
+  formulaText: {
+    en: 'x = 2sin(t) + 0.6cos(2.8t),  y = 2cos(t)',
+    'zh-CN': 'x = 2sin(t) + 0.6cos(2.8t),  y = 2cos(t)',
+  },
+  tMin: 0,
+  tMax: Math.PI * 40,
+  step: 0.01,
+  scale: 1.1,
+  stroke: '#22d3ee',
+  sampler: (t, config) => {
+    const xSinAmp = clamp(config?.ovalWeaveXSinAmp ?? 2, 0.4, 6)
+    const xCosAmp = clamp(config?.ovalWeaveXCosAmp ?? 0.6, 0, 4)
+    const xCosFreq = clamp(config?.ovalWeaveXCosFreq ?? 2.8, 0.4, 9)
+    const yCosAmp = clamp(config?.ovalWeaveYCosAmp ?? 2, 0.4, 6)
+    return {
+      x: xSinAmp * Math.sin(t) + xCosAmp * Math.cos(xCosFreq * t),
+      y: yCosAmp * Math.cos(t),
+    }
+  },
+}
+
 export const cardioidDeluxeFormula: FormulaDefinition = {
   id: 'cardioid-deluxe',
   name: {
@@ -263,6 +290,7 @@ export const parametricFormulas: FormulaDefinition[] = [
   lemniscateFormula,
   oscilloscopeHarmonicFormula,
   oscilloscopeSincosFormula,
+  sinCosOvalWeaveFormula,
   cardioidDeluxeFormula,
   astroidFormula,
   lissajousFormula,

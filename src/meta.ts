@@ -119,6 +119,9 @@ export const meta: EffectMeta<MathBeautyProps> = {
     tanCotBurstHole: 0,
     tanCotBurstCross: 0,
     tanCotBurstClamp: 0,
+    tanRadialWebFrequency: 0.4,
+    tanRadialWebGuard: 0.006,
+    tanRadialWebClamp: 12,
     superellipseA: 10,
     superellipseB: 8,
     superellipseN: 3,
@@ -138,6 +141,10 @@ export const meta: EffectMeta<MathBeautyProps> = {
     lissajousFreqX: 3,
     lissajousFreqY: 4,
     lissajousPhase: Math.PI / 2,
+    ovalWeaveXSinAmp: 2,
+    ovalWeaveXCosAmp: 0.6,
+    ovalWeaveXCosFreq: 2.8,
+    ovalWeaveYCosAmp: 2,
     heartDepth: 1,
     heartWidth: 1,
     spirographR: 10,
@@ -295,6 +302,9 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.tanCotBurstHole = rand(0, 3.5)
       result.tanCotBurstCross = rand(0, 48)
       result.tanCotBurstClamp = rand(0, 180)
+      result.tanRadialWebFrequency = rand(0.18, 0.8)
+      result.tanRadialWebGuard = rand(0.002, 0.02)
+      result.tanRadialWebClamp = rand(4, 20)
       result.superellipseA = rand(6, 13)
       result.superellipseB = rand(4, 11)
       result.superellipseN = rand(1.4, 7.5)
@@ -314,6 +324,10 @@ export const meta: EffectMeta<MathBeautyProps> = {
       result.lissajousFreqX = rand(1.2, 7.5)
       result.lissajousFreqY = rand(1.2, 7.5)
       result.lissajousPhase = rand(-Math.PI, Math.PI)
+      result.ovalWeaveXSinAmp = rand(1.2, 3.4)
+      result.ovalWeaveXCosAmp = rand(0.2, 1.4)
+      result.ovalWeaveXCosFreq = rand(1.2, 4.8)
+      result.ovalWeaveYCosAmp = rand(1.2, 3.4)
       result.heartDepth = rand(0.7, 1.45)
       result.heartWidth = rand(0.75, 1.45)
       result.spirographR = rand(6, 14)

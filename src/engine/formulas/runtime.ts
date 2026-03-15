@@ -885,11 +885,34 @@ export const getImplicitPath = (effectId: string, config?: MathBeautyProps) => {
                         range,
                         step,
                       )
-                    : createImplicitContourPath(
-                        (x, y) => (y * y * nestedMix) / 2 + Math.sin(x * waveMix) - parabolaTarget,
-                        range,
-                        step,
-                      )
+                    : effectId === 'cubic-xy-balance'
+                      ? createImplicitContourPath(
+                          (x, y) => x ** 3 + y ** 3 - 5 * x * y,
+                          range,
+                          step,
+                        )
+                      : effectId === 'sine-y-cross-bands'
+                        ? createImplicitContourPath(
+                            (x, y) => Math.sin(2 * y) - 2 * Math.sin(x),
+                            range,
+                            step,
+                          )
+                        : effectId === 'tan-sin-mirror-field'
+                          ? createImplicitContourPath(
+                              (x, y) => {
+                                const left = safeTan(x * x * Math.sin(y * y), guard)
+                                const right = safeTan(y * y * Math.sin(x * x), guard)
+                                if (!Number.isFinite(left) || !Number.isFinite(right)) return Number.NaN
+                                return left - right
+                              },
+                              range,
+                              step,
+                            )
+                          : createImplicitContourPath(
+                              (x, y) => (y * y * nestedMix) / 2 + Math.sin(x * waveMix) - parabolaTarget,
+                              range,
+                              step,
+                            )
   const sampledPath = resamplePath(path, IMPLICIT_DRAW_POINTS)
   implicitPathCache.set(key, sampledPath)
   return sampledPath
